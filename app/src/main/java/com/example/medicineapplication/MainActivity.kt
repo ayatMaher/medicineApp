@@ -9,21 +9,29 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicineapplication.adapter.MedicineAdapter
 import com.example.medicineapplication.adapter.MedicineTypeAdapter
 import com.example.medicineapplication.adapter.PharmacyHomeAdapter
+import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.MedicineType
 import com.example.medicineapplication.model.Pharmacy
 
 public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickListener,
-    PharmacyHomeAdapter.ItemClickListener {
+    PharmacyHomeAdapter.ItemClickListener, MedicineAdapter.ItemClickListener {
     //medicine type
     lateinit var medicineTypeAdapter: MedicineTypeAdapter
     lateinit var rvMedicineType: RecyclerView
     var items: ArrayList<MedicineType> = ArrayList<MedicineType>()
+
     //pharmacy
     lateinit var pharmacyHomeAdapter: PharmacyHomeAdapter
     lateinit var rvPharmacy: RecyclerView
     var pharmacy_item: ArrayList<Pharmacy> = ArrayList<Pharmacy>()
+
+    //medicine
+    lateinit var medicineAdapter: MedicineAdapter
+    lateinit var rvMedicine: RecyclerView
+    var medicine_item: ArrayList<Medicine> = ArrayList<Medicine>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,19 +60,75 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
         rvMedicineType.setAdapter(medicineTypeAdapter)
 
         // Pharmacy
-        rvPharmacy=findViewById(R.id.rvPharmacy)
-        pharmacy_item.add(Pharmacy("1",R.drawable.pharmacy_img,"صيدلية الخنساء الطبية",
-            "4.5","شارع بور سعيد "))
-        pharmacy_item.add(Pharmacy("2",R.drawable.pharmacy_img,"صيدلية الخنساء الطبية",
-            "4.5","شارع بور سعيد "))
-        pharmacy_item.add(Pharmacy("3",R.drawable.pharmacy_img,"صيدلية الخنساء الطبية",
-            "4.5","شارع بو سعيد "))
-        pharmacy_item.add(Pharmacy("4",R.drawable.pharmacy_img,"صيدلية الخنساء الطبية",
-            "4.5","شارع بور سعيد "))
+        rvPharmacy = findViewById(R.id.rvPharmacy)
+        pharmacy_item.add(
+            Pharmacy(
+                "1", R.drawable.pharmacy_img, "صيدلية الخنساء الطبية",
+                "4.5", "شارع بور سعيد "
+            )
+        )
+        pharmacy_item.add(
+            Pharmacy(
+                "2", R.drawable.pharmacy_img, "صيدلية الخنساء الطبية",
+                "4.5", "شارع بور سعيد "
+            )
+        )
+        pharmacy_item.add(
+            Pharmacy(
+                "3", R.drawable.pharmacy_img, "صيدلية الخنساء الطبية",
+                "4.5", "شارع بو سعيد "
+            )
+        )
+        pharmacy_item.add(
+            Pharmacy(
+                "4", R.drawable.pharmacy_img, "صيدلية الخنساء الطبية",
+                "4.5", "شارع بور سعيد "
+            )
+        )
 
-        pharmacyHomeAdapter=PharmacyHomeAdapter(this,pharmacy_item,this)
+        pharmacyHomeAdapter = PharmacyHomeAdapter(this, pharmacy_item, this)
         rvPharmacy.setAdapter(pharmacyHomeAdapter)
 
+        //Medicine
+        rvMedicine = findViewById(R.id.rvMedicine)
+        medicine_item.add(
+            Medicine(
+                "1",
+                "باندول",
+                R.drawable.medicine_img,
+                "120.0",
+                "مسكن للألم و مخفض للحرارة"
+            )
+        )
+        medicine_item.add(
+            Medicine(
+                "1",
+                "باندول",
+                R.drawable.medicine_img,
+                "120.0",
+                "مسكن للألم و مخفض للحرارة"
+            )
+        )
+        medicine_item.add(
+            Medicine(
+                "1",
+                "باندول",
+                R.drawable.medicine_img,
+                "120.0",
+                "مسكن للألم و مخفض للحرارة"
+            )
+        )
+        medicine_item.add(
+            Medicine(
+                "1",
+                "باندول",
+                R.drawable.medicine_img,
+                "120.0",
+                "مسكن للألم و مخفض للحرارة"
+            )
+        )
+        medicineAdapter = MedicineAdapter(this, medicine_item, this)
+        rvMedicine.setAdapter(medicineAdapter)
 
     }
 
@@ -75,6 +139,11 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
 
     override fun onItemClickPharmacy(position: Int, id: String?) {
         //when click to pharmacy card
+        TODO("Not yet implemented")
+    }
+
+    override fun onItemClickMedicine(position: Int, id: String?) {
+        //when click to medicine card
         TODO("Not yet implemented")
     }
 }

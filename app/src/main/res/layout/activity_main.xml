@@ -48,6 +48,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:layout_marginEnd="8dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/bold"
                     android:text="مرحبا, غيداء"
                     app:layout_constraintEnd_toStartOf="@id/profile_image"
                     app:layout_constraintTop_toTopOf="parent"
@@ -96,9 +98,12 @@
 
                 <TextView
                     android:layout_width="270dp"
-                    android:layout_height="42dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="100dp"
                     android:layout_marginTop="8dp"
+                    android:padding="5dp"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/rubik"
                     android:text="ابحث عن دوائك بسهولة... واعرف أماكن توفره بالقرب منك فوراً!" />
 
                 <Button
@@ -106,6 +111,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="230dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/rubik"
                     android:backgroundTint="@color/primary_color"
                     android:text="انضم الينا كصيدلية"
                     android:textColor="@color/white" />
@@ -129,7 +136,9 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="100dp"
                         android:padding="8dp"
-                        android:text="تحميل وصفة طبية" />
+                        android:textSize="14sp"
+                        android:fontFamily="@font/rubik"
+                        android:text="تحميل وصفة الطبيب" />
 
                     <ImageView
                         android:layout_width="16dp"
@@ -148,7 +157,7 @@
             android:id="@+id/card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="230dp"
+            android:layout_marginTop="240dp"
             android:padding="16dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
@@ -182,6 +191,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/bold"
                 android:text="الصيدليات القريبة من موقعك"
                 app:layout_constraintStart_toStartOf="@id/pharmacy_part"
                 app:layout_constraintTop_toTopOf="@id/pharmacy_part" />
@@ -196,6 +207,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/name"
                 tools:listitem="@layout/pharmacy_item" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/medicine_part"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layoutDirection="rtl"
+            app:layout_constraintStart_toStartOf="@id/container"
+            app:layout_constraintTop_toBottomOf="@id/pharmacy_part">
+
+            <TextView
+                android:id="@+id/medicine_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/bold"
+                android:text="الأدوية الأكثر استخداماً"
+                app:layout_constraintStart_toStartOf="@id/medicine_part"
+                app:layout_constraintTop_toTopOf="@id/medicine_part" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMedicine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="@id/medicine_part"
+                app:layout_constraintTop_toBottomOf="@id/medicine_address"
+                tools:listitem="@layout/medicine_item" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

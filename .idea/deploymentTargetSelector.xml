@@ -8,6 +8,10 @@
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Lenovo\.android\avd\Pixel_7_Pro.avd" />
+        <DropdownSelection timestamp="2025-05-26T15:33:54.040296200Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=q8eqvsa6jf99q4da" />
             </handle>
           </Target>
         </DropdownSelection>

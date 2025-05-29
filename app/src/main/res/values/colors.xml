@@ -4,4 +4,16 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#149D94</color>
     <color name="secondary">#F5F6F8</color>
+    <color name="light_green">#EEFCFC</color>
+    <color name="primary_color">#149D94</color>
+    <color name="lighter_green">#D2E6E5</color>
+    <color name="light_blue">#E4F2FC</color>
+    <color name="yellow_green">#D4F1C1</color>
+    <color name="dark_orange">#FBC0B8</color>
+    <color name="light_yellow">#FFF3CD</color>
+    <color name="purple">#D6C8F1</color>
+    <color name="orange">#FFD1A6</color>
+    <color name="green">#C8F1E6</color>
+    <color name="gray">#E0E7EF</color>
+
 </resources>

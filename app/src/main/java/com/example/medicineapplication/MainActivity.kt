@@ -26,6 +26,7 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
     lateinit var rvMedicineType: RecyclerView
     var items: ArrayList<MedicineType> = ArrayList<MedicineType>()
 
+
     //pharmacy
     lateinit var pharmacyHomeAdapter: PharmacyHomeAdapter
     lateinit var rvPharmacy: RecyclerView

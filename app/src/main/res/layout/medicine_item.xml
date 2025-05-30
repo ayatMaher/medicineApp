@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/medicine_card"
+    android:layout_width="175dp"
+    android:layout_height="185dp"
+    android:layoutDirection="rtl"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_gray">
+
+        <ImageView
+            android:id="@+id/medicine_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16sp"
+            android:src="@drawable/medicine_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/favorite_img"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/favorite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/me_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medicine_img">
+
+            <TextView
+                android:id="@+id/medicine_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="باندول"
+                android:textSize="16sp"
+                android:fontFamily="@font/rubik"/>
+
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/bold"
+                android:text="120" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:fontFamily="@font/bold"
+                android:text="$" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/medicine_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginRight="8dp"
+            android:fontFamily="@font/rubik"
+            android:text="مسكن للألم و خافض للحرارة"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/me_name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

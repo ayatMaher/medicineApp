@@ -5,10 +5,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    >
 
     <LinearLayout
-        android:id="@+id/container"
+        android:id="@+id/medicine_layout"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:background="@color/lighter_green"
@@ -32,7 +33,8 @@
             android:layout_gravity="center"
             android:text="أقراص"
             android:textColor="#131313"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:fontFamily="@font/rubik"
             android:textStyle="bold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

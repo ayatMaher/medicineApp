@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,7 +92,7 @@ public class MedicineTypeAdapter extends RecyclerView.Adapter<MedicineTypeAdapte
 
     @Override
     public int getItemCount() {
-        return 8;
+        return mData.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -103,7 +104,7 @@ public class MedicineTypeAdapter extends RecyclerView.Adapter<MedicineTypeAdapte
             super(itemView);
             this.txtTypeName = itemView.findViewById(R.id.txtName);
             this.imgTypeName = itemView.findViewById(R.id.imgType);
-            this.container = itemView.findViewById(R.id.container);
+            this.container = itemView.findViewById(R.id.medicine_layout);
             itemView.setOnClickListener(this);
         }
 

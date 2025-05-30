@@ -106,11 +106,13 @@
                     android:text="ابحث عن دوائك بسهولة... واعرف أماكن توفره بالقرب منك فوراً!"
                     android:textSize="18sp" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_join"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="230dp"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="235dp"
+                    android:padding="8dp"
+                    android:background="@drawable/btn_background"
                     android:backgroundTint="@color/primary_color"
                     android:fontFamily="@font/rubik"
                     android:text="انضم الينا كصيدلية"
@@ -122,11 +124,12 @@
                     android:id="@+id/btn_upload"
                     android:layout_width="358dp"
                     android:layout_height="52dp"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/btn_background"
                     android:clickable="true"
+                    android:focusable="true"
                     android:orientation="horizontal"
                     app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full">
 
@@ -134,7 +137,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="100dp"
+                        android:layout_marginStart="5dp"
                         android:fontFamily="@font/rubik"
                         android:padding="8dp"
                         android:text="تحميل وصفة الطبيب"
@@ -233,7 +236,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMedicine"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:orientation="horizontal"

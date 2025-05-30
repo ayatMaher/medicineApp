@@ -3,6 +3,7 @@
     <style name="Base.Theme.MedicineApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor" tools:targetApi="vanilla_ice_cream">@color/light_green</item>
     </style>
 
     <style name="Theme.MedicineApplication" parent="Base.Theme.MedicineApplication" />

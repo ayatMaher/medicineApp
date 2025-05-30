@@ -1,11 +1,14 @@
 package com.example.medicineapplication
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,12 +41,18 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        //statusBar Color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.light_green)
+            // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
+            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        }
         //Medicine type
         rvMedicineType = findViewById(R.id.rvMedicinetype);
         items.add(MedicineType("1", R.drawable.image1, "أقراص"))

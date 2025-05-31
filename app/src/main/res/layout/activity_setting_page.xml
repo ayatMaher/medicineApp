@@ -7,36 +7,17 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:layoutDirection="rtl"
-    android:padding="16dp"
+    android:layout_margin="16dp"
     tools:context=".SettingPage">
 
-    <!-- العنوان -->
-    <RelativeLayout
+    <include
+        layout="@layout/activity_header"
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingVertical="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/bold"
-            android:text="الإعدادات"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="رجوع"
-            android:src="@drawable/arrow_right" />
-    </RelativeLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- اللغة -->
     <TextView

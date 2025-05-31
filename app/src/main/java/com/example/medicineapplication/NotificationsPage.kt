@@ -5,16 +5,29 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.medicineapplication.adapter.NotificationAdapter
+import com.example.medicineapplication.model.NotificationListItem
 
 class NotificationsPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_notifications_page)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_notifications)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val items = listOf(
+            NotificationListItem.SectionHeader("اليوم"),
+            NotificationListItem.NotificationItem("تم وصول دوائك بانادول", "10:00 اليوم", R.drawable.panadol),
+            NotificationListItem.NotificationItem("تم وصول دوائك بانادول", "10:00 اليوم", R.drawable.panadol),
+
+            NotificationListItem.SectionHeader("الأحد"),
+            NotificationListItem.NotificationItem("تم وصول دوائك بانادول", "10:00 الأحد", R.drawable.panadol),
+            NotificationListItem.NotificationItem("تم وصول دوائك بانادول", "10:00 الأحد", R.drawable.panadol)
+        )
+
+        recyclerView.adapter = NotificationAdapter(items)
     }
 }

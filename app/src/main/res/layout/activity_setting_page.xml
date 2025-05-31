@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bold"
-        android:paddingBottom="8dp"
+        android:paddingVertical="8dp"
         android:text="اللغة"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"

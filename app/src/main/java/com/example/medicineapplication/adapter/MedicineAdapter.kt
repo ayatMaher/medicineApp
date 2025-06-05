@@ -1,99 +1,100 @@
-package com.example.medicineapplication.adapter;
+package com.example.medicineapplication.adapter
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.app.Activity
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.medicineapplication.R
+import com.example.medicineapplication.databinding.CategoryMedicineItemBinding
+import com.example.medicineapplication.databinding.MedicineItemBinding
+import com.example.medicineapplication.model.Medicine
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
+class MedicineAdapter(
+    private var activity: Activity,
+    var data: ArrayList<Medicine>,
+    private var itemClickListener: ItemClickListener,
 
-import com.example.medicineapplication.R;
-import com.example.medicineapplication.model.Medicine;
-import com.example.medicineapplication.model.Pharmacy;
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val backgroundColor = listOf(
+        R.color.mid_green,
+        R.color.light_beige,
+        R.color.dark_beige,
+        R.color.light_orange,
+        R.color.purple2,
+        R.color.dark_yellow_green
+    )
 
-import java.util.List;
-
-public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHolder> {
-    private final List<Medicine> mData;
-    private final LayoutInflater inflater;
-    private final MedicineAdapter.ItemClickListener itemClickListener;
-    Context context;
-
-    public MedicineAdapter(Context context, List<Medicine> data, MedicineAdapter.ItemClickListener onClick) {
-        this.inflater = LayoutInflater.from(context);
-        this.mData = data;
-        this.context = context;
-        this.itemClickListener = onClick;
+    companion object {
+        private const val TYPE_HOME = 0
+        private const val TYPE_CATEGORY = 1
     }
 
-    @NonNull
-    @Override
-    public MedicineAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.medicine_item, parent, false);
-        return new MedicineAdapter.ViewHolder(view);
+    class ViewHolderHome(var binding: MedicineItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolderCategory(var binding: CategoryMedicineItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+    interface ItemClickListener {
+        fun onItemClickMedicine(position: Int, id: String)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MedicineAdapter.ViewHolder holder, int position) {
-        var medicineData = mData.get(position);
-        Log.e("TAG", medicineData.getMedicineName());
-        Log.e("TAG", medicineData.getDescription());
-        Log.e("TAG", medicineData.getId());
-        Log.e("TAG", medicineData.getPrice());
-        Log.e("TAG", medicineData.getMedicineImage() + "");
-        holder.txtMedicineName.setText(medicineData.getMedicineName());
-        holder.txtMedicineName.setText(medicineData.getMedicineName());
-        holder.medicineImg.setImageResource(medicineData.getMedicineImage());
-        holder.txtPrice.setText(medicineData.getPrice());
-        holder.txtMedicineDescription.setText(medicineData.getDescription());
-        holder.container.setOnClickListener(v -> {
+    override fun getItemViewType(position: Int): Int {
+        return if (data[position].isFeatured) TYPE_CATEGORY else TYPE_HOME
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == TYPE_HOME) {
+            val binding = MedicineItemBinding.inflate(activity.layoutInflater, parent, false)
+            ViewHolderHome(binding)
+        } else {
+            val binding = CategoryMedicineItemBinding.inflate(activity.layoutInflater, parent, false)
+            ViewHolderCategory(binding)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = data[position]
+        when (holder) {
+            is ViewHolderHome -> {
+                holder.binding.medicineName.text = item.medicineName
+                holder.binding.medicineImg.setImageResource(item.medicineImage)
+                holder.binding.price.text = item.price.toString()
+                holder.binding.medicineDescription.text = item.description
+                holder.binding.root.setOnClickListener {
                     try {
-                        itemClickListener.onItemClickMedicine(holder.getAdapterPosition(),
-                                medicineData.getId());
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        itemClickListener.onItemClickMedicine(
+                            position,
+                            item.id
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
-        );
-    }
+            }
 
-    @Override
-    public int getItemCount() {
-        return mData.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView txtMedicineName;
-        ImageView medicineImg;
-        TextView txtMedicineDescription;
-
-        TextView txtPrice;
-        CardView container;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            this.txtMedicineName = itemView.findViewById(R.id.medicine_name);
-            this.txtMedicineDescription = itemView.findViewById(R.id.medicine_description);
-            this.txtPrice = itemView.findViewById(R.id.price);
-            this.medicineImg = itemView.findViewById(R.id.medicine_img);
-            this.container = itemView.findViewById(R.id.medicine_card);
-            itemView.setOnClickListener(this);
+            is ViewHolderCategory -> {
+                val colorResId = backgroundColor[position % backgroundColor.size]
+                holder.binding.txtMedicineName.text = item.medicineName
+                holder.binding.categoryImage.setImageResource(item.medicineImage)
+                holder.binding.oldPrice.text = item.price.toString()
+                holder.binding.newPrice.text = item.priceAfterDiscount.toString()
+                holder.binding.txtMedicineDescription.text = item.description
+                holder.binding.medicineCard.setCardBackgroundColor(activity.getColor(colorResId))
+                holder.binding.root.setOnClickListener {
+                    try {
+                        itemClickListener.onItemClickMedicine(
+                            position,
+                            item.id
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
         }
 
-        @Override
-        public void onClick(View v) {
-
-        }
 
     }
 
-    public interface ItemClickListener {
-        void onItemClickMedicine(int position, String id);
+    override fun getItemCount(): Int {
+        return data.size
     }
-
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/medicine_card"
     android:layout_width="175dp"
     android:layout_height="185dp"
@@ -24,17 +23,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/favorite_img"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/circle"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/favorite"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/me_name"

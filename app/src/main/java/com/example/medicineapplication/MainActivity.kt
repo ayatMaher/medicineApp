@@ -1,7 +1,7 @@
 package com.example.medicineapplication
 
 import android.annotation.SuppressLint
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,20 +10,22 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicineapplication.adapter.CategoryAdapter
 import com.example.medicineapplication.adapter.MedicineAdapter
-import com.example.medicineapplication.adapter.MedicineTypeAdapter
 import com.example.medicineapplication.adapter.PharmacyHomeAdapter
+import com.example.medicineapplication.databinding.ActivityMainBinding
 import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.MedicineType
 import com.example.medicineapplication.model.Pharmacy
 
-public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickListener,
+class MainActivity : AppCompatActivity(), CategoryAdapter.ItemClickListener,
     PharmacyHomeAdapter.ItemClickListener, MedicineAdapter.ItemClickListener {
+
+    lateinit var binding: ActivityMainBinding
+
     //medicine type
-    lateinit var medicineTypeAdapter: MedicineTypeAdapter
-    lateinit var rvMedicineType: RecyclerView
+    lateinit var categoryAdapter: CategoryAdapter
     var items: ArrayList<MedicineType> = ArrayList<MedicineType>()
 
 
@@ -34,14 +36,14 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
 
     //medicine
     lateinit var medicineAdapter: MedicineAdapter
-    lateinit var rvMedicine: RecyclerView
     var medicine_item: ArrayList<Medicine> = ArrayList<Medicine>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -49,25 +51,24 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
             insets
         }
         //statusBar Color
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.light_green)
-            // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
-            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
-        }
-        //Medicine type
-        rvMedicineType = findViewById(R.id.rvMedicinetype);
-        items.add(MedicineType("1", R.drawable.image1, "أقراص"))
-        items.add(MedicineType("2", R.drawable.image2, "شراب"))
-        items.add(MedicineType("3", R.drawable.image3, "حقن"))
-        items.add(MedicineType("4", R.drawable.image4, "فيتامين"))
-        items.add(MedicineType("5", R.drawable.image5, "قطرات"))
-        items.add(MedicineType("5", R.drawable.image6, "براهم"))
-        items.add(MedicineType("5", R.drawable.image7, "تحاميل"))
-        items.add(MedicineType("5", R.drawable.image8, "بخاخ"))
+        window.statusBarColor = ContextCompat.getColor(this, R.color.light_green)
+        // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars =
+            true
 
-        medicineTypeAdapter = MedicineTypeAdapter(this, items, this)
-        rvMedicineType.setLayoutManager(GridLayoutManager(this, 4)) // 4 columns
-        rvMedicineType.setAdapter(medicineTypeAdapter)
+        //Medicine type
+        items.add(MedicineType("1", R.drawable.image1, "أقراص", false))
+        items.add(MedicineType("2", R.drawable.image2, "شراب", false))
+        items.add(MedicineType("3", R.drawable.image3, "حقن", false))
+        items.add(MedicineType("4", R.drawable.image4, "فيتامين", false))
+        items.add(MedicineType("5", R.drawable.image5, "قطرات", false))
+        items.add(MedicineType("5", R.drawable.image6, "براهم", false))
+        items.add(MedicineType("5", R.drawable.image7, "تحاميل", false))
+        items.add(MedicineType("5", R.drawable.image8, "بخاخ", false))
+
+        categoryAdapter = CategoryAdapter(this, items, this)
+        binding.rvMedicinetype.layoutManager = GridLayoutManager(this, 4)
+        binding.rvMedicinetype.adapter = categoryAdapter
 
         // Pharmacy
         rvPharmacy = findViewById(R.id.rvPharmacy)
@@ -100,14 +101,13 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
         rvPharmacy.setAdapter(pharmacyHomeAdapter)
 
         //Medicine
-        rvMedicine = findViewById(R.id.rvMedicine)
         medicine_item.add(
             Medicine(
                 "1",
                 "باندول",
                 R.drawable.medicine_img,
-                "120.0",
-                "مسكن للألم و مخفض للحرارة"
+                120.0,
+                "مسكن للألم و مخفض للحرارة", isFeatured = false
             )
         )
         medicine_item.add(
@@ -115,8 +115,9 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
                 "1",
                 "باندول",
                 R.drawable.medicine_img,
-                "120.0",
-                "مسكن للألم و مخفض للحرارة"
+                120.0,
+                "مسكن للألم و مخفض للحرارة",
+                isFeatured = false
             )
         )
         medicine_item.add(
@@ -124,8 +125,9 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
                 "1",
                 "باندول",
                 R.drawable.medicine_img,
-                "120.0",
-                "مسكن للألم و مخفض للحرارة"
+                120.0,
+                "مسكن للألم و مخفض للحرارة",
+                isFeatured = false
             )
         )
         medicine_item.add(
@@ -133,27 +135,34 @@ public class MainActivity : AppCompatActivity(), MedicineTypeAdapter.ItemClickLi
                 "1",
                 "باندول",
                 R.drawable.medicine_img,
-                "120.0",
-                "مسكن للألم و مخفض للحرارة"
+                120.0,
+                "مسكن للألم و مخفض للحرارة",
+                isFeatured = false
             )
         )
         medicineAdapter = MedicineAdapter(this, medicine_item, this)
-        rvMedicine.setAdapter(medicineAdapter)
+        binding.rvMedicine.adapter = medicineAdapter
 
     }
 
-    override fun onItemClick(position: Int, id: String?) {
-        //when click to type card
-        TODO("Not yet implemented")
+    //category
+    override fun onItemClick(position: Int, id: String) {
+        //when click to category card
+        val intent = Intent(this,CategoryActivity::class.java)
+        startActivity(intent)
+
     }
 
+    //pharmacy
     override fun onItemClickPharmacy(position: Int, id: String?) {
         //when click to pharmacy card
         TODO("Not yet implemented")
     }
 
-    override fun onItemClickMedicine(position: Int, id: String?) {
+    //medicine
+    override fun onItemClickMedicine(position: Int, id: String) {
         //when click to medicine card
         TODO("Not yet implemented")
     }
+
 }

@@ -87,8 +87,8 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
                 android:orientation="horizontal">
@@ -100,7 +100,8 @@
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/lighter_yellow"
                     android:contentDescription="Rate"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/star"/>
 
                 <TextView
                     android:id="@+id/rate"
@@ -112,8 +113,8 @@
                     android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
                 android:orientation="horizontal">
@@ -126,20 +127,21 @@
                     android:backgroundTint="@color/light_yellow_green"
                     android:contentDescription="Rate"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/hour"/>
+                    android:src="@drawable/clock"/>
 
                 <TextView
                     android:id="@+id/time"
-                    android:layout_width="20dp"
-                    android:layout_height="17dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
-                    android:text=""
+                    android:text="8:00 ص_1:00 م "
+                    android:fontFamily="@font/rubik"
                     android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
                 android:orientation="horizontal">
@@ -149,18 +151,25 @@
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:background="@drawable/circle"
-                    android:backgroundTint="@color/lighter_yellow"
+                    android:backgroundTint="#D5E9EA"
                     android:contentDescription="Rate"
+                    android:src="@drawable/arrow"
                     android:scaleType="centerCrop" />
 
                 <TextView
-                    android:id="@+id/space"
+                    android:id="@+id/distance"
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
                     android:text="4.5"
                     android:textSize="14sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="كيلو"
+                    android:textSize="14sp"/>
             </LinearLayout>
 
             <ImageButton
@@ -168,7 +177,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/circle"
-                android:src="@drawable/call" />
+                android:src="@drawable/phone" />
         </LinearLayout>
     </LinearLayout>
 

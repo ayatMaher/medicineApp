@@ -13,12 +13,27 @@
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="31">
         <activity
-            android:name=".SettingPage"
+
+            android:name=".PharmacySearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CategoryActivity"
             android:exported="false" />
         <activity
             android:name=".header"
             android:exported="false" />
         <activity
+            android:name=".Notification_item"
+            android:name=".SettingPage"
+
+            android:exported="false" />
+        <activity
+            android:name=".header"
+            android:exported="false" />
+        <activity
+
+            android:name=".SettingPage"
+            android:exported="false"></activity>
             android:name=".Notification_item"
             android:exported="false" />
         <activity

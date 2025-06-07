@@ -16,8 +16,10 @@ class NotificationsPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_notifications_page)
+
         val titleText = findViewById<TextView>(R.id.titleText)
         titleText.text = "الإشعارات"
+
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_notifications)
         recyclerView.layoutManager = LinearLayoutManager(this)

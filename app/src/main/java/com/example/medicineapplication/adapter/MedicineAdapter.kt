@@ -90,8 +90,6 @@ class MedicineAdapter(
                 }
             }
         }
-
-
     }
 
     override fun getItemCount(): Int {

@@ -3,7 +3,6 @@ package com.example.medicineapplication
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -11,34 +10,30 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.medicineapplication.adapter.CategoryAdapter
 import com.example.medicineapplication.adapter.MedicineAdapter
-import com.example.medicineapplication.adapter.PharmacyHomeAdapter
+import com.example.medicineapplication.adapter.PharmacyAdapter
 import com.example.medicineapplication.databinding.ActivityMainBinding
 import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.MedicineType
 import com.example.medicineapplication.model.Pharmacy
 
 class MainActivity : AppCompatActivity(), CategoryAdapter.ItemClickListener,
-    PharmacyHomeAdapter.ItemClickListener, MedicineAdapter.ItemClickListener {
+    PharmacyAdapter.ItemClickListener, MedicineAdapter.ItemClickListener {
 
-    lateinit var binding: ActivityMainBinding
-
+    private lateinit var binding: ActivityMainBinding
 
     //medicine type
-    lateinit var categoryAdapter: CategoryAdapter
-    var items: ArrayList<MedicineType> = ArrayList<MedicineType>()
-
+    private lateinit var categoryAdapter: CategoryAdapter
+    private var items: ArrayList<MedicineType> = ArrayList()
 
     //pharmacy
-    lateinit var pharmacyHomeAdapter: PharmacyHomeAdapter
-    lateinit var rvPharmacy: RecyclerView
-    var pharmacy_item: ArrayList<Pharmacy> = ArrayList<Pharmacy>()
+    private lateinit var pharmacyHomeAdapter: PharmacyAdapter
+    private var pharmacy_item: ArrayList<Pharmacy> = ArrayList()
 
     //medicine
-    lateinit var medicineAdapter: MedicineAdapter
-    var medicine_item: ArrayList<Medicine> = ArrayList<Medicine>()
+    private lateinit var medicineAdapter: MedicineAdapter
+    private var medicine_item: ArrayList<Medicine> = ArrayList()
 
 
     @SuppressLint("MissingInflatedId")
@@ -78,34 +73,33 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.ItemClickListener,
         binding.rvMedicinetype.adapter = categoryAdapter
 
         // Pharmacy
-        rvPharmacy = findViewById(R.id.rvPharmacy)
         pharmacy_item.add(
             Pharmacy(
                 "1", R.drawable.pharmacy_img, "صيدلية الخنساء الطبية",
-                "4.5", "شارع بور سعيد "
+                4.5, "شارع بور سعيد ", isFeatured = false
             )
         )
         pharmacy_item.add(
             Pharmacy(
                 "2", R.drawable.pharmacy_img, "صيدلية الخنساء الطبية",
-                "4.5", "شارع بور سعيد "
+                4.5, "شارع بور سعيد ", isFeatured = false
             )
         )
         pharmacy_item.add(
             Pharmacy(
                 "3", R.drawable.pharmacy_img, "صيدلية الخنساء الطبية",
-                "4.5", "شارع بو سعيد "
+                4.5, "شارع بو سعيد ", isFeatured = false
             )
         )
         pharmacy_item.add(
             Pharmacy(
                 "4", R.drawable.pharmacy_img, "صيدلية الخنساء الطبية",
-                "4.5", "شارع بور سعيد "
+                4.5, "شارع بور سعيد ", isFeatured = false
             )
         )
 
-        pharmacyHomeAdapter = PharmacyHomeAdapter(this, pharmacy_item, this)
-        rvPharmacy.setAdapter(pharmacyHomeAdapter)
+        pharmacyHomeAdapter = PharmacyAdapter(this, pharmacy_item, this)
+        binding.rvPharmacy.adapter=pharmacyHomeAdapter
 
         //Medicine
         medicine_item.add(
@@ -161,10 +155,11 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.ItemClickListener,
     }
 
     //pharmacy
-    override fun onItemClickPharmacy(position: Int, id: String?) {
+    override fun onItemClickPharmacy(position: Int, id: String) {
         //when click to pharmacy card
         TODO("Not yet implemented")
     }
+
 
     //medicine
     override fun onItemClickMedicine(position: Int, id: String) {

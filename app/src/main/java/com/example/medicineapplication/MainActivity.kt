@@ -3,6 +3,7 @@ package com.example.medicineapplication
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.ItemClickListener,
 
     lateinit var binding: ActivityMainBinding
 
+
     //medicine type
     lateinit var categoryAdapter: CategoryAdapter
     var items: ArrayList<MedicineType> = ArrayList<MedicineType>()
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.ItemClickListener,
     //medicine
     lateinit var medicineAdapter: MedicineAdapter
     var medicine_item: ArrayList<Medicine> = ArrayList<Medicine>()
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +58,11 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.ItemClickListener,
         // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars =
             true
-
+        // search icon
+        binding.searchIcon.setOnClickListener {
+            val intent = Intent(this,PharmacySearchActivity::class.java)
+            startActivity(intent)
+        }
         //Medicine type
         items.add(MedicineType("1", R.drawable.image1, "أقراص", false))
         items.add(MedicineType("2", R.drawable.image2, "شراب", false))
@@ -148,7 +155,7 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.ItemClickListener,
     //category
     override fun onItemClick(position: Int, id: String) {
         //when click to category card
-        val intent = Intent(this,CategoryActivity::class.java)
+        val intent = Intent(this, CategoryActivity::class.java)
         startActivity(intent)
 
     }

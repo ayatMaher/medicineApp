@@ -36,6 +36,19 @@
                 android:contentDescription="Image"
                 android:src="@drawable/medicine_img" />
 
+            <ImageButton
+                android:id="@+id/favorite_img"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Favorite"
+                android:src="@drawable/favorite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -51,8 +64,8 @@
                 android:id="@+id/txtMedicineName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/bold"
                 android:layout_marginBottom="5dp"
+                android:fontFamily="@font/bold"
                 android:text="باندول"
                 android:textSize="14sp" />
 
@@ -78,13 +91,14 @@
                     android:textColor="#009688"
                     android:textSize="14sp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:text="$"
                     android:textColor="#009688"
                     android:textSize="14sp"
-                    android:layout_marginEnd="8dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -94,6 +108,7 @@
                     android:text="80"
                     android:textColor="#9E9E9E"
                     android:textSize="14sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

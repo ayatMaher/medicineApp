@@ -23,6 +23,10 @@
     <color name="light_orange">#F6DED4</color>
     <color name="purple2">#DEB4EA</color>
     <color name="dark_yellow_green">#DAF0AF</color>
+    <color name="lighter_yellow">#F4ECD5</color>
+    <color name="yellow">#FFC107</color>
+    <color name="light_yellow_green">#3B8EC63F</color>
+
 
 
 </resources>

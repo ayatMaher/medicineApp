@@ -5,7 +5,7 @@ data class Medicine(
     val medicineName: String,
     val medicineImage: Int,
     val price: Double = 0.0,
-    val description: String,
+    val description: String ="",
     val priceAfterDiscount: Double = 0.0,
-    val isFeatured: Boolean
+    val isFeatured: Boolean = true
 )

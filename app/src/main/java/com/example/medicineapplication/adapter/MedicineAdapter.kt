@@ -56,7 +56,6 @@ class MedicineAdapter(
             is ViewHolderHome -> {
                 holder.binding.medicineName.text = item.medicineName
                 holder.binding.medicineImg.setImageResource(item.medicineImage)
-                holder.binding.price.text = item.price.toString()
                 holder.binding.medicineDescription.text = item.description
                 holder.binding.root.setOnClickListener {
                     try {
@@ -74,8 +73,6 @@ class MedicineAdapter(
                 val colorResId = backgroundColor[position % backgroundColor.size]
                 holder.binding.txtMedicineName.text = item.medicineName
                 holder.binding.categoryImage.setImageResource(item.medicineImage)
-                holder.binding.oldPrice.text = item.price.toString()
-                holder.binding.newPrice.text = item.priceAfterDiscount.toString()
                 holder.binding.txtMedicineDescription.text = item.description
                 holder.binding.medicineCard.setCardBackgroundColor(activity.getColor(colorResId))
                 holder.binding.root.setOnClickListener {

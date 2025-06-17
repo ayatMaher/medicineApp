@@ -1,30 +1,53 @@
-package com.example.medicineapplication
+package com.example.medicineapplication.fragment
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.PharmacyAdapter
-import com.example.medicineapplication.databinding.ActivityPharmacySearchBinding
+import com.example.medicineapplication.databinding.FragmentPharmacyBinding
 import com.example.medicineapplication.model.Pharmacy
 
-class PharmacySearchActivity : AppCompatActivity(), PharmacyAdapter.ItemClickListener {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        var binding: ActivityPharmacySearchBinding
-        //pharmacy
-        lateinit var pharmacyAdapter: PharmacyAdapter
-        var pharmacy_item: ArrayList<Pharmacy> = ArrayList()
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityPharmacySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+@Suppress("DEPRECATION")
+class PharmacyFragment : Fragment(), PharmacyAdapter.ItemClickListener {
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+    private var _binding: FragmentPharmacyBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    //pharmacy
+    lateinit var pharmacyAdapter: PharmacyAdapter
+    var pharmacy_item: ArrayList<Pharmacy> = ArrayList()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPharmacyBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        //status bar
+        val window = requireActivity().window
+        window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white2)
+//        // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        // back arrow
+        binding.backArrow.setOnClickListener {
+            findNavController().navigate(R.id.action_global_to_firstFragment)
         }
+        showPharmacy()
+
+        return root
+    }
+
+    private fun showPharmacy() {
         pharmacy_item.add(
             Pharmacy(
                 "id",
@@ -97,11 +120,16 @@ class PharmacySearchActivity : AppCompatActivity(), PharmacyAdapter.ItemClickLis
                 true
             )
         )
-        pharmacyAdapter = PharmacyAdapter(this, pharmacy_item, this)
+        pharmacyAdapter = PharmacyAdapter(requireActivity(), pharmacy_item, this)
         binding.rvPharmacy.adapter = pharmacyAdapter
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onItemClickPharmacy(position: Int, id: String) {
-        TODO("Not yet implemented")
+        findNavController().navigate(R.id.navigation_home)
     }
 }

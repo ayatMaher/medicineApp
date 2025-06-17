@@ -4,7 +4,7 @@ data class MedicineType(
     val id: String,
     val imageType: Int = 0,
     val nameType: String,
-    val isFeatured: Boolean
+    val isFeatured: Boolean = true
 )
 
 

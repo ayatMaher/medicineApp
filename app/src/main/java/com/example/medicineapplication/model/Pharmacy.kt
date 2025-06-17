@@ -8,5 +8,5 @@ data class Pharmacy(
     val pharmacyAddress: String,
     val distance : Double=0.0,
     val time: String="",
-    val isFeatured:Boolean
+    val isFeatured:Boolean= true
 )

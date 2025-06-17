@@ -14,7 +14,8 @@ import com.example.medicineapplication.model.MedicineType
 class CategoryAdapter(
     private var activity: Activity,
     var data: ArrayList<MedicineType>,
-    private var itemClickListener: ItemClickListener
+    private var itemClickListener: ItemClickListener,
+    private val selectedName: String? = null
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var selectedPosition = -1
@@ -55,6 +56,7 @@ class CategoryAdapter(
         @SuppressLint("RecyclerView") position: Int
     ) {
         val item = data[position]
+
         when (holder) {
             is ViewHolderCategoryHome -> {
                 holder.binding.txtName.text = item.nameType
@@ -142,7 +144,10 @@ class CategoryAdapter(
             }
 
             is ViewHolderCategoryActivity -> {
-                if (selectedPosition == position) {
+                // تمييز العنصر إذا تطابق الاسم
+                val isSelected = item.nameType == selectedName
+                holder.binding.root.isSelected = isSelected
+                if ( isSelected) {
                     holder.binding.categoryItem.background =
                         ContextCompat.getDrawable(activity, R.drawable.category_click)
                     holder.binding.txtCategory.setTextColor(Color.WHITE)

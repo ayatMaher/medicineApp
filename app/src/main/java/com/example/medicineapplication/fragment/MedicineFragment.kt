@@ -51,6 +51,12 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
+        val pageType = arguments?.getString("page_type")
+        if (pageType == "medicine_type") {
+            binding.backArrow.visibility = View.VISIBLE
+        } else {
+            binding.backArrow.visibility = View.GONE
+        }
         // back arrow
         binding.backArrow.setOnClickListener {
             findNavController().navigate(R.id.action_global_to_firstFragment)

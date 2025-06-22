@@ -63,8 +63,10 @@ class ProfileFragment : Fragment() {
         }
         binding.favoriteLayout.setOnClickListener {
             //go to Favorite page
-            findNavController().navigate(R.id.navigation_favorite)
-            Log.e("Favorite Page", "Go To Favorite Page")
+            val bundle = Bundle().apply {
+                putString("page_type", "favorite_fragment")
+            }
+            findNavController().navigate(R.id.navigation_favorite,bundle)
         }
         binding.deleteAccount.setOnClickListener {
             //delete Account

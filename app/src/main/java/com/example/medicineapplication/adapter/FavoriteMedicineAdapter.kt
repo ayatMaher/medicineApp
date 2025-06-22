@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.MedicineFavoriteItemBinding
 import com.example.medicineapplication.model.Medicine
+import androidx.navigation.findNavController
 
 class FavoriteMedicineAdapter(
     private var activity: Activity,
@@ -37,8 +39,10 @@ class FavoriteMedicineAdapter(
             // go to Pharmacy Page
             val bundle = Bundle().apply {
                 putString("medicine Name", item.medicineName)
+                putString("page_type", "favorite")
             }
-//            navController.navigate(R.id.navigation_pharmacies, bundle)
+            holder.itemView.findNavController()
+                .navigate(R.id.navigation_pharmacies, bundle)
         }
         holder.binding.deleteFavoriteMedicine.setOnClickListener {
             //delete medicine from image

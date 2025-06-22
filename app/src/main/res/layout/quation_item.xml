@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/faqItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/quation_item_background"
+    android:padding="16dp"
+    android:layout_marginBottom="16dp"
+    android:layoutDirection="rtl">
+
+    <!-- العنوان -->
+    <LinearLayout
+        android:id="@+id/questionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|end">
+
+        <TextView
+            android:id="@+id/tvQuestion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/rubik"
+            android:text="كيف يمكنني معرفة العلاج المناسب لحالتي؟"
+            android:textSize="14sp"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/arrow_down" />
+    </LinearLayout>
+
+    <!-- الإجابة -->
+    <TextView
+        android:id="@+id/tvAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/rubik"
+        android:text="بعد تعبئة بياناتك الصحية، سيقترح عليك التطبيق العلاجات المتوفرة بناءً على حالتك."
+        android:textSize="14sp"
+        android:textColor="#666666" />
+</LinearLayout>

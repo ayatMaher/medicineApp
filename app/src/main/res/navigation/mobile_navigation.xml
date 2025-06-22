@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.medicineapplication.fragment.HomeFragment"
+        android:label="الرئيسية"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_pharmacies"
+        android:name="com.example.medicineapplication.fragment.PharmacyFragment"
+        android:label="الصيدليات"
+        tools:layout="@layout/fragment_pharmacy" >
+        <action
+            android:id="@+id/action_global_to_firstFragment"
+            app:destination="@id/navigation_home"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_medicines"
+        android:name="com.example.medicineapplication.fragment.MedicineFragment"
+        android:label="الأدوية"
+        tools:layout="@layout/fragment_medicine" >
+        <action
+            android:id="@+id/action_global_to_firstFragment"
+            app:destination="@id/navigation_home"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.medicineapplication.fragment.ProfileFragment"
+        android:label="الصفحة الشخصية"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.example.medicineapplication.fragment.FavoriteFragment"
+        android:label="المفضلة"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_global_to_firstFragment"
+            app:destination="@id/navigation_profile"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_profile"
+            app:popUpToInclusive="true"/>
+    </fragment>
+</navigation>

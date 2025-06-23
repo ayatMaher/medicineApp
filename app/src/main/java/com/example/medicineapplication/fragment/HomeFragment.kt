@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medicineapplication.MedicineDetailsActivity
+import com.example.medicineapplication.PharmacyDetailsActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.CategoryAdapter
 import com.example.medicineapplication.adapter.MedicineAdapter
@@ -28,8 +29,6 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     //medicine type
@@ -61,7 +60,10 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
         // search icon
         binding.searchIcon.setOnClickListener {
-            findNavController().navigate(R.id.navigation_pharmacies)
+            val bundle = Bundle().apply {
+                putString("page_type", "search")
+            }
+            findNavController().navigate(R.id.navigation_pharmacies, bundle)
         }
         //Medicine type
         showMedicineType()
@@ -173,21 +175,23 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
         Log.e("category", "$categoryName ")
         val bundle = Bundle().apply {
             putString("category_name", categoryName)
+            putString("page_type", "medicine_type")
         }
-        findNavController().navigate(R.id.navigation_medicines,bundle)
+        findNavController().navigate(R.id.navigation_medicines, bundle)
 
     }
 
     //pharmacy
     override fun onItemClickPharmacy(position: Int, id: String) {
         //when click to pharmacy card
-        TODO("Not yet implemented")
+        val intent = Intent(requireContext(), PharmacyDetailsActivity::class.java)
+        startActivity(intent)
     }
 
     //medicine
     override fun onItemClickMedicine(position: Int, id: String) {
         //when click to medicine card
-        val intent=Intent(requireContext(),MedicineDetailsActivity::class.java)
+        val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
         startActivity(intent)
     }
 

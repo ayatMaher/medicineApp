@@ -50,11 +50,25 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
             true
         // title text
         binding.header.titleText.text = "المفضلة"
+
+        //
+        val pageType = arguments?.getString("page_type")
+        if (pageType == "favorite_fragment") {
+            binding.header.backButton.visibility = View.VISIBLE
+        } else {
+            binding.header.backButton.visibility = View.GONE
+        }
         // back arrow
         binding.header.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_global_to_firstFragment)
+            findNavController().navigate(R.id.action_global_to_profileFragment)
         }
-        showPharmacy()
+
+        if (pageType == "favorite") {
+            clickOnMedicineButton()
+            showMedicine()
+        } else {
+            showPharmacy()
+        }
 
         binding.btnMedicines.setOnClickListener {
             clickOnMedicineButton()

@@ -5,7 +5,11 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:statusBarColor" tools:targetApi="vanilla_ice_cream">@color/light_green
         </item>
+
         <!--         <item name="bottomNavigationStyle">@style/CustomBottomNavigationView</item>&ndash;&gt;-->
+
+
+
 
     </style>
 
@@ -25,8 +29,4 @@
         <item name="itemBackground">@android:color/transparent</item>
     </style>
 
-    <style name="CustomRatingBar" parent="Theme.MaterialComponents.Light">
-        <item name="colorControlNormal">#A2A2A2</item> <!-- نجوم غير مفعّلة -->
-        <item name="colorControlActivated">#F9AE0E</item> <!-- نجوم مفعّلة (أصفر) -->
-    </style>
 </resources>

@@ -14,6 +14,16 @@
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
         <activity
+            android:name=".LogInActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".PharmacyDetailsActivity"
             android:exported="false"
             android:theme="@style/Theme.MedicineApplication" />
@@ -24,11 +34,7 @@
             android:name=".NavigationDrawerActivity"
             android:exported="true"
             android:theme="@style/Theme.MedicineApplication.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".header"

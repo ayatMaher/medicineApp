@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:orientation="vertical">
 
@@ -133,9 +133,10 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="60dp"
+                        android:layout_width="130dp"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:layout_marginStart="85dp"
                         android:background="@drawable/btn_background_stroke"
                         android:fontFamily="@font/rubik"
                         android:text="الموقع على الخريطة"
@@ -231,7 +232,7 @@
                         <ImageButton
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginStart="135dp"
+                            android:layout_marginStart="150dp"
                             android:layout_marginTop="17dp"
                             android:contentDescription="BarCode"
                             android:src="@drawable/bar_code"

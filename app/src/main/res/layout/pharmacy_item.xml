@@ -58,7 +58,7 @@
                 android:layout_height="8dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="25dp"
-                android:src="@drawable/fill_star" />
+                android:src="@drawable/fill_star_primary" />
 
             <TextView
                 android:id="@+id/rate"

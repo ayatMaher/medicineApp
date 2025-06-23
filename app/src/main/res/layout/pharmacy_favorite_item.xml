@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/category_medicine_card"
+    android:layout_width="175dp"
+    android:layout_height="220dp"
+    android:layout_margin="5dp"
+    android:layoutDirection="rtl"
+    app:cardCornerRadius="16dp">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="109dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="16dp">
+
+            <ImageView
+                android:id="@+id/pharmacy_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pharmacy2" />
+
+            <ImageButton
+                android:id="@+id/favorite_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Favorite"
+                android:src="@drawable/red_favorite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="120dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@id/content"
+        app:layout_constraintStart_toStartOf="@id/content"
+        app:layout_constraintTop_toBottomOf="@id/medicine_image">
+
+        <TextView
+            android:id="@+id/txtPharmacyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bold"
+            android:textColor="@color/black"
+            android:text="صيدلية الأسرى"
+            android:textSize="14sp" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        android:src="@drawable/location_primary"
+
+        android:layout_marginEnd="5dp"/>
+    <TextView
+        android:id="@+id/txtPharmacyLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik"
+        android:text="غزة_التفاح_شارع النفق"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+</LinearLayout>
+        
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="155dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="#E0E0E0"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line">
+
+        <LinearLayout
+            android:id="@+id/btn_pharmacy"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="5dp"
+            android:paddingEnd="8dp"
+            android:background="@drawable/btn_background"
+            android:backgroundTint="@color/light_green"
+            android:clickable="true"
+            android:orientation="horizontal"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:src="@drawable/star_primary" />
+
+            <TextView
+                android:id="@+id/PharmacyRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/rubik"
+                android:text="4.5"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/delete_favorite_pharmacy"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/delete_icon" />
+    </LinearLayout>
+</LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -14,15 +14,26 @@
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
         <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VerifyTokenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".LogInActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".PharmacyDetailsActivity"
             android:exported="false"
@@ -33,9 +44,7 @@
         <activity
             android:name=".NavigationDrawerActivity"
             android:exported="true"
-            android:theme="@style/Theme.MedicineApplication.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.MedicineApplication.NoActionBar" />
         <activity
             android:name=".header"
             android:exported="false" />

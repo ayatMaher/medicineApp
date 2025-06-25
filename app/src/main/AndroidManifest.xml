@@ -14,6 +14,21 @@
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
         <activity
+
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VerifyTokenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LogInActivity"
+
             android:name=".CommonQuationsPage"
             android:exported="false" />
         <activity

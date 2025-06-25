@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layoutDirection="rtl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutAppActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/activity_header"
+            android:layout_width="0dp"
+            android:layout_marginTop="32dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/view"
+            app:layout_constraintStart_toStartOf="@id/view"
+            app:layout_constraintTop_toTopOf="@id/view" />
+
+
+
+        <ImageView
+            android:id="@+id/icon_app"
+            android:layout_width="113dp"
+            android:layout_height="113dp"
+            android:src="@drawable/new_app_icon"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="@id/view"
+            app:layout_constraintStart_toStartOf="@id/view"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="15dp"
+            android:text="@string/long_text_part1"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik"
+            android:paddingHorizontal="20dp"
+            android:text="@string/long_text_part2"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:text="@string/long_text_part1"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik"
+            android:paddingHorizontal="20dp"
+            android:text="@string/long_text_part2"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

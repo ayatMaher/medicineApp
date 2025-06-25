@@ -6,28 +6,27 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.example.medicineapplication.databinding.ActivityLogInBinding
+import com.example.medicineapplication.databinding.ActivityVerifyTokenBinding
 
-@Suppress("DEPRECATION")
-class LogInActivity : AppCompatActivity() {
-    lateinit var binding: ActivityLogInBinding
+class VerifyTokenActivity : AppCompatActivity() {
+    lateinit var binding: ActivityVerifyTokenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLogInBinding.inflate(layoutInflater)
         enableEdgeToEdge()
+        binding = ActivityVerifyTokenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         //statusBar Color
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color_log)
         // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
-        //click to forget password
-        binding.txtForgetPassword.setOnClickListener {
-            val intent =Intent(this,ForgetPasswordActivity::class.java)
-            startActivity(intent)
-        }
-        // click to create account
-        binding.txtCreateAccount.setOnClickListener {
-            val intent =Intent(this,RegisterActivity::class.java)
+
+        // click to back arrow
+        binding.btnBack.setOnClickListener { finish() }
+
+        //click to send button
+        binding.btnSure.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
             startActivity(intent)
         }
     }

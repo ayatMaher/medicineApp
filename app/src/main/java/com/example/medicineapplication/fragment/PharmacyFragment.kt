@@ -1,6 +1,8 @@
 package com.example.medicineapplication.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.medicineapplication.MedicineDetailsActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.PharmacyAdapter
 import com.example.medicineapplication.databinding.FragmentPharmacyBinding
@@ -38,9 +41,29 @@ class PharmacyFragment : Fragment(), PharmacyAdapter.ItemClickListener {
         window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white2)
 //        // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+
+        val pageType = arguments?.getString("page_type")
+        val medicineName = arguments?.getString("medicine Name")
+        binding.edtSearch.setText(medicineName)
+        if (pageType == "search" || pageType == "favorite" || pageType == "pharmacy") {
+            binding.backArrow.visibility = View.VISIBLE
+        } else {
+            binding.backArrow.visibility = View.GONE
+        }
         // back arrow
         binding.backArrow.setOnClickListener {
-            findNavController().navigate(R.id.action_global_to_firstFragment)
+            if (pageType == "search") {
+                findNavController().navigate(R.id.action_global_to_firstFragment)
+            } else if (pageType == "favorite") {
+                val bundle = Bundle().apply {
+                    putString("page_type", "favorite")
+                }
+                findNavController().navigate(R.id.action_global_to_favoriteFragment, bundle)
+
+            }else if (pageType == "pharmacy"){
+                val intent = Intent(requireContext(),MedicineDetailsActivity::class.java)
+                requireContext().startActivity(intent)
+            }
         }
         showPharmacy()
 

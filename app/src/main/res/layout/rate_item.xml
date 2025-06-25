@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/back"
+    android:layoutDirection="rtl">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_image"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="@font/rubik"
+                android:text="غيداء جمال"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txt_rate_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:text="3 مارس 2024"
+                android:textColor="#801C1A1A"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+<!--        <RatingBar-->
+<!--            android:id="@+id/ratingBar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:isIndicator="true"-->
+<!--            android:layoutDirection="ltr"-->
+<!--            android:numStars="5"-->
+<!--            android:rating="4"-->
+<!--            android:scaleX="0.3"-->
+<!--            android:scaleY="0.3"-->
+<!--            android:stepSize="1"-->
+<!--            android:theme="@style/CustomRatingBar" />-->
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/btn_rate"-->
+<!--            android:layout_width="90dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:layout_marginStart="160dp"-->
+<!--            android:background="@drawable/back"-->
+<!--            android:backgroundTint="#fef0e2"-->
+<!--            android:text="4.0"-->
+<!--            android:textColor="@color/black" />-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:background="@drawable/back"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:backgroundTint="#fef0e2"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/fill_star"/>
+            <TextView
+                android:id="@+id/txtRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/rubik_bold"
+                android:text="4.0"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/txt_number_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/rubik"
+                android:textColor="@color/black"
+                android:text="(2.6 تقييمات)"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/rubik"
+        android:text="صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة."
+        android:textColor="#801C1A1A"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

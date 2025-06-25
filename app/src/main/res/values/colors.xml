@@ -28,6 +28,9 @@
     <color name="lighter_yellow">#F4ECD5</color>
     <color name="yellow">#FFC107</color>
     <color name="light_yellow_green">#3B8EC63F</color>
+    <color name="grey">#FAFAFA</color>
+    <color name="black_overlay">#66000000</color>
+
 
 
 

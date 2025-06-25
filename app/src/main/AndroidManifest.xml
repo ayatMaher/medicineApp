@@ -14,18 +14,37 @@
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
         <activity
-            android:name=".MedicineDetailsActivity"
+            android:name=".CommonQuationsPage"
             android:exported="false" />
         <activity
-            android:name=".NavigationDrawerActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MedicineApplication.NoActionBar">
+            android:name=".AddingPrescriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LogInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppEvaluationActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PharmacyDetailsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MedicineApplication" />
+        <activity
+            android:name=".MedicineDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutAppActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NavigationDrawerActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MedicineApplication.NoActionBar" />
         <activity
             android:name=".header"
             android:exported="false" />

@@ -12,8 +12,8 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:background="@drawable/background"
+        android:padding="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,10 +21,12 @@
             android:id="@+id/header"
             layout="@layout/activity_header"
             android:layout_width="0dp"
+            android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@id/view"
             app:layout_constraintStart_toStartOf="@id/view"
             app:layout_constraintTop_toTopOf="@id/view" />
+
         <ImageButton
             android:id="@+id/favorite_img"
             android:layout_width="25dp"
@@ -36,15 +38,342 @@
             android:src="@drawable/favorite"
             app:layout_constraintStart_toStartOf="@id/view"
             app:layout_constraintTop_toBottomOf="@id/header" />
+
         <ImageView
             android:id="@+id/image_medicine"
             android:layout_width="140dp"
             android:layout_height="170dp"
             android:src="@drawable/medicine2"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintEnd_toEndOf="@id/view"
             app:layout_constraintStart_toStartOf="@id/view"
-            app:layout_constraintEnd_toEndOf="@id/view"/>
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/medicine_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view">
+
+        <TextView
+            android:id="@+id/medicine_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12sp"
+            android:layout_marginBottom="11dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="جومي فيتامين"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:background="@drawable/back"
+            android:backgroundTint="@color/light_green"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12sp"
+                android:fontFamily="@font/rubik"
+                android:text="متاح في 18 صيدلية"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/show_pharmacy_page"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="10sp"
+                android:background="@drawable/circle"
+                android:src="@drawable/view_icon" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_medicine_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/rubik"
+        android:text="مكمل غذائي لذيذ على شكل حلوى جيلاتينية، يدعم صحتك اليومية بطريقة ممتعة وسهلة!
+يساهم في نمو  الخلايا وتجديد الجلد والحفاظ على صحةالجسد"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/medicine_name_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_medicine_description">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="35dp"
+                android:layout_marginBottom="9dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginEnd="11dp"
+                        android:src="@drawable/kit_icon" />
+
+                    <TextView
+                        android:id="@+id/txt_medicine_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/rubik"
+                        android:text="فيتامين"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/line1"
+                    android:layout_width="2dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="34dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="34dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="#81E0E0E0" />
+
+                <LinearLayout
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginEnd="11dp"
+                        android:src="@drawable/coin" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txt_medicine_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/rubik_medium"
+                            android:text="50.00"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/rubik_medium"
+                            android:text="$"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/line2"
+                    android:layout_width="2dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="34dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="34dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="#81E0E0E0" />
+
+                <LinearLayout
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginEnd="11dp"
+                        android:src="@drawable/quality" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txt_quality"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/rubik_medium"
+                            android:text="20"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/rubik_medium"
+                            android:text="حبة"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txt_usage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="85dp"
+                    android:fontFamily="@font/rubik"
+                    android:text="الاستخدام"
+                    android:textColor="@color/primary_color"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txt_instructions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="85dp"
+                    android:fontFamily="@font/rubik"
+                    android:text="التعليمات"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txt_side_effects"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik"
+                    android:text="الآثار الجانبية"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="#36149D94"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout" />
+            <LinearLayout
+                android:id="@+id/txt_line_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout">
+                <TextView
+                    android:id="@+id/txt_line_usage"
+                    android:layout_width="66dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="75dp"
+                    android:background="@color/primary_color" />
+
+                <TextView
+                    android:id="@+id/txt_line_instructions"
+                    android:layout_width="66dp"
+                    android:layout_height="2dp"
+                    android:visibility="invisible"
+                    android:layout_marginEnd="75dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/primary_color" />
+
+                <TextView
+                    android:id="@+id/txt_line_side_effect"
+                    android:layout_width="90dp"
+                    android:layout_height="2dp"
+                    android:visibility="invisible"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/primary_color"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txt_tab_content"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/txt_line_group"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/rubik"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,7 +25,7 @@
             android:fontFamily="@font/rubik"
             android:text="كيف يمكنني معرفة العلاج المناسب لحالتي؟"
             android:textSize="14sp"
-            android:textColor="#000000" />
+            android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/ivArrow"

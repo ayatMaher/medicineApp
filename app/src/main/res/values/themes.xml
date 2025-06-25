@@ -29,4 +29,16 @@
         <item name="itemBackground">@android:color/transparent</item>
     </style>
 
+    <style name="Theme.MedicineApplication.Fullscreen" parent="Theme.MedicineApplication">
+        <item name="android:actionBarStyle">
+            @style/Widget.Theme.MedicineApplication.ActionBar.Fullscreen
+        </item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.MedicineApplication.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
 </resources>

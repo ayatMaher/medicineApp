@@ -13,7 +13,7 @@
         android:id="@+id/login_image"
         android:layout_width="82dp"
         android:layout_height="82dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/circle"
         android:src="@drawable/ic_login"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
         android:paddingBottom="10sp"
@@ -76,7 +76,7 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/rubik"
                 android:gravity="start|center_vertical"
-                android:inputType="text"
+                android:inputType="textAutoCorrect"
                 android:paddingVertical="12dp"
                 android:textColor="@color/black"
                 android:textDirection="rtl"
@@ -116,7 +116,7 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/rubik"
                 android:gravity="start|center_vertical"
-                android:inputType="textEmailAddress"
+                android:inputType="phone"
                 android:paddingVertical="12dp"
                 android:textColor="@color/black"
                 android:textDirection="rtl"
@@ -209,14 +209,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkboxRememberMe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="170dp"
+                android:layout_marginEnd="155dp"
                 android:buttonTint="@color/primary_color"
                 android:fontFamily="@font/rubik"
                 android:text="تذكرني"
@@ -238,7 +238,7 @@
             android:id="@+id/btn_create_account"
             android:layout_width="match_parent"
             android:layout_height="57dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/btn_background_profile"
             android:fontFamily="@font/rubik"
             android:text="انشاء حساب"
@@ -284,7 +284,7 @@
                 android:id="@+id/btn_facebook"
                 android:layout_width="165dp"
                 android:layout_height="52dp"
-                android:layout_marginEnd="45dp"
+                android:layout_marginEnd="30dp"
                 android:background="@drawable/btn_social"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -363,13 +363,20 @@
                 android:id="@+id/txt_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/rubik"
                 android:text="تسجيل الدخول "
                 android:textColor="@color/primary_color"
                 android:textSize="16sp" />
 
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:progressTint="@color/primary_color"
+            android:visibility="gone" />
 
 
     </LinearLayout>

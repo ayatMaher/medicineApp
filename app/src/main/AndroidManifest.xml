@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,7 +16,15 @@
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
         <activity
+            android:name=".SplashActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ResetPasswordActivity"
             android:exported="false" />
         <activity
@@ -28,24 +38,8 @@
             android:exported="false" />
         <activity
             android:name=".LogInActivity"
+            android:exported="false"/>
 
-            android:name=".CommonQuationsPage"
-            android:exported="false" />
-        <activity
-            android:name=".AddingPrescriptionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LogInActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AppEvaluationActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".PharmacyDetailsActivity"
             android:exported="false"
@@ -54,11 +48,8 @@
             android:name=".MedicineDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".AboutAppActivity"
-            android:exported="false" />
-        <activity
             android:name=".NavigationDrawerActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.MedicineApplication.NoActionBar" />
         <activity
             android:name=".header"

@@ -31,6 +31,7 @@
     <color name="grey">#FAFAFA</color>
 
     <color name="status_bar_color_log">#F8F9F5</color>
+    <color name="red">#FD0505</color>
 
     <color name="black_overlay">#66000000</color>
 

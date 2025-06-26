@@ -3,6 +3,7 @@ package com.example.medicineapplication.adapter
 import android.app.Activity
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.medicineapplication.databinding.RateItemBinding
 import com.example.medicineapplication.model.User
 
@@ -28,13 +29,16 @@ class RatingAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.binding.txtUserName.text = item.userName
-        holder.binding.userImage.setImageResource(item.userImage)
+        holder.binding.txtUserName.text = item.name
+//        holder.binding.userImage.setImageResource(item.image)
+        Glide.with(holder.binding.root)
+            .load(item.image)
+            .into(holder.binding.userImage)
         holder.binding.txtRateTime.text = item.rateDate
         holder.binding.txtComment.text=item.userComment
         holder.binding.root.setOnClickListener {
             try {
-                itemClickListener.onItemClick(position, item.id)
+                itemClickListener.onItemClick(position, item.id.toString())
             } catch (e: Exception) {
                 e.printStackTrace()
             }

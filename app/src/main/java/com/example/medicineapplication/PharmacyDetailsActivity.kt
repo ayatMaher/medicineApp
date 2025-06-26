@@ -49,24 +49,24 @@ class PharmacyDetailsActivity : AppCompatActivity(), RatingAdapter.ItemClickList
 
     private fun showRatingComments() {
         items.clear()
-        items.add(
-            User(
-                "1",
-                "غيداء جمال ",
-                R.drawable.user,
-                "صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة.",
-                "5 مارس 2025"
-            )
-        )
-        items.add(
-            User(
-                "1",
-                "غيداء جمال ",
-                R.drawable.user,
-                "صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة.",
-                "5 مارس 2025"
-            )
-        )
+//        items.add(
+//            User(
+//                "1",
+//                "غيداء جمال ",
+//                R.drawable.user,
+//                "صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة.",
+//                "5 مارس 2025"
+//            )
+//        )
+//        items.add(
+//            User(
+//                "1",
+//                "غيداء جمال ",
+//                R.drawable.user,
+//                "صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة.",
+//                "5 مارس 2025"
+//            )
+//        )
         ratingAdapter = RatingAdapter(this, items, this)
         binding.rvRate.adapter = ratingAdapter
 

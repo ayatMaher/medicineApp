@@ -14,7 +14,9 @@
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
         <activity
-
+            android:name=".LocationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ResetPasswordActivity"
             android:exported="false" />
         <activity
@@ -28,14 +30,12 @@
             android:exported="false" />
         <activity
             android:name=".LogInActivity"
-
+            android:exported="false" />
+        <activity
             android:name=".CommonQuationsPage"
             android:exported="false" />
         <activity
             android:name=".AddingPrescriptionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LogInActivity"
             android:exported="false" />
         <activity
             android:name=".AppEvaluationActivity"

@@ -27,6 +27,12 @@
     <style name="CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="android:background">@android:color/transparent</item>
         <item name="itemBackground">@android:color/transparent</item>
+
+    </style>
+
+    <style name="CustomRatingBarStyle" parent="Theme.MaterialComponents.Light">
+        <item name="colorControlActivated">#F3AD39</item> <!-- أصفر -->
+        <item name="colorControlNormal">#D7D6D6</item>   <!-- رمادي للنجوم غير المفعّلة -->
     </style>
 
 </resources>

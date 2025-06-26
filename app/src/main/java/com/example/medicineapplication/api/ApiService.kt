@@ -3,9 +3,11 @@ package com.example.medicineapplication.api
 import com.example.medicineapplication.model.GenericResponse
 import com.example.medicineapplication.model.LoginResponse
 import com.example.medicineapplication.model.RegisterResponse
+import com.example.medicineapplication.model.UserResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -54,4 +56,7 @@ interface ApiService {
     ): Call<GenericResponse>
     @POST("api/auth/logout")
     fun logout(@Header("Authorization") token: String): Call<GenericResponse>
+
+    @GET("api/user")
+    fun getCurrentUser(@Header("Authorization") token: String): Call<UserResponse>
 }

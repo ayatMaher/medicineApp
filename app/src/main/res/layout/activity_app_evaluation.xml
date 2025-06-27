@@ -73,13 +73,16 @@
 
 
 
-            <TextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="137dp"
+                android:enabled="true"
                 android:layout_marginHorizontal="16dp"
                 android:background="@drawable/back"
                 android:fontFamily="@font/rubik"
                 android:padding="16dp"
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
                 android:hint="ادخل تعليقك لتفييم الصيدلية"
                 android:textSize="14sp" />
 

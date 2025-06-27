@@ -8,7 +8,7 @@
     android:background="#FFFFFF"
     android:layoutDirection="rtl"
     android:layout_margin="16dp"
-    tools:context=".SettingPage">
+    tools:context=".SettingActivity">
 
     <include
         layout="@layout/activity_header"

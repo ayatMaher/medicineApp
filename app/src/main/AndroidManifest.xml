@@ -52,16 +52,16 @@
             android:exported="false"
             android:theme="@style/Theme.MedicineApplication.NoActionBar" />
         <activity
-            android:name=".header"
+            android:name=".HeaderActivity"
             android:exported="false" />
         <activity
             android:name=".Notification_item"
             android:exported="false" />
         <activity
-            android:name=".NotificationsPage"
+            android:name=".NotificationsActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingPage"
+            android:name=".SettingActivity"
             android:exported="false" />
     </application>
 

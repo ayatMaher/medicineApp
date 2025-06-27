@@ -28,6 +28,13 @@ data class GenericResponse(
     val message: String
 )
 
+data class UserResponse(
+    val success: Boolean,
+    val message: String,
+    val user: User,
+    val status: String
+)
+
 data class User(
     val id: Int,
     val image: String?,

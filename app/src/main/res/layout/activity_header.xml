@@ -6,7 +6,7 @@
     android:paddingBottom="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".header">
+    tools:context=".HeaderActivity">
 
     <RelativeLayout
         android:id="@+id/header"

@@ -12,8 +12,10 @@ import com.example.medicineapplication.databinding.ActivityEditProfileBinding
 import com.example.medicineapplication.databinding.ActivitySettingPageBinding
 import com.example.medicineapplication.fragment.ProfileFragment
 
-class SettingPage : AppCompatActivity() {
+
+class SettingActivity : AppCompatActivity() {
     lateinit var binding: ActivitySettingPageBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

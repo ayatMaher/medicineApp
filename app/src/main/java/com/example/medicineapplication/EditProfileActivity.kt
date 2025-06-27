@@ -19,7 +19,9 @@ import com.example.medicineapplication.fragment.ProfileFragment
 import java.io.File
 import android.Manifest
 
-class EditProfile : AppCompatActivity() {
+
+
+class EditProfileActivity : AppCompatActivity() {
     lateinit var binding: ActivityEditProfileBinding
     private lateinit var imageView: ImageView
     private lateinit var selectButton: ImageView
@@ -37,7 +39,6 @@ class EditProfile : AppCompatActivity() {
             imageView.setImageURI(cameraImageUri)
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

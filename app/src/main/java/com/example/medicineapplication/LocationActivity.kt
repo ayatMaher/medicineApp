@@ -9,30 +9,30 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.example.medicineapplication.databinding.ActivityAboutAppBinding
-import com.example.medicineapplication.databinding.ActivityMedicineDetailsBinding
+import com.example.medicineapplication.databinding.ActivityForgetPasswordBinding
+import com.example.medicineapplication.databinding.ActivityLocationBinding
 import com.example.medicineapplication.fragment.ProfileFragment
 
-class AboutAppActivity : AppCompatActivity() {
-    lateinit var binding: ActivityAboutAppBinding
+class LocationActivity : AppCompatActivity() {
+    lateinit var binding: ActivityLocationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAboutAppBinding.inflate(layoutInflater)
         enableEdgeToEdge()
+        binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //statusBar Color
-        window.statusBarColor = ContextCompat.getColor(this, R.color.light_green)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color_log)
         // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
-        // title text
-        binding.header.titleText.text = "عن التطبيق "
-        // back arrow
-        binding.header.backButton.setOnClickListener {
-                val intent = Intent(this, ProfileFragment::class.java)
-                startActivity(intent)
-                finish()
+
+        val back_btn=findViewById<ImageView>(R.id.backButton)
+        back_btn.setOnClickListener {
+            val intent = Intent(this, ProfileFragment::class.java)
+            startActivity(intent)
+            finish()
         }
+
 
     }
 }

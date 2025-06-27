@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.medicineapplication.Quation_item
 import com.example.medicineapplication.R
 import com.example.medicineapplication.model.quationItem
 

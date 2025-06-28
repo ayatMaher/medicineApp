@@ -3,6 +3,7 @@ package com.example.medicineapplication.adapter
 import android.app.Activity
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.FavoriteMedicineAdapter.ItemClickListener
 import com.example.medicineapplication.databinding.PharmacyFavoriteItemBinding
 import com.example.medicineapplication.model.Pharmacy
@@ -33,6 +34,9 @@ class FavoritePharmacyAdapter(
         holder.binding.txtPharmacyName.text = item.pharmacyName
         holder.binding.txtPharmacyLocation.text = item.pharmacyAddress
         holder.binding.PharmacyRate.text = item.rate.toString()
+        holder.binding.favoriteImg.setOnClickListener {
+            holder.binding.favoriteImg.setImageResource(R.drawable.favorite)
+        }
         holder.binding.deleteFavoritePharmacy.setOnClickListener {
             //delete pharmacy from favorite
         }

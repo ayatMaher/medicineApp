@@ -17,13 +17,8 @@ import com.example.medicineapplication.LogInActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.FragmentProfileBinding
 import androidx.core.content.edit
-import com.example.medicineapplication.AboutAppActivity
-import com.example.medicineapplication.AppEvaluationActivity
-import com.example.medicineapplication.CommonQuationsPage
-import com.example.medicineapplication.EditProfile
-import com.example.medicineapplication.SettingPage
-//import com.example.medicineapplication.api.ApiClient
-//import com.example.medicineapplication.api.ApiService
+import com.example.medicineapplication.api.ApiClient
+import com.example.medicineapplication.api.ApiService
 import com.example.medicineapplication.model.GenericResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,28 +52,23 @@ class ProfileFragment : Fragment() {
     //click fun
     private fun clickToButton() {
         binding.profileLayout.setOnClickListener {
-            val intent = Intent(requireContext(), EditProfile::class.java)
-            startActivity(intent)
+            //go to profile page
             Log.e("Profile Page", "Go To Profile Page")
         }
         binding.questionLayout.setOnClickListener {
-            val intent = Intent(requireContext(), CommonQuationsPage::class.java)
-            startActivity(intent)
+            //go to Question page
             Log.e("Question Page", "Go To Question Page")
         }
         binding.settingLayout.setOnClickListener {
-            val intent = Intent(requireContext(), SettingPage::class.java)
-            startActivity(intent)
+            //go to Setting page
             Log.e("Setting Page", "Go To Setting Page")
         }
         binding.infoLayout.setOnClickListener {
-            val intent = Intent(requireContext(), AboutAppActivity::class.java)
-            startActivity(intent)
+            //go to Info page
             Log.e("Info Page", "Go To Info Page")
         }
         binding.rateLayout.setOnClickListener {
-            val intent = Intent(requireContext(), AppEvaluationActivity::class.java)
-            startActivity(intent)
+            //go to rate page
             Log.e("rate Page", "Go To rate Page")
         }
         binding.locationLayout.setOnClickListener {
@@ -97,7 +87,7 @@ class ProfileFragment : Fragment() {
             Log.e("Delete Account", "Delete Account")
         }
         binding.logout.setOnClickListener {
-//            showLogoutConfirmationDialog()
+            showLogoutConfirmationDialog()
         }
     }
 
@@ -113,49 +103,49 @@ class ProfileFragment : Fragment() {
         requireActivity().finish() // ← مهم لمنع الرجوع من الزر الخلفي
     }
 
-//    private fun showLogoutConfirmationDialog() {
-//        val dialog = AlertDialog.Builder(requireContext())
-//            .setTitle("تأكيد تسجيل الخروج")
-//            .setMessage("هل أنت متأكد أنك تريد تسجيل الخروج؟")
-//            .setPositiveButton("نعم") { _, _ ->
-//                performLogout()
-//            }
-//            .setNegativeButton("إلغاء", null)
-//            .create()
-//        dialog.show()
-//
-//        // تغيير لون أزرار الحوار بعد إظهاره
-//        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-//            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-//        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-//            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-//
-//    }
+    private fun showLogoutConfirmationDialog() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("تأكيد تسجيل الخروج")
+            .setMessage("هل أنت متأكد أنك تريد تسجيل الخروج؟")
+            .setPositiveButton("نعم") { _, _ ->
+                performLogout()
+            }
+            .setNegativeButton("إلغاء", null)
+            .create()
+        dialog.show()
 
-//    private fun performLogout() {
-//        val sharedPref =
-//            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
-//        val token = "Bearer " + sharedPref.getString("ACCESS_TOKEN", "")
-//        val apiService = ApiClient.instance.create(ApiService::class.java)
-//
-//        apiService.logout(token).enqueue(object : Callback<GenericResponse> {
-//            override fun onResponse(
-//                call: Call<GenericResponse>,
-//                response: Response<GenericResponse>
-//            ) {
-//                Toast.makeText(requireContext(), "تم تسجيل الخروج بنجاح", Toast.LENGTH_SHORT).show()
-//                logoutUser()
-//            }
-//
-//            override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
-//                Toast.makeText(
-//                    requireContext(),
-//                    "فشل الاتصال بالخادم، يتم تسجيل الخروج محليًا",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                logoutUser()
-//            }
-//        })
-//    }
+        // تغيير لون أزرار الحوار بعد إظهاره
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+
+    }
+
+    private fun performLogout() {
+        val sharedPref =
+            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        val token = "Bearer " + sharedPref.getString("ACCESS_TOKEN", "")
+        val apiService = ApiClient.instance.create(ApiService::class.java)
+
+        apiService.logout(token).enqueue(object : Callback<GenericResponse> {
+            override fun onResponse(
+                call: Call<GenericResponse>,
+                response: Response<GenericResponse>
+            ) {
+                Toast.makeText(requireContext(), "تم تسجيل الخروج بنجاح", Toast.LENGTH_SHORT).show()
+                logoutUser()
+            }
+
+            override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                Toast.makeText(
+                    requireContext(),
+                    "فشل الاتصال بالخادم، يتم تسجيل الخروج محليًا",
+                    Toast.LENGTH_SHORT
+                ).show()
+                logoutUser()
+            }
+        })
+    }
 
 }

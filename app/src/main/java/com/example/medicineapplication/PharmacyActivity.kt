@@ -1,74 +1,40 @@
-package com.example.medicineapplication.fragment
+package com.example.medicineapplication
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.medicineapplication.MedicineDetailsActivity
-import com.example.medicineapplication.PharmacyDetailsActivity
-import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.PharmacyAdapter
-import com.example.medicineapplication.databinding.FragmentPharmacyBinding
+import com.example.medicineapplication.databinding.ActivityPharmacyBinding
 import com.example.medicineapplication.model.Pharmacy
 
 @Suppress("DEPRECATION")
-class PharmacyFragment : Fragment(), PharmacyAdapter.ItemClickListener {
-
-    private var _binding: FragmentPharmacyBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    //pharmacy
+class PharmacyActivity : AppCompatActivity(), PharmacyAdapter.ItemClickListener {
+    lateinit var binding: ActivityPharmacyBinding
     lateinit var pharmacyAdapter: PharmacyAdapter
     var pharmacy_item: ArrayList<Pharmacy> = ArrayList()
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentPharmacyBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPharmacyBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
+        setContentView(binding.root)
 
         //status bar
-        val window = requireActivity().window
-        window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white2)
+        val window = this.window
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white2)
 //        // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
-        val pageType = arguments?.getString("page_type")
-        val medicineName = arguments?.getString("medicine_name")
-
-        binding.edtSearch.setText(medicineName)
-        if (pageType == "search" || pageType == "favorite" || pageType == "pharmacy") {
-            binding.backArrow.visibility = View.VISIBLE
-        } else {
-            binding.backArrow.visibility = View.GONE
-        }
-        // back arrow
+        //back arrow
         binding.backArrow.setOnClickListener {
-            if (pageType == "search") {
-                findNavController().navigate(R.id.action_global_to_firstFragment)
-            } else if (pageType == "favorite") {
-                val bundle = Bundle().apply {
-                    putString("page_type", "favorite")
-                }
-                findNavController().navigate(R.id.action_global_to_favoriteFragment, bundle)
-
-            }else if (pageType == "pharmacy"){
-                val intent = Intent(requireContext(),MedicineDetailsActivity::class.java)
-                requireContext().startActivity(intent)
-            }
+            finish()
         }
+        val medicineName= intent.getStringExtra("medicine_name")
+        binding.edtSearch.setText(medicineName)
         showPharmacy()
 
-        return root
     }
 
     private fun showPharmacy() {
@@ -144,17 +110,12 @@ class PharmacyFragment : Fragment(), PharmacyAdapter.ItemClickListener {
                 true
             )
         )
-        pharmacyAdapter = PharmacyAdapter(requireActivity(), pharmacy_item, this)
+        pharmacyAdapter = PharmacyAdapter(this, pharmacy_item, this)
         binding.rvPharmacy.adapter = pharmacyAdapter
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onItemClickPharmacy(position: Int, id: String) {
-        val intent= Intent(requireContext(), PharmacyDetailsActivity::class.java)
+        val intent= Intent(this, PharmacyDetailsActivity::class.java)
         startActivity(intent)
     }
 }

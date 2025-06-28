@@ -1,10 +1,8 @@
 package com.example.medicineapplication
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,10 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.medicineapplication.databinding.ActivityEditProfileBinding
-import com.example.medicineapplication.fragment.ProfileFragment
 import java.io.File
 import android.Manifest
 
@@ -46,13 +41,8 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnBack.setOnClickListener {
-            val intent = Intent(this, ProfileFragment::class.java)
-            startActivity(intent)
+            finish()
         }
-
-
-
-
         imageView = binding.profileImage
         selectButton = binding.addIcon
 

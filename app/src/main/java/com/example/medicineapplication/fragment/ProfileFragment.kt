@@ -17,6 +17,11 @@ import com.example.medicineapplication.LogInActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.FragmentProfileBinding
 import androidx.core.content.edit
+import com.example.medicineapplication.AboutAppActivity
+import com.example.medicineapplication.AppEvaluationActivity
+import com.example.medicineapplication.CommonQuestionsActivity
+import com.example.medicineapplication.EditProfileActivity
+import com.example.medicineapplication.SettingActivity
 import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.api.ApiService
 import com.example.medicineapplication.model.GenericResponse
@@ -52,23 +57,28 @@ class ProfileFragment : Fragment() {
     //click fun
     private fun clickToButton() {
         binding.profileLayout.setOnClickListener {
-            //go to profile page
+            val intent = Intent(requireContext(), EditProfileActivity::class.java)
+            startActivity(intent)
             Log.e("Profile Page", "Go To Profile Page")
         }
         binding.questionLayout.setOnClickListener {
-            //go to Question page
+            val intent = Intent(requireContext(), CommonQuestionsActivity::class.java)
+            startActivity(intent)
             Log.e("Question Page", "Go To Question Page")
         }
         binding.settingLayout.setOnClickListener {
-            //go to Setting page
+            val intent = Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
             Log.e("Setting Page", "Go To Setting Page")
         }
         binding.infoLayout.setOnClickListener {
-            //go to Info page
+            val intent = Intent(requireContext(), AboutAppActivity::class.java)
+            startActivity(intent)
             Log.e("Info Page", "Go To Info Page")
         }
         binding.rateLayout.setOnClickListener {
-            //go to rate page
+            val intent = Intent(requireContext(), AppEvaluationActivity::class.java)
+            startActivity(intent)
             Log.e("rate Page", "Go To rate Page")
         }
         binding.locationLayout.setOnClickListener {
@@ -90,6 +100,7 @@ class ProfileFragment : Fragment() {
             showLogoutConfirmationDialog()
         }
     }
+
 
     private fun logoutUser() {
         val sharedPref =

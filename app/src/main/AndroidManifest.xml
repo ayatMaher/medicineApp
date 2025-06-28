@@ -6,7 +6,8 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -53,7 +54,7 @@
             android:name=".LocationActivity"
             android:exported="false" />
         <activity
-            android:name=".AddingPrescriptionActivity"
+            android:name=".SplashActivity"
             android:exported="true" >
 
             <intent-filter>
@@ -82,7 +83,7 @@
             android:name=".CommonQuestionsActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".AddingPrescriptionActivity"
             android:exported="false" />
         <activity
             android:name=".AppEvaluationActivity"
@@ -110,9 +111,6 @@
             android:exported="false" />
 
         <activity
-            android:name=".EditProfile"
-            android:exported="false" />
-        <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
 
@@ -122,11 +120,6 @@
         <activity
             android:name=".SettingActivity"
             android:exported="false" />
-        <activity
-            android:name=".EditProfileActivity"
-            android:exported="false" />
-        <activity android:name=".AddingPrescriptionActivity"
-            android:exported="false"/>
     </application>
 
 </manifest>

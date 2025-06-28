@@ -24,8 +24,8 @@ import com.example.medicineapplication.AppEvaluationActivity
 import com.example.medicineapplication.CommonQuestionsActivity
 import com.example.medicineapplication.EditProfileActivity
 import com.example.medicineapplication.SettingActivity
-//import com.example.medicineapplication.api.ApiClient
-//import com.example.medicineapplication.api.ApiService
+import com.example.medicineapplication.api.ApiClient
+import com.example.medicineapplication.api.ApiService
 import com.example.medicineapplication.model.GenericResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -99,9 +99,10 @@ class ProfileFragment : Fragment() {
             Log.e("Delete Account", "Delete Account")
         }
         binding.logout.setOnClickListener {
-//            showLogoutConfirmationDialog()
+            showLogoutConfirmationDialog()
         }
     }
+
 
     private fun logoutUser() {
         val sharedPref =

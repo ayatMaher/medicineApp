@@ -25,8 +25,6 @@ class SettingActivity : AppCompatActivity() {
         binding.header.titleText.text = "الإعدادات"
 
         binding.header.backButton.setOnClickListener {
-            val intent = Intent(this, ProfileFragment::class.java)
-            startActivity(intent)
             finish()
         }
 

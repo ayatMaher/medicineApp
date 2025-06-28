@@ -36,12 +36,31 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".LocationActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
-            android:exported="false" >
+            android:name=".AddingPrescriptionActivity"
+            android:exported="true" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -60,10 +79,10 @@
             android:name=".LogInActivity"
             android:exported="false" />
         <activity
-            android:name=".CommonQuationsPage"
+            android:name=".CommonQuestionsActivity"
             android:exported="false" />
         <activity
-            android:name=".AddingPrescriptionActivity"
+            android:name=".SplashActivity"
             android:exported="false" />
         <activity
             android:name=".AppEvaluationActivity"
@@ -81,24 +100,19 @@
             android:exported="false" />
         <activity
             android:name=".NavigationDrawerActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.MedicineApplication.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
         <activity
             android:name=".HeaderActivity"
             android:exported="false" />
 
         <activity
-            android:name=".EditProfile"
+            android:name=".EditProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".Notification_item"
-            android:exported="false" />
+
         <activity
             android:name=".NotificationsActivity"
             android:exported="false" />

@@ -28,8 +28,6 @@ class LocationActivity : AppCompatActivity() {
 
         val back_btn=findViewById<ImageView>(R.id.backButton)
         back_btn.setOnClickListener {
-            val intent = Intent(this, ProfileFragment::class.java)
-            startActivity(intent)
             finish()
         }
 

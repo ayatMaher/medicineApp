@@ -46,8 +46,7 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnBack.setOnClickListener {
-            val intent = Intent(this, ProfileFragment::class.java)
-            startActivity(intent)
+            finish()
         }
 
 

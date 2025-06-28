@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medicineapplication.MedicineDetailsActivity
+import com.example.medicineapplication.PharmacyDetailsActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.FavoriteMedicineAdapter
 import com.example.medicineapplication.adapter.FavoritePharmacyAdapter
@@ -221,6 +222,8 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     override fun onItemClickPharmacy(position: Int, id: String) {
         // go to pharmacy details page
+        val intent = Intent(requireContext(), PharmacyDetailsActivity::class.java)
+        startActivity(intent)
     }
 
 }

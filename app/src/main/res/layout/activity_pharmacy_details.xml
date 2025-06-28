@@ -78,7 +78,7 @@
                         android:id="@+id/txt_pharmacy_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="224dp"
+                        android:layout_marginEnd="200dp"
                         android:fontFamily="@font/rubik_medium"
                         android:text="صيدلية الأسرى"
                         android:textColor="@color/black"
@@ -136,7 +136,7 @@
                         android:layout_width="130dp"
                         android:layout_height="36dp"
                         android:gravity="center"
-                        android:layout_marginStart="85dp"
+                        android:layout_marginStart="60dp"
                         android:background="@drawable/btn_background_stroke"
                         android:fontFamily="@font/rubik"
                         android:text="الموقع على الخريطة"
@@ -174,7 +174,7 @@
                         android:id="@+id/btn_rate"
                         android:layout_width="90dp"
                         android:layout_height="35dp"
-                        android:layout_marginStart="160dp"
+                        android:layout_marginStart="145dp"
                         android:background="@drawable/btn_background_profile"
                         android:text="اضغط للتقيم"
                         android:textColor="@color/white" />
@@ -232,10 +232,11 @@
                         <ImageButton
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginStart="150dp"
-                            android:layout_marginTop="17dp"
+                            android:layout_marginStart="140dp"
                             android:contentDescription="BarCode"
                             android:src="@drawable/bar_code"
+                            app:layout_constraintEnd_toEndOf="@id/search_bar"
+                            app:layout_constraintBottom_toBottomOf="@id/search_bar"
                             app:layout_constraintStart_toEndOf="@id/edt_search"
                             app:layout_constraintTop_toTopOf="@id/search_bar" />
 
@@ -255,6 +256,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:layout_gravity="center"
                         android:layout_marginBottom="8dp"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

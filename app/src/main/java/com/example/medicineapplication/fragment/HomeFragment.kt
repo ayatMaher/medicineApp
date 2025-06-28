@@ -2,6 +2,7 @@ package com.example.medicineapplication.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +13,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.medicineapplication.AddingPrescriptionActivity
 import com.example.medicineapplication.MedicineDetailsActivity
+import com.example.medicineapplication.NotificationsActivity
 import com.example.medicineapplication.PharmacyDetailsActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.CategoryAdapter
@@ -64,6 +67,24 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                 putString("page_type", "search")
             }
             findNavController().navigate(R.id.navigation_pharmacies, bundle)
+        }
+        //notification icon
+        binding.notificationIcon.setOnClickListener {
+            val intent = Intent(requireContext(), NotificationsActivity::class.java)
+            startActivity(intent)
+
+        }
+        // join as pharmacy button
+        binding.btnJoin.setOnClickListener {
+            val url = "https://demoapplication.jawebhom.com/where-my-treatment-app"  // ضع هنا رابط الموقع المطلوب
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
+        }
+        // upload Prescription
+        binding.btnUpload.setOnClickListener {
+            val intent = Intent(requireContext(), AddingPrescriptionActivity::class.java)
+            startActivity(intent)
         }
         //Medicine type
         showMedicineType()

@@ -35,6 +35,9 @@ class FavoriteMedicineAdapter(
         holder.binding.medicineImage.setImageResource(item.medicineImage)
         holder.binding.txtMedicineName.text = item.medicineName
         holder.binding.txtMedicinePrice.text = item.price.toString()
+        holder.binding.favoriteImg.setOnClickListener {
+            holder.binding.favoriteImg.setImageResource(R.drawable.favorite)
+        }
         holder.binding.btnPharmacy.setOnClickListener {
             // go to Pharmacy Page
             val bundle = Bundle().apply {

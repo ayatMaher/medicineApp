@@ -17,6 +17,10 @@ import com.example.medicineapplication.LogInActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.FragmentProfileBinding
 import androidx.core.content.edit
+import com.example.medicineapplication.AboutAppActivity
+import com.example.medicineapplication.CommonQuestionsActivity
+import com.example.medicineapplication.EditProfileActivity
+import com.example.medicineapplication.SettingActivity
 import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.api.ApiService
 import com.example.medicineapplication.model.GenericResponse
@@ -53,19 +57,23 @@ class ProfileFragment : Fragment() {
     private fun clickToButton() {
         binding.profileLayout.setOnClickListener {
             //go to profile page
-            Log.e("Profile Page", "Go To Profile Page")
+            val intent= Intent(requireContext(), EditProfileActivity::class.java)
+            startActivity(intent)
         }
         binding.questionLayout.setOnClickListener {
             //go to Question page
-            Log.e("Question Page", "Go To Question Page")
+            val intent= Intent(requireContext(), CommonQuestionsActivity::class.java)
+            startActivity(intent)
         }
         binding.settingLayout.setOnClickListener {
             //go to Setting page
-            Log.e("Setting Page", "Go To Setting Page")
+            val intent= Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
         }
         binding.infoLayout.setOnClickListener {
             //go to Info page
-            Log.e("Info Page", "Go To Info Page")
+            val intent= Intent(requireContext(), AboutAppActivity::class.java)
+            startActivity(intent)
         }
         binding.rateLayout.setOnClickListener {
             //go to rate page
@@ -90,6 +98,7 @@ class ProfileFragment : Fragment() {
             showLogoutConfirmationDialog()
         }
     }
+
 
     private fun logoutUser() {
         val sharedPref =

@@ -29,8 +29,6 @@ class AppEvaluationActivity : AppCompatActivity() {
         binding.header.titleText.text = ""
         // back arrow
         binding.header.backButton.setOnClickListener {
-            val intent = Intent(this, ProfileFragment::class.java)
-            startActivity(intent)
             finish()
         }
 

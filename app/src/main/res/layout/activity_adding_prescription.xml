@@ -9,13 +9,13 @@
 
     <RelativeLayout
         android:id="@+id/header"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:elevation="100dp"
         android:layoutDirection="rtl"
+        android:layout_marginTop="50dp"
         android:paddingTop="8dp"
         android:paddingBottom="16dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -72,6 +72,7 @@
                 android:padding="16dp">
 
                 <LinearLayout
+                    android:id="@+id/icon_add"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"

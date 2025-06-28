@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +24,7 @@ import com.example.medicineapplication.databinding.FragmentHomeBinding
 import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.MedicineType
 import com.example.medicineapplication.model.Pharmacy
+import androidx.core.net.toUri
 
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
@@ -78,7 +78,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
         binding.btnJoin.setOnClickListener {
             val url = "https://demoapplication.jawebhom.com/where-my-treatment-app"  // ضع هنا رابط الموقع المطلوب
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
+            intent.data = url.toUri()
             startActivity(intent)
         }
         // upload Prescription
@@ -193,7 +193,6 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
     override fun onItemClick(position: Int, id: String) {
         //when click to category card
         val categoryName = items[position].nameType
-        Log.e("category", "$categoryName ")
         val bundle = Bundle().apply {
             putString("category_name", categoryName)
             putString("page_type", "medicine_type")

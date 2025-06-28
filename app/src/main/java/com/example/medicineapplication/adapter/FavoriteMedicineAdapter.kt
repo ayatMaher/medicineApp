@@ -41,7 +41,7 @@ class FavoriteMedicineAdapter(
         holder.binding.btnPharmacy.setOnClickListener {
             // go to Pharmacy Page
             val bundle = Bundle().apply {
-                putString("medicine Name", item.medicineName)
+                putString("medicine_name", item.medicineName)
                 putString("page_type", "favorite")
             }
             holder.itemView.findNavController()

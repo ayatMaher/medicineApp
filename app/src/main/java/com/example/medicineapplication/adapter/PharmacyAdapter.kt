@@ -1,7 +1,12 @@
 package com.example.medicineapplication.adapter
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.PharmacyItemBinding
@@ -76,6 +81,21 @@ class PharmacyAdapter(
                 holder.binding.rate.text = item.rate.toString()
                 holder.binding.time.text = item.time
                 holder.binding.distance.text = item.distance.toString()
+                holder.binding.contactWhatsApp.setOnClickListener {
+                    val phoneNumber = "972592754492" // رقم الهاتف بصيغة دولية بدون "+"
+                    val message = "مرحبا، أود الاستفسار من فضلك."
+                    val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
+
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = url.toUri()
+
+                    try {
+                        activity.startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        Toast.makeText(activity, "واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
                 holder.binding.root.setOnClickListener {
                     try {
                         itemClickListener.onItemClickPharmacy(

@@ -1,6 +1,7 @@
 package com.example.medicineapplication
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,7 @@ class MedicineDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityMedicineDetailsBinding
 
     //    var item: ArrayList<Medicine> = ArrayList()
+    @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMedicineDetailsBinding.inflate(layoutInflater)
@@ -30,6 +32,15 @@ class MedicineDetailsActivity : AppCompatActivity() {
         binding.header.backButton.setOnClickListener {
             finish()
         }
+        // show or do not show price of medicine
+        val pharmacyName = intent.getStringExtra("pharmacy_name")
+        if (pharmacyName == null) {
+            binding.priceLayout.visibility = View.GONE
+            binding.line1.visibility = View.GONE
+        } else {
+            binding.priceLayout.visibility = View.VISIBLE
+            binding.line1.visibility = View.VISIBLE
+        }
         showUsage()
 
         // favorite icon
@@ -38,14 +49,10 @@ class MedicineDetailsActivity : AppCompatActivity() {
         }
         // show pharmacy icon
         binding.showPharmacyPage.setOnClickListener {
-//            val fragment = PharmacyFragment()
-//            fragment.arguments = Bundle().apply {
-//                putString("page_type", "pharmacy")
-//            }
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.navigation_pharmacies, fragment)
-//                .addToBackStack(null)
-//                .commit()
+            val medicineName = binding.medicineName.text.toString()
+            val intent = Intent(this, PharmacyActivity::class.java)
+            intent.putExtra("medicine_name", medicineName)
+            startActivity(intent)
         }
         binding.txtUsage.setOnClickListener {
             showUsage()
@@ -67,7 +74,7 @@ class MedicineDetailsActivity : AppCompatActivity() {
         binding.txtLineSideEffect.visibility = View.INVISIBLE
         binding.txtInstructions.setTextColor(ContextCompat.getColor(this, R.color.black))
         binding.txtLineInstructions.visibility = View.INVISIBLE
-        binding.txtTabContent.text =""" 
+        binding.txtTabContent.text = """ 
             1.دعم المناعة وتعزيز مقاومة الجسم للأمراض
             2.تحسين صحة الشعر والبشرة والأظافر
             3.المساهمة في تقوية العظام والأسنان (حسب النوع)

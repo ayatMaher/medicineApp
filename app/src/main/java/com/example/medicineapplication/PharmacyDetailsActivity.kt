@@ -1,6 +1,10 @@
 package com.example.medicineapplication
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,6 +17,7 @@ import com.example.medicineapplication.databinding.ActivityPharmacyDetailsBindin
 import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.User
 import java.time.LocalDate
+import androidx.core.net.toUri
 
 class PharmacyDetailsActivity : AppCompatActivity(), RatingAdapter.ItemClickListener,
     MedicinePharmacyDetailsAdapter.ItemClickListener {
@@ -39,6 +44,21 @@ class PharmacyDetailsActivity : AppCompatActivity(), RatingAdapter.ItemClickList
         //favorite icon
         binding.favoriteImg.setOnClickListener {
             binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+        }
+        // contactWhatsApp
+        binding.contactWhatsApp.setOnClickListener {
+            val phoneNumber = "972592754492" // رقم الهاتف بصيغة دولية بدون "+"
+            val message = "مرحبا، أود الاستفسار من فضلك."
+            val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = url.toUri()
+
+            try {
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this, "واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT).show()
+            }
         }
         //rating comments
         showRatingComments()

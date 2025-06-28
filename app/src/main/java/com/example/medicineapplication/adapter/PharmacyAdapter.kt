@@ -3,6 +3,7 @@ package com.example.medicineapplication.adapter
 import android.app.Activity
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.PharmacyItemBinding
 import com.example.medicineapplication.databinding.PharmacySearchItemBinding
 import com.example.medicineapplication.model.Pharmacy
@@ -54,6 +55,9 @@ class PharmacyAdapter(
                 holder.binding.pharmacyImg.setImageResource(item.pharmacyImage)
                 holder.binding.pharmacyAddress.text = item.pharmacyAddress
                 holder.binding.rate.text = item.rate.toString()
+                holder.binding.favoriteImg.setOnClickListener {
+                    holder.binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+                }
                 holder.binding.root.setOnClickListener {
                     try {
                         itemClickListener.onItemClickPharmacy(

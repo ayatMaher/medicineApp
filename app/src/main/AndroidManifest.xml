@@ -15,6 +15,7 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -99,7 +100,7 @@
         <activity
             android:name=".NavigationDrawerActivity"
             android:exported="false"
-            android:theme="@style/Theme.MedicineApplication.NoActionBar"></activity>
+            android:theme="@style/Theme.MedicineApplication.NoActionBar" />
         <activity
             android:name=".HeaderActivity"
             android:exported="false" />
@@ -112,6 +113,8 @@
         <activity
             android:name=".SettingActivity"
             android:exported="false" />
+
+
     </application>
 
 </manifest>

@@ -29,8 +29,6 @@ class AboutAppActivity : AppCompatActivity() {
         binding.header.titleText.text = "عن التطبيق "
         // back arrow
         binding.header.backButton.setOnClickListener {
-                val intent = Intent(this, ProfileFragment::class.java)
-                startActivity(intent)
                 finish()
         }
 

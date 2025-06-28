@@ -1,17 +1,16 @@
 package com.example.medicineapplication.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.medicineapplication.R
+import com.example.medicineapplication.databinding.ActivityNotificationItemBinding
+import com.example.medicineapplication.databinding.ItemSectionHeaderBinding
 import com.example.medicineapplication.model.NotificationListItem
 
 class NotificationAdapter(
     private val items: List<NotificationListItem>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_ITEM = 1
@@ -24,51 +23,48 @@ class NotificationAdapter(
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_section_header, parent, false)
-            HeaderViewHolder(view)
+            val binding = ItemSectionHeaderBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+            HeaderViewHolder(binding)
         } else {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.activity_notification_item, parent, false)
-            NotificationViewHolder(view)
+            val binding = ActivityNotificationItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+            NotificationViewHolder(binding)
         }
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = items[position]) {
             is NotificationListItem.SectionHeader -> (holder as HeaderViewHolder).bind(item)
             is NotificationListItem.NotificationItem -> (holder as NotificationViewHolder).bind(item)
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
 
-    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val title: TextView = itemView.findViewById(R.id.tv_section_title)
+    class HeaderViewHolder(private val binding: ItemSectionHeaderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NotificationListItem.SectionHeader) {
-            title.text = item.title
+            binding.tvSectionTitle.text = item.title
         }
     }
 
-    class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val message: TextView = itemView.findViewById(R.id.tv_message)
-        private val time: TextView = itemView.findViewById(R.id.tv_time)
-        private val image: ImageView = itemView.findViewById(R.id.img_medicine)
+
+    class NotificationViewHolder(private val binding: ActivityNotificationItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NotificationListItem.NotificationItem) {
-            message.text = item.message
-            time.text = item.time
-            image.setImageResource(item.imageResId)
+            binding.tvMessage.text = item.message
+            binding.tvTime.text = item.time
+            binding.imgMedicine.setImageResource(item.imageResId)
         }
     }
 }

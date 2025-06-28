@@ -4,13 +4,13 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
-    <style name="Widget.Theme.MedicineApplication.ButtonBar.Fullscreen" parent="">
-        <item name="android:background">@color/black_overlay</item>
-        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
-    </style>
+<!--    <style name="Widget.Theme.MedicineApplication.ButtonBar.Fullscreen" parent="">-->
+<!--        <item name="android:background">@color/black_overlay</item>-->
+<!--        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>-->
+<!--    </style>-->
 
-    <style name="CustomRatingBarStyle" parent="Theme.MaterialComponents.Light">
-        <item name="colorControlActivated">#F3AD39</item> <!-- أصفر -->
-        <item name="colorControlNormal">#D7D6D6</item>   <!-- رمادي للنجوم غير المفعّلة -->
-    </style>
+<!--    <style name="CustomRatingBarStyle" parent="Theme.MaterialComponents.Light">-->
+<!--        <item name="colorControlActivated">#F3AD39</item> &lt;!&ndash; أصفر &ndash;&gt;-->
+<!--        <item name="colorControlNormal">#D7D6D6</item>   &lt;!&ndash; رمادي للنجوم غير المفعّلة &ndash;&gt;-->
+<!--    </style>-->
 </resources>

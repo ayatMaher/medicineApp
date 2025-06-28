@@ -7,16 +7,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.medicineapplication.adapter.MedicinePharmacyDetailsAdapter
 import com.example.medicineapplication.adapter.RatingAdapter
-import com.example.medicineapplication.databinding.ActivityMedicineDetailsBinding
 import com.example.medicineapplication.databinding.ActivityPharmacyDetailsBinding
 import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.User
-import java.time.LocalDate
 import androidx.core.net.toUri
 
 class PharmacyDetailsActivity : AppCompatActivity(), RatingAdapter.ItemClickListener,
@@ -57,8 +52,14 @@ class PharmacyDetailsActivity : AppCompatActivity(), RatingAdapter.ItemClickList
             try {
                 startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(this, "واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "واتساب غير مثبت على الجهاز"+e.message, Toast.LENGTH_SHORT).show()
             }
+        }
+
+        // rate the pharmacy
+        binding.btnRate.setOnClickListener {
+            val intent = Intent(this, AppEvaluationActivity::class.java)
+            startActivity(intent)
         }
         //rating comments
         showRatingComments()
@@ -133,6 +134,9 @@ class PharmacyDetailsActivity : AppCompatActivity(), RatingAdapter.ItemClickList
     }
 
     override fun onItemClickMedicine(position: Int, id: String) {
-        TODO("Not yet implemented")
+        val pharmacyName = binding.txtPharmacyName.text.toString()
+        val intent = Intent(this, MedicineDetailsActivity::class.java)
+        intent.putExtra("pharmacy_name", pharmacyName)
+        startActivity(intent)
     }
 }

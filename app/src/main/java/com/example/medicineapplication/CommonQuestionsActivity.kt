@@ -9,6 +9,7 @@ import com.example.medicineapplication.adapter.QuationsAdapter
 import com.example.medicineapplication.databinding.ActivityCommonQuestionsPageBinding
 import com.example.medicineapplication.model.quationItem
 
+@Suppress("DEPRECATION")
 class CommonQuestionsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCommonQuestionsPageBinding
@@ -46,7 +47,7 @@ class CommonQuestionsActivity : AppCompatActivity() {
             )
         )
 
-        
+
         faqAdapter = QuationsAdapter(faqList)
         binding.faqRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.faqRecyclerView.adapter = faqAdapter

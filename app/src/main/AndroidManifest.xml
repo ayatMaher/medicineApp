@@ -11,8 +11,10 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
-
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -25,7 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
-
+        <activity
+            android:name=".PharmacyActivity"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -56,10 +60,8 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -87,7 +89,7 @@
             android:exported="false" />
         <activity
             android:name=".AppEvaluationActivity"
-            android:exported="true"/>
+            android:exported="false"/>
 
         <activity
             android:name=".PharmacyDetailsActivity"
@@ -102,10 +104,7 @@
         <activity
             android:name=".NavigationDrawerActivity"
             android:exported="false"
-            android:theme="@style/Theme.MedicineApplication.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/Theme.MedicineApplication.NoActionBar" />
         <activity
             android:name=".HeaderActivity"
             android:exported="false" />

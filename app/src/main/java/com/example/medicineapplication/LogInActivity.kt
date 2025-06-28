@@ -28,7 +28,7 @@ class LogInActivity : AppCompatActivity() {
         binding = ActivityLogInBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        // إعداد Retrofit
+//         إعداد Retrofit
         apiService = ApiClient.instance.create(ApiService::class.java)
         //statusBar Color
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color_log)

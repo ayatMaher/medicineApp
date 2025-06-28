@@ -1,6 +1,7 @@
 package com.example.medicineapplication
 
 import android.R
+import android.content.Intent
 import android.os.Bundle
 import android.widget.RatingBar
 import android.widget.RatingBar.OnRatingBarChangeListener
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.medicineapplication.databinding.ActivityAppEvaluationBinding
+import com.example.medicineapplication.fragment.ProfileFragment
 
 
 class AppEvaluationActivity : AppCompatActivity() {
@@ -27,6 +29,8 @@ class AppEvaluationActivity : AppCompatActivity() {
         binding.header.titleText.text = ""
         // back arrow
         binding.header.backButton.setOnClickListener {
+            val intent = Intent(this, ProfileFragment::class.java)
+            startActivity(intent)
             finish()
         }
 

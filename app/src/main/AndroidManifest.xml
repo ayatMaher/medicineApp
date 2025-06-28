@@ -2,7 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
+
 
     <application
         android:allowBackup="true"
@@ -15,14 +24,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".LocationActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false" >
+
+
         </activity>
         <activity
             android:name=".ResetPasswordActivity"
@@ -41,6 +67,17 @@
             android:exported="false" />
 
         <activity
+            android:name=".CommonQuationsPage"
+            android:exported="false" />
+        <activity
+            android:name=".AddingPrescriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppEvaluationActivity"
+            android:exported="true"/>
+
+
+        <activity
             android:name=".PharmacyDetailsActivity"
             android:exported="false"
             android:theme="@style/Theme.MedicineApplication" />
@@ -48,11 +85,24 @@
             android:name=".MedicineDetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".AboutAppActivity"
+            android:exported="false" />
+        <activity
             android:name=".NavigationDrawerActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MedicineApplication.NoActionBar" />
+            android:exported="true"
+            android:theme="@style/Theme.MedicineApplication.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".HeaderActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".EditProfile"
             android:exported="false" />
         <activity
             android:name=".Notification_item"

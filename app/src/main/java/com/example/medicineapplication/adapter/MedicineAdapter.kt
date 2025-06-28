@@ -45,7 +45,8 @@ class MedicineAdapter(
             val binding = MedicineItemBinding.inflate(activity.layoutInflater, parent, false)
             ViewHolderHome(binding)
         } else {
-            val binding = CategoryMedicineItemBinding.inflate(activity.layoutInflater, parent, false)
+            val binding =
+                CategoryMedicineItemBinding.inflate(activity.layoutInflater, parent, false)
             ViewHolderCategory(binding)
         }
     }
@@ -57,6 +58,9 @@ class MedicineAdapter(
                 holder.binding.medicineName.text = item.medicineName
                 holder.binding.medicineImg.setImageResource(item.medicineImage)
                 holder.binding.medicineDescription.text = item.description
+                holder.binding.favoriteImg.setOnClickListener {
+                    holder.binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+                }
                 holder.binding.root.setOnClickListener {
                     try {
                         itemClickListener.onItemClickMedicine(
@@ -75,6 +79,9 @@ class MedicineAdapter(
                 holder.binding.categoryImage.setImageResource(item.medicineImage)
                 holder.binding.txtMedicineDescription.text = item.description
                 holder.binding.medicineCard.setCardBackgroundColor(activity.getColor(colorResId))
+                holder.binding.favoriteImg.setOnClickListener {
+                    holder.binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+                }
                 holder.binding.root.setOnClickListener {
                     try {
                         itemClickListener.onItemClickMedicine(

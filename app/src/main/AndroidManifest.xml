@@ -110,6 +110,9 @@
             android:exported="false" />
 
         <activity
+            android:name=".EditProfile"
+            android:exported="false" />
+        <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
 
@@ -119,6 +122,11 @@
         <activity
             android:name=".SettingActivity"
             android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity android:name=".AddingPrescriptionActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

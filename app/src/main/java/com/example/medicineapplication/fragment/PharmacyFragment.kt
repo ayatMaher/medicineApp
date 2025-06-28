@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.medicineapplication.MedicineDetailsActivity
+import com.example.medicineapplication.PharmacyDetailsActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.PharmacyAdapter
 import com.example.medicineapplication.databinding.FragmentPharmacyBinding
@@ -153,6 +154,7 @@ class PharmacyFragment : Fragment(), PharmacyAdapter.ItemClickListener {
     }
 
     override fun onItemClickPharmacy(position: Int, id: String) {
-        findNavController().navigate(R.id.navigation_home)
+        val intent= Intent(requireContext(), PharmacyDetailsActivity::class.java)
+        startActivity(intent)
     }
 }

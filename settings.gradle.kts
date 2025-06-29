@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Medicine Application"
 include(":app")
- 
+
+

@@ -26,10 +26,6 @@ class LocationActivity : AppCompatActivity() {
         // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
-        val back_btn=findViewById<ImageView>(R.id.backButton)
-        back_btn.setOnClickListener {
-            finish()
-        }
 
 
     }

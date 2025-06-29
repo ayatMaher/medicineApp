@@ -53,12 +53,15 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.google.material)
     implementation(libs.androidx.annotation)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     //noinspection UseTomlInstead
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    //noinspection UseTomlInstead
+    implementation (libs.glide)
+    implementation (libs.play.services.location.v2101)
 
 }

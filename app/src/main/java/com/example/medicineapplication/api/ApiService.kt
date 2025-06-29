@@ -57,6 +57,6 @@ interface ApiService {
     @POST("api/auth/logout")
     fun logout(@Header("Authorization") token: String): Call<GenericResponse>
 
-    @GET("api/user")
+    @GET("api/user/current-user")  // أو المسار الصحيح حسب Postman
     fun getCurrentUser(@Header("Authorization") token: String): Call<UserResponse>
 }

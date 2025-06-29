@@ -86,7 +86,7 @@ class LogInActivity : AppCompatActivity() {
                         Toast.makeText(
                             this@LogInActivity,
                             response.body()!!.message,
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         )
                             .show()
                         binding.btnLog.isEnabled = true
@@ -101,7 +101,7 @@ class LogInActivity : AppCompatActivity() {
                         try {
                             val jsonObject = JSONObject(errorBody!!)
                             val errorMessage = jsonObject.getJSONObject("data").getString("error")
-                            Toast.makeText(this@LogInActivity, errorMessage, Toast.LENGTH_LONG)
+                            Toast.makeText(this@LogInActivity, errorMessage, Toast.LENGTH_SHORT)
                                 .show()
                             binding.progressBar.visibility = View.GONE
                             binding.btnLog.isEnabled = true
@@ -129,7 +129,7 @@ class LogInActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
                 binding.btnLog.isEnabled = true
                 binding.btnLog.alpha = 1f
-                Toast.makeText(this@LogInActivity, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@LogInActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }

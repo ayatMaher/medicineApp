@@ -82,7 +82,7 @@ class RegisterActivity : AppCompatActivity() {
                     startActivity(
                         Intent(
                             this@RegisterActivity,
-                            NavigationDrawerActivity::class.java
+                            LocationActivity::class.java
                         )
                     )
                     finish()

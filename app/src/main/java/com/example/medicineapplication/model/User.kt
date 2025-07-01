@@ -31,7 +31,7 @@ data class GenericResponse(
 data class UserResponse(
     val success: Boolean,
     val message: String,
-    val user: User,
+    val data: User,
     val status: String
 )
 

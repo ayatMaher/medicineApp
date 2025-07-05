@@ -38,84 +38,88 @@ class PharmacyActivity : AppCompatActivity(), PharmacyAdapter.ItemClickListener 
     }
 
     private fun showPharmacy() {
-        pharmacy_item.add(
-            Pharmacy(
-                "id",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "النفق_شارع بور سعيد",
-                450.5,
-                "8:00 ص _ 1:00 م",
-                true
-            )
-        )
-        pharmacy_item.add(
-            Pharmacy(
-                "id",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "النفق_شارع بور سعيد",
-                450.5,
-                "8:00 ص _ 1:00 م",
-                true
-            )
-        )
-        pharmacy_item.add(
-            Pharmacy(
-                "id",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "النفق_شارع بور سعيد",
-                450.5,
-                "8:00 ص _ 1:00 م",
-                true
-            )
-        )
-        pharmacy_item.add(
-            Pharmacy(
-                "id",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "النفق_شارع بور سعيد",
-                450.5,
-                "8:00 ص _ 1:00 م",
-                true
-            )
-        )
-        pharmacy_item.add(
-            Pharmacy(
-                "id",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "النفق_شارع بور سعيد",
-                450.5,
-                "8:00 ص _ 1:00 م",
-                true
-            )
-        )
-        pharmacy_item.add(
-            Pharmacy(
-                "id",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "النفق_شارع بور سعيد",
-                450.5,
-                "8:00 ص _ 1:00 م",
-                true
-            )
-        )
-        pharmacyAdapter = PharmacyAdapter(this, pharmacy_item, this)
-        binding.rvPharmacy.adapter = pharmacyAdapter
+//        pharmacy_item.add(
+//            Pharmacy(
+//                "id",
+//                R.drawable.pharmacy2,
+//                "صيدلية الأسرى",
+//                4.5,
+//                "النفق_شارع بور سعيد",
+//                450.5,
+//                "8:00 ص _ 1:00 م",
+//                true
+//            )
+//        )
+//        pharmacy_item.add(
+//            Pharmacy(
+//                "id",
+//                R.drawable.pharmacy2,
+//                "صيدلية الأسرى",
+//                4.5,
+//                "النفق_شارع بور سعيد",
+//                450.5,
+//                "8:00 ص _ 1:00 م",
+//                true
+//            )
+//        )
+//        pharmacy_item.add(
+//            Pharmacy(
+//                "id",
+//                R.drawable.pharmacy2,
+//                "صيدلية الأسرى",
+//                4.5,
+//                "النفق_شارع بور سعيد",
+//                450.5,
+//                "8:00 ص _ 1:00 م",
+//                true
+//            )
+//        )
+//        pharmacy_item.add(
+//            Pharmacy(
+//                "id",
+//                R.drawable.pharmacy2,
+//                "صيدلية الأسرى",
+//                4.5,
+//                "النفق_شارع بور سعيد",
+//                450.5,
+//                "8:00 ص _ 1:00 م",
+//                true
+//            )
+//        )
+//        pharmacy_item.add(
+//            Pharmacy(
+//                "id",
+//                R.drawable.pharmacy2,
+//                "صيدلية الأسرى",
+//                4.5,
+//                "النفق_شارع بور سعيد",
+//                450.5,
+//                "8:00 ص _ 1:00 م",
+//                true
+//            )
+//        )
+//        pharmacy_item.add(
+//            Pharmacy(
+//                "id",
+//                R.drawable.pharmacy2,
+//                "صيدلية الأسرى",
+//                4.5,
+//                "النفق_شارع بور سعيد",
+//                450.5,
+//                "8:00 ص _ 1:00 م",
+//                true
+//            )
+//        )
+//        pharmacyAdapter = PharmacyAdapter(this, pharmacy_item, this)
+//        binding.rvPharmacy.adapter = pharmacyAdapter
     }
 
     override fun onItemClickPharmacy(position: Int, id: String) {
         val intent= Intent(this, PharmacyDetailsActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onAddToFavorite(pharmacyId: Int) {
+
     }
 }

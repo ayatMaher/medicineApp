@@ -3,6 +3,7 @@ package com.example.medicineapplication.adapter
 import android.app.Activity
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.FavoriteMedicineAdapter.ItemClickListener
 import com.example.medicineapplication.databinding.PharmacyFavoriteItemBinding
@@ -30,20 +31,39 @@ class FavoritePharmacyAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.binding.pharmacyImg.setImageResource(item.pharmacyImage)
-        holder.binding.txtPharmacyName.text = item.pharmacyName
-        holder.binding.txtPharmacyLocation.text = item.pharmacyAddress
-        holder.binding.PharmacyRate.text = item.rate.toString()
-        holder.binding.favoriteImg.setOnClickListener {
+
+        // تحميل الصورة من URL باستخدام Glide
+        Glide.with(holder.itemView.context)
+            .load(item.image_pharmacy)
+            .placeholder(R.drawable.new_background)
+            .into(holder.binding.pharmacyImg)
+
+        holder.binding.txtPharmacyName.text = item.name_pharmacy
+        holder.binding.txtPharmacyLocation.text = item.address.formatted_address
+        holder.binding.PharmacyRate.text = item.average_rating.toString()
+
+        // إظهار القلب الأحمر إن كانت الصيدلية مفضلة
+        if (item.is_favorite) {
+            holder.binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+        } else {
             holder.binding.favoriteImg.setImageResource(R.drawable.favorite)
         }
-        holder.binding.deleteFavoritePharmacy.setOnClickListener {
-            //delete pharmacy from favorite
+
+// يمكن لاحقاً استخدام هذا للضغط على الأيقونة وتغيير الحالة
+        holder.binding.favoriteImg.setOnClickListener {
+            // لا يتم تغيير الشكل فقط، بل يجب إرسال الطلب لإزالة من المفضلة (لاحقاً)
         }
+
+
+        holder.binding.deleteFavoritePharmacy.setOnClickListener {
+            // حذف الصيدلية من المفضلة
+        }
+
         holder.binding.root.setOnClickListener {
-            itemClickListener.onItemClickPharmacy(position, item.id)
+            itemClickListener.onItemClickPharmacy(position, item.id.toString())
         }
     }
+
 
     override fun getItemCount(): Int {
         return data.size

@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
@@ -19,9 +21,14 @@ import com.example.medicineapplication.PharmacyDetailsActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.FavoriteMedicineAdapter
 import com.example.medicineapplication.adapter.FavoritePharmacyAdapter
+import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.databinding.FragmentFavoriteBinding
+import com.example.medicineapplication.model.FavoritePharmacyListResponse
 import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.Pharmacy
+import retrofit2.Response
+import retrofit2.Call
+import retrofit2.Callback
 
 @Suppress("DEPRECATION")
 class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
@@ -140,79 +147,48 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     private fun showPharmacy() {
         pharmacy_items.clear()
-        pharmacy_items.add(
-            Pharmacy(
-                "1",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "غزة_التفاح_شارع النفق"
-            )
-        )
-        pharmacy_items.add(
-            Pharmacy(
-                "2",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "غزة_التفاح_شارع النفق"
-            )
-        )
-        pharmacy_items.add(
-            Pharmacy(
-                "3",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "غزة_التفاح_شارع النفق"
-            )
-        )
-        pharmacy_items.add(
-            Pharmacy(
-                "4",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "غزة_التفاح_شارع النفق"
-            )
-        )
-        pharmacy_items.add(
-            Pharmacy(
-                "5",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "غزة_التفاح_شارع النفق"
-            )
-        )
-        pharmacy_items.add(
-            Pharmacy(
-                "6",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "غزة_التفاح_شارع النفق"
-            )
-        )
-        pharmacy_items.add(
-            Pharmacy(
-                "7",
-                R.drawable.pharmacy2,
-                "صيدلية الأسرى",
-                4.5,
-                "غزة_التفاح_شارع النفق"
-            )
-        )
 
-        //visible
-        binding.rvFavoritePharmacy.visibility = View.VISIBLE
-        binding.rvFavoriteMedicine.visibility = View.GONE
+        val sharedPref =
+            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
 
-        favoritePharmacyAdapter = FavoritePharmacyAdapter(requireActivity(), pharmacy_items, this)
-        binding.rvFavoritePharmacy.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.rvFavoritePharmacy.adapter = favoritePharmacyAdapter
+        if (token.isEmpty()) {
+            Toast.makeText(requireContext(), "يرجى تسجيل الدخول", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+        // استدعاء API
+        ApiClient.apiService.getFavoritePharmacies("Bearer $token")
+            .enqueue(object : Callback<FavoritePharmacyListResponse> {
+                override fun onResponse(
+                    call: Call<FavoritePharmacyListResponse>,
+                    response: Response<FavoritePharmacyListResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        val pharmacies = response.body()?.data?.map {
+                            it.pharmacy.copy(is_favorite = true)
+                        } ?: emptyList()
+
+                        pharmacy_items.addAll(pharmacies)
+
+                        // عرض القائمة
+                        binding.rvFavoritePharmacy.visibility = View.VISIBLE
+                        binding.rvFavoriteMedicine.visibility = View.GONE
+
+                        favoritePharmacyAdapter = FavoritePharmacyAdapter(requireActivity(), pharmacy_items, this@FavoriteFragment)
+                        binding.rvFavoritePharmacy.layoutManager = GridLayoutManager(requireContext(), 2)
+                        binding.rvFavoritePharmacy.adapter = favoritePharmacyAdapter
+                    } else {
+                        Toast.makeText(requireContext(), "فشل في جلب المفضلة", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<FavoritePharmacyListResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "خطأ في الاتصال: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
+
 
     override fun onItemClickMedicine(position: Int, id: String) {
         //when click to medicine card
@@ -222,7 +198,9 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     override fun onItemClickPharmacy(position: Int, id: String) {
         // go to pharmacy details page
+        val pharmacy = pharmacy_items[position]
         val intent = Intent(requireContext(), PharmacyDetailsActivity::class.java)
+        intent.putExtra("pharmacy", pharmacy)
         startActivity(intent)
     }
 

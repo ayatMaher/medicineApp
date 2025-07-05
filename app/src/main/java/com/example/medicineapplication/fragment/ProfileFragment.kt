@@ -136,7 +136,8 @@ class ProfileFragment : Fragment() {
     private fun performLogout() {
         val sharedPref =
             requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
-        val token = "Bearer " + sharedPref.getString("ACCESS_TOKEN", "")
+        val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+
         val apiService = ApiClient.instance.create(ApiService::class.java)
 
         apiService.logout(token).enqueue(object : Callback<GenericResponse> {

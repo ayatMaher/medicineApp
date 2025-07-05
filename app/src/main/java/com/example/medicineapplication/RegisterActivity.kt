@@ -71,13 +71,15 @@ class RegisterActivity : AppCompatActivity() {
                 binding.btnCreateAccount.alpha = 1f
                 if (response.isSuccessful && response.body() != null) {
                     val token = response.body()?.data?.accessToken
+                    val id= response.body()?.data?.user?.id
                     Toast.makeText(
                         this@RegisterActivity,
                         response.body()!!.message,
                         Toast.LENGTH_SHORT
                     ).show()
                     val pref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-                    pref.edit { putString("ACCESS_TOKEN", token) }
+                    pref.edit { putString("ACCESS_TOKEN", "Bearer $token") }
+                    pref.edit { putInt("USER_ID", id!!)}
                     binding.btnCreateAccount.isEnabled = true
                     startActivity(
                         Intent(

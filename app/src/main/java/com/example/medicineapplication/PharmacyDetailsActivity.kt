@@ -2,141 +2,142 @@ package com.example.medicineapplication
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.medicineapplication.adapter.MedicinePharmacyDetailsAdapter
 import com.example.medicineapplication.adapter.RatingAdapter
 import com.example.medicineapplication.databinding.ActivityPharmacyDetailsBinding
 import com.example.medicineapplication.model.Medicine
+import com.example.medicineapplication.model.Pharmacy
 import com.example.medicineapplication.model.User
 import androidx.core.net.toUri
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 
-class PharmacyDetailsActivity : AppCompatActivity(), RatingAdapter.ItemClickListener,
+class PharmacyDetailsActivity : AppCompatActivity(),
+    RatingAdapter.ItemClickListener,
     MedicinePharmacyDetailsAdapter.ItemClickListener {
-    lateinit var binding: ActivityPharmacyDetailsBinding
 
-    // rating comments user
-    lateinit var ratingAdapter: RatingAdapter
-    var items: ArrayList<User> = ArrayList()
+    private lateinit var binding: ActivityPharmacyDetailsBinding
+    private lateinit var pharmacy: Pharmacy
 
-    // medicine
-    lateinit var medicinePharmacyDetailsAdapter: MedicinePharmacyDetailsAdapter
-    var medicine_items: ArrayList<Medicine> = ArrayList()
+    private lateinit var ratingAdapter: RatingAdapter
+    private var items: ArrayList<User> = ArrayList()
+
+    private lateinit var medicinePharmacyDetailsAdapter: MedicinePharmacyDetailsAdapter
+    private var medicine_items: ArrayList<Medicine> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPharmacyDetailsBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        // title text
+
+        // ✅ استقبال الكائن بأمان
+        pharmacy = intent.getParcelableExtra("pharmacy") ?: run {
+            Toast.makeText(this, "فشل في تحميل بيانات الصيدلية", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        setupUI()
+        showPharmacyData()
+        showRatingComments()
+        showMedicine()
+    }
+
+    private fun setupUI() {
         binding.header.titleText.text = "تفاصيل الصيدلية"
-        // back arrow
+
         binding.header.backButton.setOnClickListener {
             finish()
         }
-        //favorite icon
+
+        // ✅ عرض الأيقونة حسب حالة is_favorite
+        updateFavoriteIcon(pharmacy.is_favorite)
+
         binding.favoriteImg.setOnClickListener {
-            binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+            // هنا مجرد قلب الشكل محليًا (إن كنت تريد حفظها لاحقًا في السيرفر أضف كود API هنا)
+            pharmacy.is_favorite = !pharmacy.is_favorite
+            updateFavoriteIcon(pharmacy.is_favorite)
         }
-        // contactWhatsApp
+
+
         binding.contactWhatsApp.setOnClickListener {
-            val phoneNumber = "972592754492" // رقم الهاتف بصيغة دولية بدون "+"
+            val phone = pharmacy.phone_number_pharmacy.replace("+", "").replace(" ", "")
             val message = "مرحبا، أود الاستفسار من فضلك."
-            val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
-
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = url.toUri()
-
+            val url = "https://wa.me/$phone?text=${Uri.encode(message)}"
+            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             try {
                 startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(this, "واتساب غير مثبت على الجهاز"+e.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // rate the pharmacy
         binding.btnRate.setOnClickListener {
             val intent = Intent(this, AppEvaluationActivity::class.java)
             startActivity(intent)
         }
-        //rating comments
-        showRatingComments()
-        // medicine in pharmacy
-        showMedicine()
+    }
 
+    private fun updateFavoriteIcon(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+        } else {
+            binding.favoriteImg.setImageResource(R.drawable.favorite) 
+        }
+    }
+
+
+    private fun showPharmacyData() {
+        Glide.with(this)
+            .load(pharmacy.image_pharmacy)
+            .placeholder(R.drawable.new_background)
+            .into(object : CustomTarget<Drawable>() {
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    binding.imgPharmacyLayout.background = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    binding.imgPharmacyLayout.background = placeholder
+                }
+            })
+
+        binding.txtPharmacyName.text = pharmacy.name_pharmacy
+        binding.txtAddress.text = pharmacy.address.formatted_address
+        binding.txtPharmacyDescription.text = pharmacy.description
+
+
+        Log.e("PharmacyData", pharmacy.name_pharmacy + " - " +pharmacy.description+ " - " +pharmacy.address.formatted_address)
     }
 
     private fun showRatingComments() {
         items.clear()
-//        items.add(
-//            User(
-//                "1",
-//                "غيداء جمال ",
-//                R.drawable.user,
-//                "صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة.",
-//                "5 مارس 2025"
-//            )
-//        )
-//        items.add(
-//            User(
-//                "1",
-//                "غيداء جمال ",
-//                R.drawable.user,
-//                "صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة.",
-//                "5 مارس 2025"
-//            )
-//        )
         ratingAdapter = RatingAdapter(this, items, this)
         binding.rvRate.adapter = ratingAdapter
-
     }
 
     private fun showMedicine() {
         medicine_items.clear()
-        medicine_items.add(
-            Medicine(
-                "1",
-                "باندول",
-                R.drawable.medicine_details,
-                80.0,
-                "مسكن الألم وخافض للحرارة ",
-                50.0
-            )
-        )
-        medicine_items.add(
-            Medicine(
-                "1",
-                "باندول",
-                R.drawable.medicine_details,
-                80.0,
-                "مسكن الألم وخافض للحرارة ",
-                50.0
-            )
-        )
-        medicine_items.add(
-            Medicine(
-                "1",
-                "باندول",
-                R.drawable.medicine_details,
-                80.0,
-                "مسكن الألم وخافض للحرارة ",
-                50.0
-            )
-        )
-        medicinePharmacyDetailsAdapter = MedicinePharmacyDetailsAdapter(this, medicine_items, this)
+        medicinePharmacyDetailsAdapter =
+            MedicinePharmacyDetailsAdapter(this, medicine_items, this)
         binding.rvMedicine.adapter = medicinePharmacyDetailsAdapter
     }
 
     override fun onItemClick(position: Int, id: String) {
-        TODO("Not yet implemented")
+        // لم يُستخدم بعد
     }
 
     override fun onItemClickMedicine(position: Int, id: String) {
-        val pharmacyName = binding.txtPharmacyName.text.toString()
         val intent = Intent(this, MedicineDetailsActivity::class.java)
-        intent.putExtra("pharmacy_name", pharmacyName)
+        intent.putExtra("pharmacy_name", pharmacy.name_pharmacy)
         startActivity(intent)
     }
 }

@@ -50,6 +50,12 @@ class LocationActivity : AppCompatActivity() {
             checkLocationSettingsAndPermission()
         }
 
+        binding.chooseLocation.setOnClickListener {
+            var intent= Intent(this, AddAddressActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
 
 
     }

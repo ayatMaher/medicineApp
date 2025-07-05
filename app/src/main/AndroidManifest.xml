@@ -45,7 +45,7 @@
             android:value="AIzaSyBKawgNYb5rpYKP_XNT9_uuEBLWpbczm68" />
 
         <activity
-            android:name=".CurrentLocationActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,8 +64,10 @@
             android:name=".LocationActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
-            android:exported="false"></activity>
+            android:name=".CurrentLocationActivity"
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="false" />

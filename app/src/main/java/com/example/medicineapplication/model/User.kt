@@ -45,3 +45,68 @@ data class User(
     val rateDate: String = "",
     val userComment: String = "",
 )
+
+
+
+data class StoreLocationResponse(
+    val success: Boolean,
+    val message: String,
+    val status: String,
+    val data: LocationData
+)
+
+
+data class LocationData(
+    val id: Int,
+    val user: LocationUser,
+    val latitude: Double,
+    val longitude: Double,
+    val formatted_address: String,
+    val country: String,
+    val region: String,
+    val city: String,
+    val district: String,
+    val postal_code: String,
+    val location_type: String
+)
+
+
+data class LocationUser(
+    val id: Int,
+    val image: String?,  // nullable
+    val name: String,
+    val phone: String,
+    val email: String,
+    val location: LocationDetails
+)
+
+
+data class LocationDetails(
+    val id: Int,
+    val latitude: String, // String في الرد
+    val longitude: String,
+    val formatted_address: String,
+    val country: String,
+    val region: String,
+    val city: String,
+    val district: String,
+    val postal_code: String,
+    val location_type: String
+)
+
+
+
+
+data class StoreLocationRequest(
+    val user_id: Int,
+    val latitude: Double,
+    val longitude: Double,
+    val formatted_address: String,
+    val country: String,
+    val region: String,
+    val city: String,
+    val district: String,
+    val postal_code: String,
+    val location_type: String
+)
+

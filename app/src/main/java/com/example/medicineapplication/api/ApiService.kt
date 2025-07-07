@@ -7,6 +7,7 @@ import com.example.medicineapplication.model.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -14,6 +15,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -74,4 +76,36 @@ interface ApiService {
         @Part("password") password: RequestBody,
         @Part image: MultipartBody.Part?
     ): Call<UserResponse>
+
+    @GET("api/pharmacies/pharmacies-nearest")
+    fun nearbyPharmacies(
+        @Header("Authorization") token: String
+    ): Call<PharmacyResponse>
+
+
+    @POST("api/user/store-location")
+    fun storeUserLocation(
+        @Header("Authorization") token: String,
+        @Body requestBody: StoreLocationRequest
+    ): Call<StoreLocationResponse>
+
+    @GET("api/pharmacies/search-of-treatment-pharmacies-nearest")
+    fun searchTreatmentPharmacyNearby(
+        @Header("Authorization") token: String,
+        @Query("treatment_search") treatmentName: String
+    ): Call<PharmacyResponse>
+
+    @POST("api/pharmacies/store-favorite")
+    fun storeFavorite(
+        @Header("Authorization") token: String,
+        @Body request: FavoritePharmacyRequest
+    ): Call<FavoritePharmacyResponse>
+
+    @GET("api/pharmacies/favorite")
+    fun getFavoritePharmacies(
+        @Header("Authorization") token: String
+    ): Call<FavoritePharmacyListResponse>
+
+
+
 }

@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.kapt")
+    id ("kotlin-android")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -63,8 +66,5 @@ dependencies {
     //noinspection UseTomlInstead
     implementation (libs.glide)
     implementation (libs.play.services.location.v2101)
-    implementation(libs.maps.compose)
-    implementation(libs.play.services.maps)
-    implementation (libs.okhttp)
 
 }

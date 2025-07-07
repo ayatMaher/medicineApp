@@ -81,7 +81,8 @@ class LogInActivity : AppCompatActivity() {
                         val token = responseData.accessToken
                         // save token
                         val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-                        sharedPref.edit { putString("ACCESS_TOKEN", token) }
+                        sharedPref.edit { putString("ACCESS_TOKEN", "Bearer $token") }
+
 
                         Toast.makeText(
                             this@LogInActivity,

@@ -1,11 +1,13 @@
 package com.example.medicineapplication
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,8 +19,14 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.util.*
 
+@Suppress("DEPRECATION")
 class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityCurrentLocationBinding
@@ -27,7 +35,6 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
     private lateinit var geocoder: Geocoder
-
     private var locationMarker: Marker? = null
     private val LOCATION_PERMISSION_CODE = 1001
     private val LOCATION_SETTINGS_REQUEST_CODE = 101
@@ -121,6 +128,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateMapLocation(latLng: LatLng) {
         locationMarker?.remove()
         locationMarker = map.addMarker(
@@ -130,15 +138,43 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         )
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
 
-        val addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-        val addressLine = if (!addressList.isNullOrEmpty()) {
-            addressList[0].getAddressLine(0)
-        } else {
-            "عنوان غير معروف"
-        }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                if (!addressList.isNullOrEmpty()) {
+                    val address = addressList[0]
 
-        binding.address.text = addressLine
+                    val country = address.countryName ?: "غير معروف"
+                    val adminArea = address.adminArea ?: "غير معروف"    // المحافظة أو المنطقة
+                    val city = address.locality ?: "غير معروف"          // المدينة
+                    val district = address.subLocality ?: "غير معروف"   // الحي
+                    val postalCode = address.postalCode ?: "غير معروف"
+                    val fullAddress = address.getAddressLine(0) ?: "غير معروف"
+
+                    withContext(Dispatchers.Main) {
+                        binding.address.text = """
+                        الدولة: $country
+                        المنطقة: $adminArea
+                        المدينة: $city
+                        الحي: $district
+                        الرمز البريدي: $postalCode
+                        العنوان الكامل: $fullAddress
+                    """.trimIndent()
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        binding.address.text = "تعذر العثور على تفاصيل العنوان"
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    binding.address.text = "فشل في جلب العنوان، تحقق من الإنترنت"
+                }
+            }
+        }
     }
+
 
     private fun checkLocationPermission(): Boolean {
         return ActivityCompat.checkSelfPermission(

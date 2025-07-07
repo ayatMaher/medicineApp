@@ -12,14 +12,21 @@ import com.example.medicineapplication.model.StoreLocationRequest
 import com.example.medicineapplication.model.StoreLocationResponse
 import com.example.medicineapplication.model.User
 import com.example.medicineapplication.model.UserResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+
+import retrofit2.http.Part
+
 import retrofit2.http.Query
+
 
 interface ApiService {
 
@@ -70,6 +77,18 @@ interface ApiService {
     @GET("api/user/current-user")  // أو المسار الصحيح حسب Postman
     fun getCurrentUser(@Header("Authorization") token: String): Call<UserResponse>
 
+
+    @Multipart
+    @POST("api/user/update-profile")
+    fun updateUser(
+        @Header("Authorization") token: String,
+        @Part("name") name: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("phone") phone: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part image: MultipartBody.Part?
+    ): Call<UserResponse>
+
     @GET("api/pharmacies/pharmacies-nearest")
     fun nearbyPharmacies(
         @Header("Authorization") token: String
@@ -98,6 +117,7 @@ interface ApiService {
     fun getFavoritePharmacies(
         @Header("Authorization") token: String
     ): Call<FavoritePharmacyListResponse>
+
 
 
 

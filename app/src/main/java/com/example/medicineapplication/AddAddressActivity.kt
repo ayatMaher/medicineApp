@@ -25,6 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
+@Suppress("DEPRECATION")
 class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityAddAddressBinding
@@ -43,6 +44,10 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         // تغيير لون شريط الحالة
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color_log)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
 
         geocoder = Geocoder(this, Locale.getDefault())
 

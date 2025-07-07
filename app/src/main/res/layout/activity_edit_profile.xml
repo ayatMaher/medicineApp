@@ -74,9 +74,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="471dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layoutDirection="rtl"
+            android:paddingBottom="16dp"
             android:paddingHorizontal="16dp"
             android:paddingTop="90dp">
 
@@ -222,6 +223,14 @@
                 android:text="حفظ التعديل"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:progressTint="@color/primary_color"
+                android:visibility="gone"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

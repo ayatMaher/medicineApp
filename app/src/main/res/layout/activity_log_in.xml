@@ -15,7 +15,7 @@
         android:layout_height="82dp"
         android:layout_marginTop="56dp"
         android:background="@drawable/circle"
-        android:src="@drawable/ic_login"
+        android:src="@drawable/ic_log_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

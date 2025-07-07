@@ -4,12 +4,16 @@ import com.example.medicineapplication.model.GenericResponse
 import com.example.medicineapplication.model.LoginResponse
 import com.example.medicineapplication.model.RegisterResponse
 import com.example.medicineapplication.model.UserResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface ApiService {
 
@@ -59,4 +63,15 @@ interface ApiService {
 
     @GET("api/user/current-user")  // أو المسار الصحيح حسب Postman
     fun getCurrentUser(@Header("Authorization") token: String): Call<UserResponse>
+
+    @Multipart
+    @POST("api/user/update-profile")
+    fun updateUser(
+        @Header("Authorization") token: String,
+        @Part("name") name: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("phone") phone: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part image: MultipartBody.Part?
+    ): Call<UserResponse>
 }

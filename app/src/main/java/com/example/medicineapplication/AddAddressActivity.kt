@@ -12,6 +12,7 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import java.util.*
 
+@Suppress("DEPRECATION")
 class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityAddAddressBinding
@@ -31,6 +32,10 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color_log)
         // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
 
         geocoder = Geocoder(this, Locale.getDefault())
 

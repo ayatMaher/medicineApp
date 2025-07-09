@@ -5,16 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.MedicineFavoriteItemBinding
-import com.example.medicineapplication.model.Medicine
 import androidx.navigation.findNavController
+import com.example.medicineapplication.model.FavoriteTreatmentItem
 
 class FavoriteMedicineAdapter(
     private var activity: Activity,
-    var data: ArrayList<Medicine>,
+    var data: ArrayList<FavoriteTreatmentItem>,
     private var itemClickListener: ItemClickListener,
 ) : RecyclerView.Adapter<FavoriteMedicineAdapter.ViewHolder>() {
+
     class ViewHolder(var binding: MedicineFavoriteItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -31,36 +33,42 @@ class FavoriteMedicineAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
-        holder.binding.medicineImage.setImageResource(item.medicineImage)
-        holder.binding.txtMedicineName.text = item.medicineName
-        holder.binding.txtMedicinePrice.text = item.price.toString()
-        holder.binding.favoriteImg.setOnClickListener {
-            holder.binding.favoriteImg.setImageResource(R.drawable.favorite)
-        }
+        val item = data[position].treatment
+
+        // اسم الدواء
+        holder.binding.txtMedicineName.text = item.name
+
+        // تحميل الصورة باستخدام Glide
+        Glide.with(activity)
+            .load(item.image)
+            .placeholder(R.drawable.medicine_img)
+            .into(holder.binding.medicineImage)
+
+        // الذهاب إلى شاشة الصيدليات
         holder.binding.btnPharmacy.setOnClickListener {
-            // go to Pharmacy Page
             val bundle = Bundle().apply {
-                putString("medicine_name", item.medicineName)
+                putString("medicine_name", item.name)
                 putString("page_type", "favorite")
             }
             holder.itemView.findNavController()
                 .navigate(R.id.navigation_pharmacies, bundle)
         }
+
+        // حذف من المفضلة (تنفيذ لاحقًا)
         holder.binding.deleteFavoriteMedicine.setOnClickListener {
-            //delete medicine from image
             Log.e("Delete Medicine", "Medicine Delete")
+            // يمكنك إضافة دالة onDelete هنا لاحقاً
         }
+
+        // الضغط على العنصر نفسه
         holder.binding.root.setOnClickListener {
             try {
-                itemClickListener.onItemClickMedicine(position, item.id)
+                itemClickListener.onItemClickMedicine(position, item.id.toString())
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+    override fun getItemCount(): Int = data.size
 }

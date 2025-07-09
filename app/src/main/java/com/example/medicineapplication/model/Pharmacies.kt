@@ -92,3 +92,52 @@ data class FavoritePharmacyListResponse(
     val message: String,
     val data: List<FavoritePharmacyWrapper>
 )
+
+
+data class StoreRatingResponse(
+    val success: Boolean,
+    val message: String,
+    val data: List<Any>,
+    val status: String
+)
+
+data class StoreRatingRequest(
+    val user_id: Int,
+    val pharmacy_id: Int,
+    val rating: String,
+    val comment: String?,
+)
+
+
+data class MedicineResponse(
+    val success: Boolean,
+    val message: String,
+    val data: List<Medicine>,
+    val status: String
+)
+
+@Parcelize
+data class Medicine(
+    val id: Int,
+    val image: String,
+    val name: String,
+    val description: String,
+    val about_the_medicine: String,
+    val how_to_use: String,
+    val instructions: String,
+    val side_effects: String,
+    val is_favorite: Boolean,
+    val pharmacy_stock: List<PharmacyStock>
+) : Parcelable
+
+
+@Parcelize
+data class PharmacyStock(
+    val id: Int,
+    val price: String,
+    val discount_rate: Int,
+    val price_after_discount: String,
+    val status: String,
+    val quantity: Int,
+    val expiration_date: String
+) : Parcelable

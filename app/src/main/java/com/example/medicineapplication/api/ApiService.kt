@@ -1,17 +1,26 @@
 package com.example.medicineapplication.api
 
-import android.R
+import com.example.medicineapplication.model.FavoriteMedicineRequest
+import com.example.medicineapplication.model.FavoriteMedicineResponse
 import com.example.medicineapplication.model.FavoritePharmacyListResponse
 import com.example.medicineapplication.model.FavoritePharmacyRequest
 import com.example.medicineapplication.model.FavoritePharmacyResponse
+import com.example.medicineapplication.model.FavoriteTreatmentResponse
+import com.example.medicineapplication.model.GeneralResponse
 import com.example.medicineapplication.model.GenericResponse
 import com.example.medicineapplication.model.LoginResponse
+import com.example.medicineapplication.model.MedicineResponse
+import com.example.medicineapplication.model.MedicinesWithCategoryResponse
 import com.example.medicineapplication.model.PharmacyResponse
 import com.example.medicineapplication.model.RegisterResponse
 import com.example.medicineapplication.model.StoreLocationRequest
 import com.example.medicineapplication.model.StoreLocationResponse
-import com.example.medicineapplication.model.User
+import com.example.medicineapplication.model.StoreRatingRequest
+import com.example.medicineapplication.model.StoreRatingResponse
+import com.example.medicineapplication.model.TreatmentsSearchResponse
 import com.example.medicineapplication.model.UserResponse
+import com.example.medicineapplication.model.ViewCategoriesResponse
+import com.example.medicineapplication.model.storeTreatmentAvailbilteRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -118,6 +127,69 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<FavoritePharmacyListResponse>
 
+    @POST("api/pharmacies/store-rating")
+    fun ratingPharmacy(
+        @Header("Authorization") token: String,
+        @Body request:StoreRatingRequest
+    ): Call<StoreRatingResponse>
+
+    @GET("api/pharmacies/search-treatment")
+    fun searchTreatmentOfStock(
+        @Header("Authorization") token: String,
+        @Query("pharmacy_id") pharmacyId: String,
+        @Query("treatment_search") treatmentName: String
+    ): Call<MedicineResponse>
+
+
+    @GET("api/treatments/most-searched-treatment")
+    fun getTopTreatment(
+        @Header("Authorization") token: String
+    ): Call<MedicinesWithCategoryResponse>
+
+
+    @POST("api/treatments/store-favorite")
+    fun  storFavoriteMedicine(
+        @Header("Authorization") token: String,
+        @Body request: FavoriteMedicineRequest
+    ): Call<FavoriteMedicineResponse>
+
+
+    @GET("api/treatments/favorite")
+    fun getFavoriteMedicines(
+        @Header("Authorization") token: String
+    ): Call<FavoriteTreatmentResponse>
+
+
+
+    @GET("api/treatments/search")
+    fun treatmentsSearch(
+        @Header("Authorization") token: String,
+        @Query("category_id") categoryId: String,
+        @Query("treatment_search") treatmentName: String
+    ): Call<TreatmentsSearchResponse>
+
+
+
+    @GET("api/categories")
+    fun viewCategories(
+        @Header("Authorization") token: String
+    ): Call<ViewCategoriesResponse>
+
+
+
+    @POST("api/treatments/store-search-treatment")
+    fun storeSearchTreatment(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: String,
+        @Query("treatment_id") treatmentId: String
+    ): Call<GeneralResponse>
+
+
+    @POST("api/treatments/store-request-treatment-available")
+    fun storeRequestTreatmentAvailbilte(
+        @Header("Authorization") token: String,
+        @Body request: storeTreatmentAvailbilteRequest
+    ): Call<GeneralResponse>
 
 
 

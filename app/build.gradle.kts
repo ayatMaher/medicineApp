@@ -70,8 +70,10 @@ dependencies {
     implementation(libs.play.services.maps)
 
     implementation (libs.okhttp)
+
     // Glide
-    kapt(libs.compiler)
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+
 
 
 }

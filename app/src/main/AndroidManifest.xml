@@ -47,8 +47,20 @@
             android:value="AIzaSyBKawgNYb5rpYKP_XNT9_uuEBLWpbczm68" />
 
         <activity
+
             android:name=".CurrentLocationActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
 
         <activity
             android:name=".AddAddressActivity"
@@ -59,15 +71,6 @@
         <activity
             android:name=".LocationActivity"
             android:exported="false" />
-        <activity
-            android:name=".SplashActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="false" />

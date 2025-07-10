@@ -56,6 +56,7 @@
                 android:autofillHints=""
                 android:background="@null"
                 android:fontFamily="@font/rubik"
+                android:imeOptions="actionSearch"
                 android:hint="ابحث عن دوائك"
                 android:inputType="text"
                 android:textSize="14sp"

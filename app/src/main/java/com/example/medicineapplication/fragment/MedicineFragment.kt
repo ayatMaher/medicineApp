@@ -3,9 +3,14 @@ package com.example.medicineapplication.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
@@ -15,9 +20,19 @@ import com.example.medicineapplication.MedicineDetailsActivity
 import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.CategoryAdapter
 import com.example.medicineapplication.adapter.MedicineAdapter
+import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.databinding.FragmentMedicineBinding
-import com.example.medicineapplication.model.Medicine
-import com.example.medicineapplication.model.MedicineType
+import com.example.medicineapplication.model.Category
+import com.example.medicineapplication.model.FavoriteMedicineRequest
+import com.example.medicineapplication.model.FavoriteMedicineResponse
+import com.example.medicineapplication.model.GeneralResponse
+import com.example.medicineapplication.model.Treatment
+import com.example.medicineapplication.model.TreatmentsSearchResponse
+import com.example.medicineapplication.model.ViewCategoriesResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 @Suppress("DEPRECATION")
 class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
@@ -31,11 +46,20 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
     // category
     private lateinit var categoryAdapter: CategoryAdapter
-    val data = ArrayList<MedicineType>()
+    val data = ArrayList<Category>()
 
     // medicine
     private lateinit var medicineAdapter: MedicineAdapter
-    private val medicineData = ArrayList<Medicine>()
+    private val medicineData = ArrayList<Treatment>()
+
+    private var token: String=" "
+    private var userId: Int=-1
+
+    private var medicineName: String=""
+    private var categoryId: String?=""
+
+    private var selectedCategoryId: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +69,13 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
         _binding = FragmentMedicineBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
+        val sharedPref = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+        userId = sharedPref.getInt("USER_ID", -1)
+
+
         //status bar
         val window = requireActivity().window
         window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white2)
@@ -62,125 +93,206 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
             findNavController().navigate(R.id.action_global_to_firstFragment)
         }
 
+        categoryId = selectedCategoryId ?: arguments?.getString("category_id") ?: ""
+
+        if(categoryId==null){
+            categoryId=""
+        }
+
+        if (token.isNotEmpty()) {
+            if (categoryId?.isNotEmpty()==true&&medicineName.isEmpty()){
+                fetchTreatments(token ,categoryId.toString(),"")
+                Toast.makeText(requireContext(), " أولاً", Toast.LENGTH_SHORT).show()
+            }else if(categoryId?.isNotEmpty()==true&&medicineName.isNotEmpty()){
+                fetchTreatments(token ,categoryId.toString(),medicineName)
+                Toast.makeText(requireContext(), " 1111111111", Toast.LENGTH_SHORT).show()
+            }else if(categoryId==null&&medicineName.isNotEmpty()){
+                fetchTreatments(token ,"",medicineName)
+            }
+        } else {
+            Toast.makeText(requireContext(), "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
+        }
+
+
         //category
         showCategory()
         //medicine
-        showMedicine()
+        setupMedicineRecycler()
+        setupSearchListeners()
         return root
     }
 
+
+    private fun setupSearchListeners() {
+        // الضغط على Enter من الكيبورد
+        binding.edtSearch.setOnEditorActionListener { _: TextView, actionId: Int, event: KeyEvent? ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                performSearch()
+                true
+            } else {
+                false
+            }
+        }
+
+        // الضغط على أيقونة البحث
+        binding.searchImage.setOnClickListener {
+            performSearch()
+        }
+    }
+
+
+    private fun performSearch() {
+        medicineName = binding.edtSearch.text.toString().trim()
+        if (medicineName.isEmpty()) {
+            Toast.makeText(requireContext(), "يرجى إدخال اسم الدواء", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val sharedPref = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+
+
+
+        if (token.isNotEmpty()) {
+            fetchTreatments(token ,categoryId.toString(),medicineName)
+        } else {
+            Toast.makeText(requireContext(), "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun fetchTreatments(token: String, categoryId: String, treatment: String) {
+        ApiClient.apiService.treatmentsSearch(token, categoryId, treatment)
+            .enqueue(object : Callback<TreatmentsSearchResponse> {
+                override fun onResponse(
+                    call: Call<TreatmentsSearchResponse>,
+                    response: Response<TreatmentsSearchResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        val results = response.body()?.data?.filterIsInstance<Treatment>() ?: emptyList()
+                        medicineAdapter.updateData(results)
+
+                        Toast.makeText(requireContext(), "${categoryId},${treatment}تم العثور على نتائج", Toast.LENGTH_SHORT).show()
+                    } else {
+
+                        Toast.makeText(requireContext(), "${categoryId},${treatment} لم يتم العثور على نتائج", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<TreatmentsSearchResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG).show()
+                }
+            })
+    }
+
+
+
     private fun showCategory() {
-        data.add(MedicineType("1", nameType = "أقراص", isFeatured = true))
-        data.add(MedicineType("2", nameType = "شراب", isFeatured = true))
-        data.add(MedicineType("3", nameType = "حقن", isFeatured = true))
-        data.add(MedicineType("4", nameType = "فيتامين", isFeatured = true))
-        data.add(MedicineType("5", nameType = "قطرات", isFeatured = true))
-        data.add(MedicineType("6", nameType = "براهم", isFeatured = true))
-        data.add(MedicineType("7", nameType = "تحاميل", isFeatured = true))
-        data.add(MedicineType("8", nameType = "بخاخ", isFeatured = true))
-        val selectedCategoryName = arguments?.getString("category_name")
-        categoryAdapter = CategoryAdapter(requireActivity(), data, this,selectedCategoryName)
-        binding.rvCategory.adapter = categoryAdapter
+
+        ApiClient.apiService.viewCategories(token)
+            .enqueue(object : Callback<ViewCategoriesResponse> {
+                override fun onResponse(call: Call<ViewCategoriesResponse>, response: Response<ViewCategoriesResponse>) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+
+                        val categories = response.body()?.data ?: emptyList()
+                        val updatedList = categories.map {
+                            it.copy(isFeatured=true)
+                        }
+                        data.addAll(updatedList)
+                        //Toast.makeText(requireContext(), "تم العثور على نتائج الانواع", Toast.LENGTH_SHORT).show()
+                        val selectedCategoryName = arguments?.getString("category_name")
+                        categoryAdapter = CategoryAdapter(requireActivity(), data, this@MedicineFragment,selectedCategoryName)
+                        binding.rvCategory.adapter = categoryAdapter
+                    }else {
+                       // Toast.makeText(requireContext(), " لم يتم العثور على نتائج الانواع", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ViewCategoriesResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG).show()
+                }
+            })
+
     }
 
-    private fun showMedicine() {
-        //medicine
-        medicineData.add(
-            Medicine(
-                "1",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "2",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "3",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "4",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "5",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "6",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "7",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "8",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "9",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
-        medicineData.add(
-            Medicine(
-                "1",
-                "بنادول",
-                R.drawable.medicine_img,
-                description = "مسكن للالم و خافض للحرارة",
-                isFeatured = true
-            )
-        )
 
+    private fun setupMedicineRecycler() {
         medicineAdapter = MedicineAdapter(requireActivity(), medicineData, this)
-        binding.rvCategoryMedicine.layoutManager = GridLayoutManager(requireContext(), 2) //2 column
+        binding.rvCategoryMedicine.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvCategoryMedicine.adapter = medicineAdapter
+    }
+
+    private fun storeSearchTreatment(token: String,userId: String,treatmentId: String){
+        ApiClient.apiService.storeSearchTreatment(token,userId,treatmentId)
+            .enqueue(object : Callback<GeneralResponse> {
+                override fun onResponse(call: Call<GeneralResponse>, response: Response<GeneralResponse>) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+
+                        //val categories = response.body()?.data ?: emptyList()
+                        Toast.makeText(requireContext(), "نجح ${response.body()}", Toast.LENGTH_LONG).show()
+
+                        Log.d("hhh", "نجح ${response.body()}")
+
+                    }else {
+                         Toast.makeText(requireContext(), " لم يتم العثور على نتائج", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG).show()
+                }
+            })
 
     }
+
+
+    private fun addMedicineToFavorite(medicineId: Int) {
+
+        if (token.isEmpty() || userId == -1) {
+            Toast.makeText(requireContext(), "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val request = FavoriteMedicineRequest(userId, medicineId)
+
+        ApiClient.apiService.storFavoriteMedicine( token, request)
+            .enqueue(object : Callback<FavoriteMedicineResponse> {
+                override fun onResponse(
+                    call: Call<FavoriteMedicineResponse>,
+                    response: Response<FavoriteMedicineResponse>
+                ) {
+                    val errorBody = response.errorBody()?.string()
+
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        Toast.makeText(requireContext(), "تمت الإضافة إلى المفضلة", Toast.LENGTH_SHORT).show()
+
+                        // ✅ تحديث حالة isFavorite في القائمة وإبلاغ الـ Adapter
+                        val index = medicineData.indexOfFirst { it.id == medicineId }
+                        if (index != -1) {
+                            medicineData[index].is_favorite = true
+                            medicineAdapter.notifyItemChanged(index)
+                        }
+
+                    } else {
+                        val errorMessage = try {
+                            val json = org.json.JSONObject(errorBody ?: "")
+                            json.optJSONObject("data")?.optString("error") ?: "فشل في الإضافة للمفضلة"
+                        } catch (e: Exception) {
+                            "فشل في الإضافة للمفضلة"
+                        }
+
+                        Log.e("FavoriteError", "Response code: ${response.code()}, Error body: $errorBody")
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<FavoriteMedicineResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "خطأ: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -188,12 +300,35 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
     }
 
     override fun onItemClick(position: Int, id: String) {
-        Log.e("TAG", "onItemClick: ")
+        selectedCategoryId = id
+        Log.d("SelectedCategory", "ID: $selectedCategoryId")
+
+        val categoryName = data[position].name
+        val categoryId = data[position].id
+        val bundle = Bundle().apply {
+            putString("category_name", categoryName)
+            putString("category_id", categoryId.toString())
+            putString("page_type", "medicine_type")
+        }
+        findNavController().navigate(R.id.navigation_medicines, bundle)
     }
 
+
     override fun onItemClickMedicine(position: Int, id: String) {
-        val intent= Intent(requireContext(), MedicineDetailsActivity::class.java)
+
+        storeSearchTreatment(token,userId.toString(),id.toString())
+        Log.d("hhh", "نجح ${id}")
+
+        val treatment = medicineAdapter.data[position]
+        val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
+        intent.putExtra("medicine", treatment)
         startActivity(intent)
+}
+
+
+    override fun onAddMedicineToFavorite(medicineId: Int) {
+        Log.d("DEBUG", "medicineId clicked: $medicineId")
+        addMedicineToFavorite(medicineId)
     }
 
 

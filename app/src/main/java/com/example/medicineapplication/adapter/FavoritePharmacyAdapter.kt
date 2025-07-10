@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.medicineapplication.R
-import com.example.medicineapplication.adapter.FavoriteMedicineAdapter.ItemClickListener
 import com.example.medicineapplication.databinding.PharmacyFavoriteItemBinding
 import com.example.medicineapplication.model.Pharmacy
 

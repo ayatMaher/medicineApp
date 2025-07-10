@@ -26,6 +26,7 @@ import com.example.medicineapplication.AppEvaluationActivity
 import com.example.medicineapplication.CommonQuestionsActivity
 import com.example.medicineapplication.EditProfileActivity
 import com.example.medicineapplication.SettingActivity
+import com.example.medicineapplication.model.DeleteResponse
 import com.example.medicineapplication.model.GenericResponse
 import com.example.medicineapplication.model.UserResponse
 import org.json.JSONObject
@@ -98,11 +99,12 @@ class ProfileFragment : Fragment() {
         }
         binding.deleteAccount.setOnClickListener {
             //delete Account
-            Log.e("Delete Account", "Delete Account")
+            showDeleteAccountDialog()
         }
         binding.logout.setOnClickListener {
             showLogoutConfirmationDialog()
         }
+        loadUserImage()
     }
 
     private fun loadUserImage() {
@@ -119,16 +121,16 @@ class ProfileFragment : Fragment() {
                         response.body()!!.message,
                         Toast.LENGTH_SHORT
                     ).show()
-
-                    Log.e("UserImage", "Image URL: ${user.image}")
+                    //show uaer image
                     user.image?.let {
-                        Glide.with(requireContext())
+                        Glide.with(this@ProfileFragment)
                             .load(it)
                             .placeholder(R.drawable.user)
                             .into(binding.profileImage)
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
+
                     if (errorBody != null && errorBody.trim().startsWith("{")) {
                         try {
                             val json = JSONObject(errorBody)
@@ -140,11 +142,14 @@ class ProfileFragment : Fragment() {
                             ).show()
 
                             if (errorMessage.contains("غير مصرح")) {
+                                // 🧹 حذف التوكن
                                 val sharedPref = requireActivity().getSharedPreferences(
                                     "MyAppPrefs",
                                     MODE_PRIVATE
                                 )
                                 sharedPref.edit { clear() }
+
+                                // 🔁 إعادة التوجيه إلى تسجيل الدخول
                                 val intent =
                                     Intent(requireContext(), LogInActivity::class.java)
                                 intent.flags =
@@ -152,6 +157,7 @@ class ProfileFragment : Fragment() {
                                 startActivity(intent)
                                 requireActivity().finish()
                             }
+
                         } catch (e: Exception) {
                             Toast.makeText(
                                 requireContext(),
@@ -213,10 +219,8 @@ class ProfileFragment : Fragment() {
 
     private fun performLogout() {
         val sharedPref =
-
-            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+            requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
-
 
         val apiService = ApiClient.instance.create(ApiService::class.java)
 
@@ -239,5 +243,66 @@ class ProfileFragment : Fragment() {
             }
         })
     }
+
+    private fun deleteAccount() {
+        val sharedPref =
+            requireActivity().getSharedPreferences("MyAppPrefs",MODE_PRIVATE)
+        val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+
+        if (token.isEmpty()) {
+            Toast.makeText(requireContext(), "المستخدم غير مسجل الدخول", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val bearerToken = if (token.startsWith("Bearer ")) token else "Bearer $token"
+        val apiService = ApiClient.instance.create(ApiService::class.java)
+        val userId = sharedPref.getInt("USER_ID", -1)
+        Log.e("user id ", userId.toString())
+        Log.e("bearerToken", bearerToken)
+
+        if (userId == -1) {
+            Toast.makeText(requireContext(), "معرف المستخدم غير موجود", Toast.LENGTH_SHORT).show()
+            return
+        }
+        apiService.deleteAccount(bearerToken, userId).enqueue(object : Callback<DeleteResponse> {
+            override fun onResponse(
+                call: Call<DeleteResponse>,
+                response: Response<DeleteResponse>
+            ) {
+                Log.e("response", response.toString())
+                if (response.isSuccessful && response.body()?.success == true) {
+                    Toast.makeText(requireContext(), response.body()!!.message, Toast.LENGTH_SHORT)
+                        .show()
+
+                    // 🧹 حذف التوكن والانتقال لتسجيل الدخول
+                    sharedPref.edit { clear() }
+                    val intent = Intent(requireContext(), LogInActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    requireActivity().finish()
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("delete_error_body", errorBody ?: "no error body")
+                }
+            }
+
+            override fun onFailure(call: Call<DeleteResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "خطأ في الاتصال: ${t.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
+
+    private fun showDeleteAccountDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("❗ تأكيد حذف الحساب")
+            .setMessage("هل أنت متأكد أنك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.")
+            .setPositiveButton("نعم") { _, _ ->
+                deleteAccount()
+            }
+            .setNegativeButton("إلغاء", null)
+            .show()
+    }
+
 
 }

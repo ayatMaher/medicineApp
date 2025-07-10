@@ -47,7 +47,6 @@
             android:value="AIzaSyBKawgNYb5rpYKP_XNT9_uuEBLWpbczm68" />
 
         <activity
-
             android:name=".CurrentLocationActivity"
             android:exported="false" />
 
@@ -62,6 +61,7 @@
         </activity>
 
 
+
         <activity
             android:name=".AddAddressActivity"
             android:exported="false" />
@@ -71,7 +71,10 @@
         <activity
             android:name=".LocationActivity"
             android:exported="false" />
+       
         <activity
+
+
             android:name=".ResetPasswordActivity"
             android:exported="false" />
         <activity

@@ -1,5 +1,9 @@
 package com.example.medicineapplication
 
+
+//noinspection SuspiciousImport
+import android.R
+
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -9,12 +13,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.databinding.ActivityAppEvaluationBinding
+
 import com.example.medicineapplication.model.StoreRatingRequest
 import com.example.medicineapplication.model.StoreRatingResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
+@Suppress("DEPRECATION")
 class AppEvaluationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppEvaluationBinding
@@ -37,6 +44,14 @@ class AppEvaluationActivity : AppCompatActivity() {
             finish()
         }
 
+        val ratingBar = binding.ratingBar
+        ratingBar.onRatingBarChangeListener = object : OnRatingBarChangeListener {
+            override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
+                Toast.makeText(applicationContext, "Rating: $rating", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
         // جلب البيانات من SharedPreferences
         val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
@@ -54,6 +69,7 @@ class AppEvaluationActivity : AppCompatActivity() {
                 Toast.makeText(this, "معلومات المستخدم أو الصيدلية غير صحيحة", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
 
 
 

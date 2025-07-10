@@ -2,7 +2,6 @@ package com.example.medicineapplication.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -41,9 +40,11 @@ import com.example.medicineapplication.model.PharmacyResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 import com.example.medicineapplication.model.Treatment
 import com.example.medicineapplication.model.ViewCategoriesResponse
 import kotlin.math.log
+
 
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
@@ -237,7 +238,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                             val json = org.json.JSONObject(errorBody ?: "")
                             json.optJSONObject("data")?.optString("error") ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
-                            "فشل في الإضافة للمفضلة"
+                            e.message
                         }
 
                         Log.e("FavoriteError", "Response code: ${response.code()}, Error body: $errorBody")

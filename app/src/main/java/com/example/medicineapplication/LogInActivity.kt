@@ -2,6 +2,7 @@ package com.example.medicineapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -79,10 +80,16 @@ class LogInActivity : AppCompatActivity() {
                     val responseData = response.body()?.data
                     if (responseData != null) {
                         val token = responseData.accessToken
+                        val userId=responseData.user.id
+
                         // save token
                         val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-                        sharedPref.edit { putString("ACCESS_TOKEN", "Bearer $token") }
-
+                        sharedPref.edit {
+                            putString("ACCESS_TOKEN", token)
+                            putInt("USER_ID", userId)
+                            apply()
+                        }
+                        Log.e("LOGIN_TOKEN", "Saved token: $token")
 
                         Toast.makeText(
                             this@LogInActivity,

@@ -14,7 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.medicineapplication.databinding.ActivityNavigationDrawerBinding
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.navigationrail.NavigationRailView
 
 @Suppress("DEPRECATION")
 class NavigationDrawerActivity : AppCompatActivity(),

@@ -51,6 +51,7 @@
             android:name=".CurrentLocationActivity"
             android:exported="false" />
 
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -70,9 +71,6 @@
         <activity
             android:name=".LocationActivity"
             android:exported="false" />
-        <activity
-
-        </activity>
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="false" />

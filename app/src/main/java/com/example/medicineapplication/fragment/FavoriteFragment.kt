@@ -24,6 +24,8 @@ import com.example.medicineapplication.adapter.FavoritePharmacyAdapter
 import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.databinding.FragmentFavoriteBinding
 import com.example.medicineapplication.model.FavoritePharmacyListResponse
+import com.example.medicineapplication.model.FavoriteTreatmentItem
+import com.example.medicineapplication.model.FavoriteTreatmentResponse
 import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.Pharmacy
 import retrofit2.Response
@@ -38,7 +40,9 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     // medicine
     lateinit var favoriteMedicineAdapter: FavoriteMedicineAdapter
-    private var medicine_items: ArrayList<Medicine> = ArrayList()
+    private var medicine_items: ArrayList<FavoriteTreatmentItem> = ArrayList()
+
+    private var token: String=""
 
     //pharmacy
     lateinit var favoritePharmacyAdapter: FavoritePharmacyAdapter
@@ -50,6 +54,12 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
     ): View {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
+        val sharedPref =
+            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+
         //statusBar Color
         val window = requireActivity().window
         window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
@@ -129,28 +139,45 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     private fun showMedicine() {
         medicine_items.clear()
-        medicine_items.add(Medicine("1", "بنادول", R.drawable.medicine_img, 50.0))
-        medicine_items.add(Medicine("2", "بنادول", R.drawable.medicine_img, 150.0))
-        medicine_items.add(Medicine("3", "بنادول", R.drawable.medicine_img, 500.0))
-        medicine_items.add(Medicine("4", "بنادول", R.drawable.medicine_img, 160.0))
-        medicine_items.add(Medicine("5", "بنادول", R.drawable.medicine_img, 200.0))
-        medicine_items.add(Medicine("6", "بنادول", R.drawable.medicine_img, 40.0))
 
-        //visible
-        binding.rvFavoriteMedicine.visibility = View.VISIBLE
-        binding.rvFavoritePharmacy.visibility = View.GONE
+        if (token.isEmpty()) {
+            Toast.makeText(requireContext(), "يرجى تسجيل الدخول", Toast.LENGTH_SHORT).show()
+            return
+        }
+        ApiClient.apiService.getFavoriteMedicines("Bearer $token")
+            .enqueue(object : Callback<FavoriteTreatmentResponse> {
+                override fun onResponse(
+                    call: Call<FavoriteTreatmentResponse>,
+                    response: Response<FavoriteTreatmentResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        val favorites = response.body()?.data ?: emptyList()
 
-        favoriteMedicineAdapter = FavoriteMedicineAdapter(requireActivity(), medicine_items, this)
-        binding.rvFavoriteMedicine.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.rvFavoriteMedicine.adapter = favoriteMedicineAdapter
+                        medicine_items.clear()
+                        medicine_items.addAll(favorites)
+
+                        favoriteMedicineAdapter = FavoriteMedicineAdapter(requireActivity(), medicine_items, this@FavoriteFragment)
+                        binding.rvFavoriteMedicine.layoutManager = GridLayoutManager(requireContext(), 2)
+                        binding.rvFavoriteMedicine.adapter = favoriteMedicineAdapter
+
+                        binding.rvFavoriteMedicine.visibility = View.VISIBLE
+                        binding.rvFavoritePharmacy.visibility = View.GONE
+                    } else {
+                        Toast.makeText(requireContext(), "فشل في جلب الأدوية المفضلة", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<FavoriteTreatmentResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
+
+
+
 
     private fun showPharmacy() {
         pharmacy_items.clear()
-
-        val sharedPref =
-            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
-        val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
 
         if (token.isEmpty()) {
             Toast.makeText(requireContext(), "يرجى تسجيل الدخول", Toast.LENGTH_SHORT).show()
@@ -158,7 +185,7 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
         }
 
         // استدعاء API
-        ApiClient.apiService.getFavoritePharmacies("Bearer $token")
+        ApiClient.apiService.getFavoritePharmacies(token)
             .enqueue(object : Callback<FavoritePharmacyListResponse> {
                 override fun onResponse(
                     call: Call<FavoritePharmacyListResponse>,
@@ -192,7 +219,9 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     override fun onItemClickMedicine(position: Int, id: String) {
         //when click to medicine card
+        val medicine=medicine_items[position]
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
+        intent.putExtra("medicine", medicine)
         startActivity(intent)
     }
 

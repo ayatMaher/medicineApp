@@ -1,6 +1,7 @@
 package com.example.medicineapplication.model
 
 import com.google.gson.annotations.SerializedName
+import java.sql.Array
 
 
 data class LoginResponse(
@@ -109,4 +110,6 @@ data class StoreLocationRequest(
     val postal_code: String,
     val location_type: String
 )
+
+
 

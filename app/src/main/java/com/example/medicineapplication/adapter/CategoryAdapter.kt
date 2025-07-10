@@ -6,19 +6,42 @@ import android.graphics.Color
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.CategoryItemsBinding
 import com.example.medicineapplication.databinding.MedicineTypeBinding
+import com.example.medicineapplication.model.Category
 import com.example.medicineapplication.model.MedicineType
 
 class CategoryAdapter(
     private var activity: Activity,
-    var data: ArrayList<MedicineType>,
+    var data: ArrayList<Category>,
     private var itemClickListener: ItemClickListener,
     private val selectedName: String? = null
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val backgroundColor = listOf(
+        R.color.light_blue,
+        R.color.yellow_green,
+        R.color.dark_orange,
+        R.color.light_yellow,
+        R.color.purple,
+        R.color.orange,
+        R.color.green,
+        R.color.gray
+    )
+
     private var selectedPosition = -1
+
+    init {
+        selectedName?.let { name ->
+            val initialIndex = data.indexOfFirst { it.name == name }
+            if (initialIndex != -1) {
+                selectedPosition = initialIndex
+            }
+        }
+    }
 
     companion object {
         private const val TYPE_HOME = 0
@@ -36,7 +59,7 @@ class CategoryAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (data[position].isFeatured) TYPE_CATEGORY else TYPE_HOME
+        return if (data[position].isFeatured==true) TYPE_CATEGORY else TYPE_HOME
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -59,95 +82,30 @@ class CategoryAdapter(
 
         when (holder) {
             is ViewHolderCategoryHome -> {
-                holder.binding.txtName.text = item.nameType
-                holder.binding.imgType.setImageResource(item.imageType)
+                holder.binding.txtName.text = item.name
+                Glide.with(activity)
+                    .load(item.image)
+                    .into(holder.binding.imgType)
                 holder.binding.root.setOnClickListener {
                     try {
-                        itemClickListener.onItemClick(position, item.id)
+                        itemClickListener.onItemClick(position, item.id.toString())
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
-                when (position) {
-                    0 -> {
-                        holder.binding.medicineLayout.setBackgroundColor(
-                            ContextCompat.getColor(
-                                activity,
-                                R.color.light_blue
-                            )
-                        )
-                    }
 
-                    1 -> {
-                        holder.binding.medicineLayout.setBackgroundColor(
-                            ContextCompat.getColor(
-                                activity,
-                                R.color.yellow_green
-                            )
-                        )
-                    }
 
-                    2 -> {
-                        holder.binding.medicineLayout.setBackgroundColor(
-                            ContextCompat.getColor(
-                                activity,
-                                R.color.dark_orange
-                            )
-                        )
-                    }
+                val colorResId = backgroundColor[position % backgroundColor.size]
+                holder.binding.medicineLayout.setBackgroundColor(activity.getColor(colorResId))
 
-                    3 -> {
-                        holder.binding.medicineLayout.setBackgroundColor(
-                            ContextCompat.getColor(
-                                activity,
-                                R.color.light_yellow
-                            )
-                        )
-                    }
-
-                    4 -> {
-                        holder.binding.medicineLayout.setBackgroundColor(
-                            ContextCompat.getColor(
-                                activity,
-                                R.color.purple
-                            )
-                        )
-                    }
-
-                    5 -> {
-                        holder.binding.medicineLayout.setBackgroundColor(
-                            ContextCompat.getColor(
-                                activity,
-                                R.color.orange
-                            )
-                        )
-                    }
-
-                    6 -> {
-                        holder.binding.medicineLayout.setBackgroundColor(
-                            ContextCompat.getColor(
-                                activity,
-                                R.color.green
-                            )
-                        )
-                    }
-
-                    7 -> {
-                        holder.binding.medicineLayout.setBackgroundColor(
-                            ContextCompat.getColor(
-                                activity,
-                                R.color.gray
-                            )
-                        )
-                    }
-                }
             }
 
             is ViewHolderCategoryActivity -> {
-                // تمييز العنصر إذا تطابق الاسم
-                val isSelected = item.nameType == selectedName
-                holder.binding.root.isSelected = isSelected
-                if ( isSelected) {
+
+                holder.binding.txtCategory.text = item.name
+
+                val isSelected = position == selectedPosition
+                if (isSelected) {
                     holder.binding.categoryItem.background =
                         ContextCompat.getDrawable(activity, R.drawable.category_click)
                     holder.binding.txtCategory.setTextColor(Color.WHITE)
@@ -156,18 +114,19 @@ class CategoryAdapter(
                         ContextCompat.getDrawable(activity, R.drawable.category)
                     holder.binding.txtCategory.setTextColor(Color.BLACK)
                 }
-                holder.binding.txtCategory.text = item.nameType
+
                 holder.binding.root.setOnClickListener {
                     try {
                         val previousPosition = selectedPosition
                         selectedPosition = position
                         notifyItemChanged(previousPosition)
                         notifyItemChanged(selectedPosition)
-                        itemClickListener.onItemClick(position, item.id)
+                        itemClickListener.onItemClick(position, item.id.toString())
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
+
             }
         }
 

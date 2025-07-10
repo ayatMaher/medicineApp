@@ -51,15 +51,6 @@
             android:exported="false" />
 
         <activity
-            android:name=".AddAddressActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PharmacyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LocationActivity"
-            android:exported="false" />
-        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -68,7 +59,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
         <activity
+            android:name=".AddAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PharmacyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocationActivity"
+            android:exported="false" />
+       
+        <activity
+
+
             android:name=".ResetPasswordActivity"
             android:exported="false" />
         <activity

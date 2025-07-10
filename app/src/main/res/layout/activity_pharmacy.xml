@@ -58,6 +58,7 @@
                 android:fontFamily="@font/rubik"
                 android:hint="ابحث عن دوائك"
                 android:inputType="text"
+                android:imeOptions="actionSearch"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@id/search_image"
                 app:layout_constraintTop_toTopOf="@id/search_bar" />

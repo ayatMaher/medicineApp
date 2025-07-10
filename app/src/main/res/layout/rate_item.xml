@@ -54,48 +54,86 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-<!--        <RatingBar-->
-<!--            android:id="@+id/ratingBar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:isIndicator="true"-->
-<!--            android:layoutDirection="ltr"-->
-<!--            android:numStars="5"-->
-<!--            android:rating="4"-->
-<!--            android:scaleX="0.3"-->
-<!--            android:scaleY="0.3"-->
-<!--            android:stepSize="1"-->
-<!--            android:theme="@style/CustomRatingBar" />-->
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/btn_rate"-->
-<!--            android:layout_width="90dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:layout_marginStart="160dp"-->
-<!--            android:background="@drawable/back"-->
-<!--            android:backgroundTint="#fef0e2"-->
-<!--            android:text="4.0"-->
-<!--            android:textColor="@color/black" />-->
+        <!--        <RatingBar-->
+        <!--            android:id="@+id/ratingBar"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:isIndicator="true"-->
+        <!--            android:layoutDirection="ltr"-->
+        <!--            android:numStars="5"-->
+        <!--            android:rating="4"-->
+        <!--            android:scaleX="0.3"-->
+        <!--            android:scaleY="0.3"-->
+        <!--            android:stepSize="1"-->
+        <!--            android:theme="@style/CustomRatingBar" />-->
+        <!--        <androidx.appcompat.widget.AppCompatButton-->
+        <!--            android:id="@+id/btn_rate"-->
+        <!--            android:layout_width="90dp"-->
+        <!--            android:layout_height="35dp"-->
+        <!--            android:layout_marginStart="160dp"-->
+        <!--            android:background="@drawable/back"-->
+        <!--            android:backgroundTint="#fef0e2"-->
+        <!--            android:text="4.0"-->
+        <!--            android:textColor="@color/black" />-->
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
             android:layout_gravity="center"
+            android:layout_marginStart="60dp"
             android:gravity="center"
-            android:padding="10dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/star"/>
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/starsContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/star1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="2dp"
+                    android:src="@drawable/star" />
+
+                <ImageView
+                    android:id="@+id/star2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="2dp"
+                    android:src="@drawable/star" />
+
+                <ImageView
+                    android:id="@+id/star3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="2dp"
+                    android:src="@drawable/star" />
+
+                <ImageView
+                    android:id="@+id/star4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="2dp"
+                    android:src="@drawable/star" />
+
+                <ImageView
+                    android:id="@+id/star5"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/star" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/txtRate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="5dp"
                 android:fontFamily="@font/rubik_bold"
                 android:text="4.0"
-                android:layout_marginEnd="5dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -108,11 +146,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/rubik"
         android:text="صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة."
         android:textColor="#801C1A1A"
         android:textSize="14sp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout" />

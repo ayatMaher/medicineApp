@@ -2,6 +2,7 @@ package com.example.medicineapplication.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.PharmacyAdapter
 import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.databinding.FragmentPharmacyBinding
+import com.example.medicineapplication.model.GeneralResponse
 import com.example.medicineapplication.model.Pharmacy
 import com.example.medicineapplication.model.PharmacyResponse
 import retrofit2.Call
@@ -38,6 +40,8 @@ class PharmacyFragment : Fragment(), PharmacyAdapter.ItemClickListener {
 
     private val pharmacyList = MutableLiveData<List<Pharmacy>>()
     private val error = MutableLiveData<String>()
+    private var token: String=""
+    private var userId: Int=-1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +59,12 @@ class PharmacyFragment : Fragment(), PharmacyAdapter.ItemClickListener {
         val pageType = arguments?.getString("page_type")
         binding.backArrow.visibility =
             if (pageType == "search" || pageType == "favorite" || pageType == "pharmacy") View.VISIBLE else View.GONE
+
+
+        val sharedPref = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+        userId = sharedPref.getInt("USER_ID", -1)
+
 
         binding.backArrow.setOnClickListener {
             when (pageType) {
@@ -105,8 +115,7 @@ class PharmacyFragment : Fragment(), PharmacyAdapter.ItemClickListener {
             return
         }
 
-        val sharedPref = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
-        val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+
 
         if (token.isNotEmpty()) {
             fetchPharmaciesNearby(token, medicineName)

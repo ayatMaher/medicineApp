@@ -12,6 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.medicineapplication.databinding.ActivityLocationBinding
 import android.Manifest
+import android.content.Context
+import android.location.LocationManager
+import android.provider.Settings
 
 @Suppress("DEPRECATION")
 class LocationActivity : AppCompatActivity() {
@@ -44,7 +47,7 @@ class LocationActivity : AppCompatActivity() {
             checkLocationSettingsAndPermission()
         }
 
-        binding.chooseLocation.setOnClickListener {
+        binding.btnChooseLocation.setOnClickListener {
             var intent= Intent(this, AddAddressActivity::class.java)
             startActivity(intent)
             finish()

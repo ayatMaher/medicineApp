@@ -40,6 +40,29 @@ class LocationActivity : AppCompatActivity() {
 
 
         binding.btnCurrentLocation.setOnClickListener {
+
+            checkLocationSettingsAndPermission()
+        }
+
+        binding.chooseLocation.setOnClickListener {
+            var intent= Intent(this, AddAddressActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+
+
+    }
+    private fun checkLocationSettingsAndPermission() {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        if (!isGpsEnabled) {
+            // فتح إعدادات الموقع
+            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        } else {
+            // طلب إذن الوصول للموقع
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
             ) {

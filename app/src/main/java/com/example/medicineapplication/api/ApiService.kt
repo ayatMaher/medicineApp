@@ -13,7 +13,6 @@ import com.example.medicineapplication.model.StoreLocationResponse
 import com.example.medicineapplication.model.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -70,7 +69,6 @@ interface ApiService {
         @Field("password") password: String,
         @Field("password_confirmation") passwordConfirmation: String
     ): Call<GenericResponse>
-
     @POST("api/auth/logout")
     fun logout(@Header("Authorization") token: String): Call<GenericResponse>
 

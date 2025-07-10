@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
@@ -55,7 +54,7 @@ class ProfileFragment : Fragment() {
 
         // click
         clickToButton()
-
+        loadUserImage()
         return root
     }
 
@@ -107,38 +106,6 @@ class ProfileFragment : Fragment() {
         loadUserImage()
     }
 
-
-    private fun logoutUser() {
-        val sharedPref =
-            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
-        sharedPref.edit { clear() }
-
-        val intent = Intent(requireContext(), LogInActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-
-        requireActivity().finish() // ← مهم لمنع الرجوع من الزر الخلفي
-    }
-
-    private fun showLogoutConfirmationDialog() {
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("تأكيد تسجيل الخروج")
-            .setMessage("هل أنت متأكد أنك تريد تسجيل الخروج؟")
-            .setPositiveButton("نعم") { _, _ ->
-                performLogout()
-            }
-            .setNegativeButton("إلغاء", null)
-            .create()
-        dialog.show()
-
-        // تغيير لون أزرار الحوار بعد إظهاره
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-
-    }
-
     private fun loadUserImage() {
         val sharedPref = requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val token = "Bearer " + sharedPref.getString("ACCESS_TOKEN", "")
@@ -167,7 +134,6 @@ class ProfileFragment : Fragment() {
                         try {
                             val json = JSONObject(errorBody)
                             val errorMessage = json.optString("message", "حدث خطأ")
-
                             Toast.makeText(
                                 requireContext(),
                                 errorMessage,
@@ -218,9 +184,41 @@ class ProfileFragment : Fragment() {
         })
     }
 
+
+    private fun logoutUser() {
+        val sharedPref =
+            requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        sharedPref.edit { clear() }
+
+        val intent = Intent(requireContext(), LogInActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
+        requireActivity().finish() // ← مهم لمنع الرجوع من الزر الخلفي
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("تأكيد تسجيل الخروج")
+            .setMessage("هل أنت متأكد أنك تريد تسجيل الخروج؟")
+            .setPositiveButton("نعم") { _, _ ->
+                performLogout()
+            }
+            .setNegativeButton("إلغاء", null)
+            .create()
+        dialog.show()
+
+        // تغيير لون أزرار الحوار بعد إظهاره
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+
+    }
+
     private fun performLogout() {
         val sharedPref =
-            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+            requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
 
         val apiService = ApiClient.instance.create(ApiService::class.java)

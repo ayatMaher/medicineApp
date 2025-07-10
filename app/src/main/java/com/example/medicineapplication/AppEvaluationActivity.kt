@@ -1,7 +1,7 @@
 package com.example.medicineapplication
 
+//noinspection SuspiciousImport
 import android.R
-import android.content.Intent
 import android.os.Bundle
 import android.widget.RatingBar
 import android.widget.RatingBar.OnRatingBarChangeListener
@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.medicineapplication.databinding.ActivityAppEvaluationBinding
-import com.example.medicineapplication.fragment.ProfileFragment
 
 
+@Suppress("DEPRECATION")
 class AppEvaluationActivity : AppCompatActivity() {
     lateinit var binding: ActivityAppEvaluationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +33,12 @@ class AppEvaluationActivity : AppCompatActivity() {
         }
 
         val ratingBar = binding.ratingBar
-        ratingBar.setOnRatingBarChangeListener(object : OnRatingBarChangeListener {
+        ratingBar.onRatingBarChangeListener = object : OnRatingBarChangeListener {
             override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
-                Toast.makeText(getApplicationContext(), "Rating: " + rating, Toast.LENGTH_SHORT)
+                Toast.makeText(applicationContext, "Rating: $rating", Toast.LENGTH_SHORT)
                     .show()
             }
-        })
+        }
 
     }
 }

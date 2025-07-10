@@ -1,5 +1,6 @@
 package com.example.medicineapplication.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -12,7 +13,9 @@ import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.PharmacyItemBinding
 import com.example.medicineapplication.databinding.PharmacySearchItemBinding
 import com.example.medicineapplication.model.Pharmacy
+import androidx.core.net.toUri
 
+@Suppress("DEPRECATION")
 class PharmacyAdapter(
     private var activity: Activity,
     var data: List<Pharmacy>,
@@ -97,11 +100,11 @@ class PharmacyAdapter(
                     val phoneNumber = item.phone_number_pharmacy.replaceFirst("0", "972")
                     val message = "مرحبا، أود الاستفسار من فضلك."
                     val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
                     try {
                         activity.startActivity(intent)
                     } catch (e: ActivityNotFoundException) {
-                        Toast.makeText(activity, "واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -112,6 +115,7 @@ class PharmacyAdapter(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newData: List<Pharmacy>) {
         data = newData
         notifyDataSetChanged()

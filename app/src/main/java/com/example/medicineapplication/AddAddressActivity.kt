@@ -56,94 +56,8 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         binding.confirmButton.setOnClickListener {
-            if (selectedLatLng != null) {
-                val addresses = geocoder.getFromLocation(
-                    selectedLatLng!!.latitude,
-                    selectedLatLng!!.longitude,
-                    1
-                )
+            storeLocation()
 
-                if (!addresses.isNullOrEmpty()) {
-                    val address = addresses[0]
-                    selectedAddress = address.getAddressLine(0) ?: ""
-
-                    val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-                    val userId = sharedPref.getInt("USER_ID", -1)
-                    val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
-                    val bearerToken = if (token.startsWith("Bearer ")) token else "Bearer $token"
-
-                    if (userId == -1 || token.isEmpty()) {
-                        Toast.makeText(this, "بيانات المستخدم غير موجودة", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
-
-                    //  استخدام قيم افتراضية إذا كانت البيانات ناقصة
-                    val countryName = address.countryName ?: "Palestine"
-                    val regionName = address.adminArea ?: "Gaza"
-                    val cityName = address.locality ?: "Gaza City"
-                    val districtName = address.subLocality ?: "Unknown District"
-                    val postalCode = address.postalCode ?: "00000"
-
-
-                    val request = StoreLocationRequest(
-                        user_id = userId,
-                        latitude = selectedLatLng!!.latitude,
-                        longitude = selectedLatLng!!.longitude,
-                        formatted_address = selectedAddress,
-                        country = countryName,
-                        region = regionName,
-                        city = cityName,
-                        district = districtName,
-                        postal_code = postalCode,
-                        location_type = "home"
-                    )
-
-                    Log.d("MyLog", "Token = $bearerToken")
-                    Log.d("MyLog", "Request = $request")
-
-                    ApiClient.apiService.storeUserLocation(bearerToken, request)
-                        .enqueue(object : Callback<StoreLocationResponse> {
-                            override fun onResponse(
-                                call: Call<StoreLocationResponse>,
-                                response: Response<StoreLocationResponse>
-                            ) {
-                                if (response.isSuccessful && response.body()?.success == true) {
-                                    Toast.makeText(
-                                        this@AddAddressActivity,
-                                        " تم حفظ العنوان بنجاح",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    Log.d("MyLog", "تم حفظ العنوان بنجاح")
-                                    val intent = Intent(this@AddAddressActivity, NavigationDrawerActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                } else {
-                                    val errorBody = response.errorBody()?.string()
-                                    Log.e("MyLog", "فشل في الحفظ - كود: ${response.code()}\nالرد: $errorBody")
-                                    Toast.makeText(
-                                        this@AddAddressActivity,
-                                        "فشل في الحفظ: ${response.message()}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-
-                            override fun onFailure(call: Call<StoreLocationResponse>, t: Throwable) {
-                                Toast.makeText(
-                                    this@AddAddressActivity,
-                                    "خطأ في الاتصال: ${t.message}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                Log.e("MyLog", "API error", t)
-                            }
-                        })
-
-                } else {
-                    Toast.makeText(this, "تعذر العثور على العنوان", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "يرجى اختيار موقع على الخريطة", Toast.LENGTH_SHORT).show()
-            }
         }
 
     }
@@ -172,4 +86,103 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
+    private fun storeLocation() {
+        if (selectedLatLng != null) {
+            val addresses = geocoder.getFromLocation(
+                selectedLatLng!!.latitude,
+                selectedLatLng!!.longitude,
+                1
+            )
+
+            if (!addresses.isNullOrEmpty()) {
+                val address = addresses[0]
+                selectedAddress = address.getAddressLine(0) ?: ""
+
+                val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                val userId = sharedPref.getInt("USER_ID", -1)
+                val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+                val bearerToken = if (token.startsWith("Bearer ")) token else "Bearer $token"
+
+                if (userId == -1 || token.isEmpty()) {
+                    Toast.makeText(this, "بيانات المستخدم غير موجودة", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                //  استخدام قيم افتراضية إذا كانت البيانات ناقصة
+                val countryName = address.countryName ?: "Palestine"
+                val regionName = address.adminArea ?: "Gaza"
+                val cityName = address.locality ?: "Gaza City"
+                val districtName = address.subLocality ?: "Unknown District"
+                val postalCode = address.postalCode ?: "00000"
+
+
+                val request = StoreLocationRequest(
+                    user_id = userId,
+                    latitude = selectedLatLng!!.latitude,
+                    longitude = selectedLatLng!!.longitude,
+                    formatted_address = selectedAddress,
+                    country = countryName,
+                    region = regionName,
+                    city = cityName,
+                    district = districtName,
+                    postal_code = postalCode,
+                    location_type = "home"
+                )
+
+                Log.d("MyLog", "Token = $bearerToken")
+                Log.d("MyLog", "Request = $request")
+
+                ApiClient.apiService.storeUserLocation(bearerToken, request)
+                    .enqueue(object : Callback<StoreLocationResponse> {
+                        override fun onResponse(
+                            call: Call<StoreLocationResponse>,
+                            response: Response<StoreLocationResponse>
+                        ) {
+                            if (response.isSuccessful && response.body()?.success == true) {
+                                Toast.makeText(
+                                    this@AddAddressActivity,
+                                    " تم حفظ العنوان بنجاح",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.d("MyLog", "تم حفظ العنوان بنجاح")
+                                val intent = Intent(
+                                    this@AddAddressActivity,
+                                    NavigationDrawerActivity::class.java
+                                )
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                val errorBody = response.errorBody()?.string()
+                                Log.e(
+                                    "MyLog",
+                                    "فشل في الحفظ - كود: ${response.code()}\nالرد: $errorBody"
+                                )
+                                Toast.makeText(
+                                    this@AddAddressActivity,
+                                    "فشل في الحفظ: ${response.message()}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<StoreLocationResponse>, t: Throwable) {
+                            Toast.makeText(
+                                this@AddAddressActivity,
+                                "خطأ في الاتصال: ${t.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e("MyLog", "API error", t)
+                        }
+                    })
+
+            } else {
+                Toast.makeText(this, "تعذر العثور على العنوان", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "يرجى اختيار موقع على الخريطة", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
+
+

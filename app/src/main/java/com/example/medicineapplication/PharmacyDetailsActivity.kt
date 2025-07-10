@@ -20,6 +20,7 @@ import androidx.core.net.toUri
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
+@Suppress("DEPRECATION")
 class PharmacyDetailsActivity : AppCompatActivity(),
     RatingAdapter.ItemClickListener,
     MedicinePharmacyDetailsAdapter.ItemClickListener {
@@ -77,7 +78,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
             try {
                 startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(this, "واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, " ${e.message}واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT).show()
             }
         }
 

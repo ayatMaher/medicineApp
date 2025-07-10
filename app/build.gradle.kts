@@ -66,5 +66,11 @@ dependencies {
     //noinspection UseTomlInstead
     implementation (libs.glide)
     implementation (libs.play.services.location.v2101)
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
+    implementation (libs.okhttp)
+    // Glide
+    kapt(libs.compiler)
+
 
 }

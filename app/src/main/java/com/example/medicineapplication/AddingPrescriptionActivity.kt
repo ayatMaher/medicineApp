@@ -18,6 +18,7 @@ import android.widget.LinearLayout
 import com.example.medicineapplication.databinding.ActivityAddingPrescriptionBinding
 import java.io.File
 
+@Suppress("DEPRECATION")
 class AddingPrescriptionActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityAddingPrescriptionBinding

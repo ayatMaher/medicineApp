@@ -110,7 +110,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                         val msg = try {
                             JSONObject(errorBody!!).getJSONObject("data").getString("error")
                         } catch (e: Exception) {
-                            "فشل في إعادة تعيين كلمة المرور"
+                            e.message
                         }
                         Toast.makeText(this@ResetPasswordActivity, msg, Toast.LENGTH_LONG).show()
                         binding.progressBar.visibility = View.GONE

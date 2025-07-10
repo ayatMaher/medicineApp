@@ -1,13 +1,22 @@
 package com.example.medicineapplication.api
 
+import com.example.medicineapplication.model.DeleteResponse
+import com.example.medicineapplication.model.FavoritePharmacyListResponse
+import com.example.medicineapplication.model.FavoritePharmacyRequest
+import com.example.medicineapplication.model.FavoritePharmacyResponse
 import com.example.medicineapplication.model.GenericResponse
 import com.example.medicineapplication.model.LoginResponse
+import com.example.medicineapplication.model.PharmacyResponse
 import com.example.medicineapplication.model.RegisterResponse
+import com.example.medicineapplication.model.StoreLocationRequest
+import com.example.medicineapplication.model.StoreLocationResponse
 import com.example.medicineapplication.model.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -15,6 +24,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -60,10 +70,11 @@ interface ApiService {
         @Field("password") password: String,
         @Field("password_confirmation") passwordConfirmation: String
     ): Call<GenericResponse>
+
     @POST("api/auth/logout")
     fun logout(@Header("Authorization") token: String): Call<GenericResponse>
 
-    @GET("api/user/current-user")  // أو المسار الصحيح حسب Postman
+    @GET("api/user/current-user")
     fun getCurrentUser(@Header("Authorization") token: String): Call<UserResponse>
 
     @Multipart
@@ -76,6 +87,13 @@ interface ApiService {
         @Part("password") password: RequestBody,
         @Part image: MultipartBody.Part?
     ): Call<UserResponse>
+
+
+    @DELETE("api/user/delete-account-user/{id}")
+    fun deleteAccount(
+        @Header("Authorization") token: String,
+        @Path("id") userId: Int
+    ): Call<DeleteResponse>
 
     @GET("api/pharmacies/pharmacies-nearest")
     fun nearbyPharmacies(
@@ -105,7 +123,6 @@ interface ApiService {
     fun getFavoritePharmacies(
         @Header("Authorization") token: String
     ): Call<FavoritePharmacyListResponse>
-
 
 
 }

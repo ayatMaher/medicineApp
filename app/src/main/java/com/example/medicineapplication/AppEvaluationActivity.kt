@@ -1,5 +1,6 @@
 package com.example.medicineapplication
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -20,6 +21,7 @@ class AppEvaluationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppEvaluationBinding
 
+    @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAppEvaluationBinding.inflate(layoutInflater)
@@ -56,9 +58,6 @@ class AppEvaluationActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
-
-
             val request = StoreRatingRequest(
                 user_id = userId,
                 pharmacy_id = pharmacyId,
@@ -89,4 +88,5 @@ class AppEvaluationActivity : AppCompatActivity() {
                 })
         }
     }
+
 }

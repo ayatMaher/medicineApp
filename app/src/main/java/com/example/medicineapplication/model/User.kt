@@ -1,8 +1,6 @@
 package com.example.medicineapplication.model
 
-import android.location.Location
 import com.google.gson.annotations.SerializedName
-import java.sql.Array
 
 
 data class LoginResponse(
@@ -28,7 +26,7 @@ data class Data(
 data class GenericResponse(
     val success: Boolean,
     val message: String,
-    val data:  Any?,
+    val data: Any?,
     val status: String
 )
 
@@ -38,19 +36,34 @@ data class UserResponse(
     val data: User,
     val status: String
 )
+
+data class StoreAppRatingResponse(
+    val success: Boolean,
+    val message: String,
+    val data: List<Any>,
+    val status: String
+)
+
+data class StoreRatingAppRequest(
+    val user_id: Int,
+    val rating: String,
+    val comment: String?,
+)
+
 data class DeleteResponse(
     val success: Boolean,
     val message: String,
-    val data: Data?,
+    val data: List<Any>?,
     val status: String
 )
+
 data class User(
     val id: Int,
     val image: String?,
     val name: String,
     val phone: String,
     val email: String,
-    val location: Location?,
+    val location: LocationData?,
     val rateDate: String = "",
     val userComment: String = "",
 )
@@ -63,6 +76,19 @@ data class StoreLocationResponse(
     val data: LocationData
 )
 
+
+
+data class LocationRequest(
+    val latitude: Double,
+    val longitude: Double,
+    val formatted_address: String,
+    val country: String,
+    val region: String,
+    val city: String,
+    val district: String,
+    val postal_code: String,
+    val location_type: String
+)
 
 data class LocationData(
     val id: Int,

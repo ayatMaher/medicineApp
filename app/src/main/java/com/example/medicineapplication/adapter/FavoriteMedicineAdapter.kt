@@ -4,13 +4,14 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.MedicineFavoriteItemBinding
-import androidx.navigation.findNavController
 import com.example.medicineapplication.model.FavoriteTreatmentItem
 
+@Suppress("DEPRECATION")
 class FavoriteMedicineAdapter(
     private var activity: Activity,
     var data: ArrayList<FavoriteTreatmentItem>,
@@ -22,6 +23,7 @@ class FavoriteMedicineAdapter(
 
     interface ItemClickListener {
         fun onItemClickMedicine(position: Int, id: String)
+        fun onDeleteMedicineFavorite(medicineId: Int)
     }
 
     override fun onCreateViewHolder(
@@ -54,10 +56,16 @@ class FavoriteMedicineAdapter(
                 .navigate(R.id.navigation_pharmacies, bundle)
         }
 
+        holder.binding.favoriteImg.setOnClickListener {
+            val favoriteId = data[position].id
+            Log.d("MedicineID", "ID to delete: $favoriteId")
+            itemClickListener.onDeleteMedicineFavorite(favoriteId)
+        }
         // حذف من المفضلة (تنفيذ لاحقًا)
         holder.binding.deleteFavoriteMedicine.setOnClickListener {
-            Log.e("Delete Medicine", "Medicine Delete")
-            // يمكنك إضافة دالة onDelete هنا لاحقاً
+            val favoriteId = data[position].id
+            Log.d("MedicineID", "ID to delete: $favoriteId")
+            itemClickListener.onDeleteMedicineFavorite(favoriteId)
         }
 
         // الضغط على العنصر نفسه

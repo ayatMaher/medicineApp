@@ -7,9 +7,9 @@ import com.bumptech.glide.Glide
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.CategoryMedicineItemBinding
 import com.example.medicineapplication.databinding.MedicineItemBinding
-import com.example.medicineapplication.model.Pharmacy
 import com.example.medicineapplication.model.Treatment
 
+@Suppress("DEPRECATION")
 class MedicineAdapter(
     private var activity: Activity,
     var data: ArrayList<Treatment>,
@@ -73,8 +73,6 @@ class MedicineAdapter(
                 } else {
                     holder.binding.favoriteImg.setImageResource(R.drawable.favorite)
                 }
-
-
 
                 holder.binding.favoriteImg.setOnClickListener {
                     itemClickListener.onAddMedicineToFavorite(item.id)

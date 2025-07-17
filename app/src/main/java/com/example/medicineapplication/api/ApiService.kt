@@ -1,11 +1,8 @@
 package com.example.medicineapplication.api
 
-
 import com.example.medicineapplication.model.DeleteResponse
-
 import com.example.medicineapplication.model.FavoriteMedicineRequest
 import com.example.medicineapplication.model.FavoriteMedicineResponse
-
 import com.example.medicineapplication.model.FavoritePharmacyListResponse
 import com.example.medicineapplication.model.FavoritePharmacyRequest
 import com.example.medicineapplication.model.FavoritePharmacyResponse
@@ -17,13 +14,13 @@ import com.example.medicineapplication.model.MedicineResponse
 import com.example.medicineapplication.model.MedicinesWithCategoryResponse
 import com.example.medicineapplication.model.PharmacyResponse
 import com.example.medicineapplication.model.RegisterResponse
+import com.example.medicineapplication.model.StoreAppRatingResponse
 import com.example.medicineapplication.model.StoreLocationRequest
 import com.example.medicineapplication.model.StoreLocationResponse
-
+import com.example.medicineapplication.model.StoreRatingAppRequest
 import com.example.medicineapplication.model.StoreRatingRequest
 import com.example.medicineapplication.model.StoreRatingResponse
 import com.example.medicineapplication.model.TreatmentsSearchResponse
-
 import com.example.medicineapplication.model.UserResponse
 import com.example.medicineapplication.model.ViewCategoriesResponse
 import com.example.medicineapplication.model.storeTreatmentAvailbilteRequest
@@ -42,6 +39,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+
 interface ApiService {
 
     @FormUrlEncoded
@@ -49,6 +47,13 @@ interface ApiService {
     fun login(
         @Field("email") email: String,
         @Field("password") password: String
+    ): Call<LoginResponse>
+
+    @Multipart
+    @POST("api/auth/social-callback")
+    fun loginWithGoogle(
+        @Part("provider") provider: RequestBody,
+        @Part("id_token") idToken: RequestBody
     ): Call<LoginResponse>
 
     @FormUrlEncoded
@@ -85,6 +90,7 @@ interface ApiService {
         @Field("password") password: String,
         @Field("password_confirmation") passwordConfirmation: String
     ): Call<GenericResponse>
+
     @POST("api/auth/logout")
     fun logout(@Header("Authorization") token: String): Call<GenericResponse>
 
@@ -102,12 +108,35 @@ interface ApiService {
         @Part image: MultipartBody.Part?
     ): Call<UserResponse>
 
+    @POST("api/user/update-location")
+    fun updateLocation(
+        @Header("Authorization") token: String,
+        @Body location: StoreLocationRequest
+    ): Call<GeneralResponse>
 
-    @DELETE("api/user/delete-account-user/{id}")
+    @GET("api/user/delete-account-user/{id}")
     fun deleteAccount(
         @Header("Authorization") token: String,
         @Path("id") userId: Int
     ): Call<DeleteResponse>
+
+    @DELETE("api/user/favorite-delete/{favorite_id}")
+    fun removeMedicineFavorite(
+        @Header("Authorization") token: String,
+        @Path("favorite_id") favoriteId: Int
+    ): Call<GenericResponse>
+
+    @DELETE("api/user/favorite-delete/{favorite_id}")
+    fun removePharmacyFavorite(
+        @Header("Authorization") token: String,
+        @Path("favorite_id") favoriteId: Int
+    ): Call<GenericResponse>
+
+    @POST("api/user/store-rating")
+    fun ratingApp(
+        @Header("Authorization") token: String,
+        @Body request: StoreRatingAppRequest
+    ): Call<StoreAppRatingResponse>
 
     @GET("api/pharmacies/pharmacies-nearest")
     fun nearbyPharmacies(
@@ -141,7 +170,7 @@ interface ApiService {
     @POST("api/pharmacies/store-rating")
     fun ratingPharmacy(
         @Header("Authorization") token: String,
-        @Body request:StoreRatingRequest
+        @Body request: StoreRatingRequest
     ): Call<StoreRatingResponse>
 
     @GET("api/pharmacies/search-treatment")
@@ -159,7 +188,7 @@ interface ApiService {
 
 
     @POST("api/treatments/store-favorite")
-    fun  storFavoriteMedicine(
+    fun storFavoriteMedicine(
         @Header("Authorization") token: String,
         @Body request: FavoriteMedicineRequest
     ): Call<FavoriteMedicineResponse>
@@ -171,7 +200,6 @@ interface ApiService {
     ): Call<FavoriteTreatmentResponse>
 
 
-
     @GET("api/treatments/search")
     fun treatmentsSearch(
         @Header("Authorization") token: String,
@@ -180,12 +208,10 @@ interface ApiService {
     ): Call<TreatmentsSearchResponse>
 
 
-
     @GET("api/categories")
     fun viewCategories(
         @Header("Authorization") token: String
     ): Call<ViewCategoriesResponse>
-
 
 
     @POST("api/treatments/store-search-treatment")
@@ -201,5 +227,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: storeTreatmentAvailbilteRequest
     ): Call<GeneralResponse>
+
 
 }

@@ -18,6 +18,7 @@ class FavoritePharmacyAdapter(
 
     interface ItemClickListener {
         fun onItemClickPharmacy(position: Int, id: String)
+        fun onDeletePharmacyFavorite(pharmacy: Pharmacy, position: Int)
     }
 
     override fun onCreateViewHolder(
@@ -51,11 +52,13 @@ class FavoritePharmacyAdapter(
 // يمكن لاحقاً استخدام هذا للضغط على الأيقونة وتغيير الحالة
         holder.binding.favoriteImg.setOnClickListener {
             // لا يتم تغيير الشكل فقط، بل يجب إرسال الطلب لإزالة من المفضلة (لاحقاً)
+            itemClickListener.onDeletePharmacyFavorite(item, position)
         }
 
 
         holder.binding.deleteFavoritePharmacy.setOnClickListener {
             // حذف الصيدلية من المفضلة
+            itemClickListener.onDeletePharmacyFavorite(item, position)
         }
 
         holder.binding.root.setOnClickListener {

@@ -1,9 +1,10 @@
 package com.example.medicineapplication.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medicineapplication.MedicineDetailsActivity
@@ -19,15 +21,16 @@ import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.FavoriteMedicineAdapter
 import com.example.medicineapplication.adapter.FavoritePharmacyAdapter
 import com.example.medicineapplication.api.ApiClient
+import com.example.medicineapplication.api.ApiService
 import com.example.medicineapplication.databinding.FragmentFavoriteBinding
 import com.example.medicineapplication.model.FavoritePharmacyListResponse
 import com.example.medicineapplication.model.FavoriteTreatmentItem
 import com.example.medicineapplication.model.FavoriteTreatmentResponse
-import com.example.medicineapplication.model.Medicine
+import com.example.medicineapplication.model.GenericResponse
 import com.example.medicineapplication.model.Pharmacy
-import retrofit2.Response
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 
 @Suppress("DEPRECATION")
 class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
@@ -39,11 +42,12 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
     lateinit var favoriteMedicineAdapter: FavoriteMedicineAdapter
     private var medicine_items: ArrayList<FavoriteTreatmentItem> = ArrayList()
 
-    private var token: String=""
+    private var token: String = ""
 
     //pharmacy
     lateinit var favoritePharmacyAdapter: FavoritePharmacyAdapter
     var pharmacy_items: ArrayList<Pharmacy> = ArrayList()
+
 
     @SuppressLint("ResourceAsColor")
     override fun onCreateView(
@@ -77,13 +81,9 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
         binding.header.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_global_to_profileFragment)
         }
-
-        if (pageType == "favorite") {
-            clickOnMedicineButton()
-            showMedicine()
-        } else {
-            showPharmacy()
-        }
+        // default tab(medicine)
+        clickOnMedicineButton()
+        showMedicine()
 
         binding.btnMedicines.setOnClickListener {
             clickOnMedicineButton()
@@ -153,25 +153,35 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
                         medicine_items.clear()
                         medicine_items.addAll(favorites)
 
-                        favoriteMedicineAdapter = FavoriteMedicineAdapter(requireActivity(), medicine_items, this@FavoriteFragment)
-                        binding.rvFavoriteMedicine.layoutManager = GridLayoutManager(requireContext(), 2)
+                        favoriteMedicineAdapter = FavoriteMedicineAdapter(
+                            requireActivity(),
+                            medicine_items,
+                            this@FavoriteFragment
+                        )
+                        binding.rvFavoriteMedicine.layoutManager =
+                            GridLayoutManager(requireContext(), 2)
                         binding.rvFavoriteMedicine.adapter = favoriteMedicineAdapter
 
                         binding.rvFavoriteMedicine.visibility = View.VISIBLE
                         binding.rvFavoritePharmacy.visibility = View.GONE
                     } else {
-                        Toast.makeText(requireContext(), "فشل في جلب الأدوية المفضلة", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "فشل في جلب الأدوية المفضلة",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<FavoriteTreatmentResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "فشل الاتصال: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
-
-
-
 
     private fun showPharmacy() {
         pharmacy_items.clear()
@@ -189,34 +199,47 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
                     response: Response<FavoritePharmacyListResponse>
                 ) {
                     if (response.isSuccessful && response.body()?.success == true) {
-                        val pharmacies = response.body()?.data?.map {
-                            it.pharmacy.copy(is_favorite = true)
-                        } ?: emptyList()
+                        val favorites = response.body()?.data ?: emptyList()
 
+                        val pharmacies = favorites.map { wrapper ->
+                            wrapper.pharmacy.apply {
+                                is_favorite = true
+                                favorite_id = wrapper.id  // ← ربط الـ favorite_id مع الصيدلية
+                            }
+                        }
+                        pharmacy_items.clear()
                         pharmacy_items.addAll(pharmacies)
-
                         // عرض القائمة
                         binding.rvFavoritePharmacy.visibility = View.VISIBLE
                         binding.rvFavoriteMedicine.visibility = View.GONE
 
-                        favoritePharmacyAdapter = FavoritePharmacyAdapter(requireActivity(), pharmacy_items, this@FavoriteFragment)
-                        binding.rvFavoritePharmacy.layoutManager = GridLayoutManager(requireContext(), 2)
+                        favoritePharmacyAdapter = FavoritePharmacyAdapter(
+                            requireActivity(),
+                            pharmacy_items,
+                            this@FavoriteFragment
+                        )
+                        binding.rvFavoritePharmacy.layoutManager =
+                            GridLayoutManager(requireContext(), 2)
                         binding.rvFavoritePharmacy.adapter = favoritePharmacyAdapter
                     } else {
-                        Toast.makeText(requireContext(), "فشل في جلب المفضلة", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "فشل في جلب المفضلة", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 
                 override fun onFailure(call: Call<FavoritePharmacyListResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "خطأ في الاتصال: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "خطأ في الاتصال: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
 
-
     override fun onItemClickMedicine(position: Int, id: String) {
         //when click to medicine card
-        val medicine=medicine_items[position]
+        val medicine = medicine_items[position]
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
         intent.putExtra("medicine", medicine)
         startActivity(intent)
@@ -229,5 +252,93 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
         intent.putExtra("pharmacy", pharmacy)
         startActivity(intent)
     }
+
+    override fun onDeletePharmacyFavorite(
+        pharmacy: Pharmacy,
+        position: Int
+    ) {
+
+        val token = "Bearer ${
+            requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString(
+                "ACCESS_TOKEN",
+                ""
+            )
+        }"
+
+        val call =
+            ApiClient.apiService.removePharmacyFavorite(token, pharmacy.favorite_id ?: return)
+        call.enqueue(object : Callback<GenericResponse> {
+            override fun onResponse(
+                call: Call<GenericResponse>,
+                response: Response<GenericResponse>
+            ) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    Toast.makeText(requireContext(), "تم الحذف بنجاح", Toast.LENGTH_SHORT).show()
+                    showPharmacy()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "فشل في الحذف: ${response.body()?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                Toast.makeText(
+                    requireContext(),
+                    "فشل الاتصال: ${t.localizedMessage}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+
+
+    }
+
+    //click to delete favorite
+    override fun onDeleteMedicineFavorite(medicineId: Int) {
+        deleteFromFavoriteMedicine(medicineId)
+        Log.d("medicineId", medicineId.toString())
+    }
+
+    private fun deleteFromFavoriteMedicine(medicineId: Int) {
+        val sharedPref =
+            requireContext().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+        val bearerToken = if (token.startsWith("Bearer ")) token else "Bearer $token"
+
+        val apiService = ApiClient.instance.create(ApiService::class.java)
+
+        apiService.removeMedicineFavorite(bearerToken, medicineId)
+            .enqueue(object : Callback<GenericResponse> {
+                override fun onResponse(
+                    call: Call<GenericResponse>,
+                    response: Response<GenericResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT)
+                            .show()
+                        // إعادة تحميل المفضلة مثلاً
+                        showMedicine()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "فشل في الحذف: ${response.message()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                    Toast.makeText(
+                        requireContext(),
+                        "خطأ في الاتصال: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
 
 }

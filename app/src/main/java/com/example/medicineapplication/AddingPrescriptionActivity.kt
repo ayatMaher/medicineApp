@@ -5,6 +5,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -13,9 +17,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.WindowInsetsControllerCompat
-import android.widget.ImageView
-import android.widget.LinearLayout
 import com.example.medicineapplication.databinding.ActivityAddingPrescriptionBinding
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import java.io.File
 
 @Suppress("DEPRECATION")
@@ -50,6 +55,10 @@ class AddingPrescriptionActivity : AppCompatActivity() {
         // عند الضغط على icon_add، نعرض حوار اختيار الصورة
         binding.iconAdd.setOnClickListener {
             showImagePickerDialog()
+        }
+
+        binding.btnBackArrow.setOnClickListener {
+            finish()
         }
     }
 
@@ -97,11 +106,51 @@ class AddingPrescriptionActivity : AppCompatActivity() {
             )
             scaleType = ImageView.ScaleType.FIT_CENTER // ✅ مهم: لعرض الصورة بالحجم الطبيعي
             setImageURI(uri)
+            val image = InputImage.fromFilePath(this@AddingPrescriptionActivity, uri)
+            val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
+            recognizer.process(image)
+                .addOnSuccessListener { visionText ->
+                    val fullText = visionText.text
+                    val drugName = extractDrugName(fullText)
+
+                    if (drugName != null) {
+                        Log.d("EXTRACTED_DRUG", "تم التعرف على الدواء: $drugName")
+                        Toast.makeText(this@AddingPrescriptionActivity, "تم التعرف على الدواء: $drugName", Toast.LENGTH_LONG).show()
+                        // انتقل لصفحة البحث مع اسم الدواء
+//                        val intent = Intent(this, MedicineFragment::class.java)
+//                        intent.putExtra("DRUG_NAME", drugName)
+//                        startActivity(intent)
+                    } else {
+                        Toast.makeText(
+                            this@AddingPrescriptionActivity,
+                            "لم يتم العثور على اسم دواء",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        this@AddingPrescriptionActivity,
+                        "فشل في قراءة النص",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             adjustViewBounds = true // ✅ يسمح للارتفاع يتكيف حسب حجم الصورة
         }
 
 
         // إضافة الصورة داخل icon_add
         container.addView(imageView)
+    }
+    private fun extractDrugName(text: String): String? {
+        val knownDrugs = listOf("Panadol", "Augmentin", "Aspirin", "Brufen", "Amoxicillin")
+        for (drug in knownDrugs) {
+            if (text.contains(drug, ignoreCase = true)) {
+                return drug
+            }
+        }
+        return null
     }
 }

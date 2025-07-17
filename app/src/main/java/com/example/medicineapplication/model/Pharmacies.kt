@@ -23,6 +23,7 @@ data class Pharmacy(
     val rating: List<Rating>?,  // nullable لو البيانات ممكن تكون null
     val count_rating: Int?,
     val distance: String,
+    var favorite_id: Int? = null,
     val isFeatured: Boolean
 ) : Parcelable
 
@@ -86,6 +87,7 @@ data class FavoritePharmacyWrapper(
     val id: Int,
     val pharmacy: Pharmacy
 )
+
 
 data class FavoritePharmacyListResponse(
     val success: Boolean,

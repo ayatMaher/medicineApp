@@ -4,28 +4,28 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.example.medicineapplication.AboutAppActivity
+import com.example.medicineapplication.CommonQuestionsActivity
+import com.example.medicineapplication.CurrentUserLocationActivity
+import com.example.medicineapplication.EditProfileActivity
 import com.example.medicineapplication.LogInActivity
 import com.example.medicineapplication.R
-import com.example.medicineapplication.databinding.FragmentProfileBinding
-import androidx.core.content.edit
-import com.bumptech.glide.Glide
+import com.example.medicineapplication.RatingAppActivity
+import com.example.medicineapplication.SettingActivity
 import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.api.ApiService
-import com.example.medicineapplication.AboutAppActivity
-import com.example.medicineapplication.AppEvaluationActivity
-import com.example.medicineapplication.CommonQuestionsActivity
-import com.example.medicineapplication.EditProfileActivity
-import com.example.medicineapplication.SettingActivity
+import com.example.medicineapplication.databinding.FragmentProfileBinding
 import com.example.medicineapplication.model.DeleteResponse
 import com.example.medicineapplication.model.GenericResponse
 import com.example.medicineapplication.model.UserResponse
@@ -82,13 +82,14 @@ class ProfileFragment : Fragment() {
             Log.e("Info Page", "Go To Info Page")
         }
         binding.rateLayout.setOnClickListener {
-            val intent = Intent(requireContext(), AppEvaluationActivity::class.java)
+            val intent = Intent(requireContext(), RatingAppActivity::class.java)
             startActivity(intent)
             Log.e("rate Page", "Go To rate Page")
         }
         binding.locationLayout.setOnClickListener {
             //go to Location page
-            Log.e("Location Page", "Go To Location Page")
+            val intent = Intent(requireContext(), CurrentUserLocationActivity::class.java)
+            startActivity(intent)
         }
         binding.favoriteLayout.setOnClickListener {
             //go to Favorite page
@@ -104,7 +105,7 @@ class ProfileFragment : Fragment() {
         binding.logout.setOnClickListener {
             showLogoutConfirmationDialog()
         }
-        loadUserImage()
+
     }
 
     private fun loadUserImage() {

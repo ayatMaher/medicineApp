@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -42,7 +41,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
     private var ratingItems: List<Rating> = emptyList()
 
     private lateinit var medicinePharmacyDetailsAdapter: MedicinePharmacyDetailsAdapter
-    private var medicine_items: ArrayList<Medicine> = ArrayList()
+    private var medicineItems: ArrayList<Medicine> = ArrayList()
 
     private var token: String=" "
     private var userId: Int=-1
@@ -56,7 +55,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        val sharedPref = getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
         userId = sharedPref.getInt("USER_ID", -1)
 
@@ -164,8 +163,8 @@ class PharmacyDetailsActivity : AppCompatActivity(),
     }
 
     private fun showMedicine() {
-        medicine_items.clear()
-        medicinePharmacyDetailsAdapter = MedicinePharmacyDetailsAdapter(this, medicine_items, this)
+        medicineItems.clear()
+        medicinePharmacyDetailsAdapter = MedicinePharmacyDetailsAdapter(this, medicineItems, this)
         binding.rvMedicine.adapter = medicinePharmacyDetailsAdapter
     }
 
@@ -271,9 +270,9 @@ class PharmacyDetailsActivity : AppCompatActivity(),
 
 
 
-    private fun storeRequestTreatmentAvailbilte(token: String,userId: Int,treatment_name: String,pharmacy_id: Int){
+    private fun storeRequestTreatmentAvailbilte(token: String,userId: Int,treatmentName: String,pharmacyId: Int){
 
-        val request = storeTreatmentAvailbilteRequest(userId, treatment_name,pharmacy_id)
+        val request = storeTreatmentAvailbilteRequest(userId, treatmentName,pharmacyId)
         ApiClient.apiService.storeRequestTreatmentAvailbilte( token, request)
             .enqueue(object : Callback<GeneralResponse> {
                 override fun onResponse(
@@ -292,11 +291,10 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                             val json = org.json.JSONObject(errorBody ?: "")
                             json.optJSONObject("data")?.optString("error") ?: "فشل غير معروف"
                         } catch (e: Exception) {
-                            "فشل غير معروف"
+                            " ${e.message}فشل غير معروف"
                         }
 
                         showErrorDialog(errorMessage)
-                        Log.e("FavoriteError", "Response code: ${response.code()}, Error body: $errorBody")
                     }
                 }
 
@@ -336,10 +334,8 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                             val json = org.json.JSONObject(errorBody ?: "")
                             json.optJSONObject("data")?.optString("error") ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
-                            "فشل في الإضافة للمفضلة"
+                            "${e.message}فشل في الإضافة للمفضلة"
                         }
-
-                        Log.e("FavoriteError", "Response code: ${response.code()}, Error body: $errorBody")
                         Toast.makeText(this@PharmacyDetailsActivity, errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }

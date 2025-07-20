@@ -8,40 +8,15 @@
     android:layoutDirection="ltr"
     tools:context=".CommonQuestionsActivity">
 
-
-    <RelativeLayout
+    <include
         android:id="@+id/header"
+        layout="@layout/activity_header"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:elevation="100dp"
-        android:layoutDirection="rtl"
-        android:paddingTop="8dp"
-        android:paddingBottom="16dp"
-
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:contentDescription="رجوع"
-            android:src="@drawable/arrow_right" />
-
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/medium"
-            android:text="الأسئلة الشائعة"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-
-    </RelativeLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.cardview.widget.CardView

@@ -13,9 +13,10 @@
         android:id="@+id/login_image"
         android:layout_width="82dp"
         android:layout_height="82dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/circle"
-        android:src="@drawable/ic_login"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_log_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/rubik_medium"
-        android:text="إنشاء حساب"
+        android:text="@string/create_account"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
         android:paddingBottom="10sp"
@@ -49,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik"
-            android:text="الاسم"
+            android:text="@string/userName"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -58,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/btn_background_stroke_op"
-            android:hint="الاسم"
+            android:hint="@string/userName"
             android:textDirection="rtl"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="16dp"
@@ -88,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/rubik"
-            android:text="رقم الجوال"
+            android:text="@string/phone_text"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -97,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/btn_background_stroke_op"
-            android:hint="رقم الجوال"
+            android:hint="@string/phone_text"
             android:textDirection="rtl"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="16dp"
@@ -128,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/rubik"
-            android:text="البريد الالكتروني"
+            android:text="@string/email"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -137,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/btn_background_stroke_op"
-            android:hint="البريد الإلكتروني"
+            android:hint="@string/email"
             android:textDirection="rtl"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="16dp"
@@ -168,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/rubik"
-            android:text="كلمة المرور"
+            android:text="@string/password"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -178,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/btn_background_stroke_op"
-            android:hint="كلمة المرور"
+            android:hint="@string/password"
             android:textDirection="rtl"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="16dp"
@@ -215,7 +216,7 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/btn_background_profile"
             android:fontFamily="@font/rubik"
-            android:text="انشاء حساب"
+            android:text="@string/create_account"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -238,7 +239,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/medium"
-                android:text="أو"
+                android:text="@string/or"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -270,7 +271,7 @@
                     android:layout_marginTop="16.5dp"
                     android:layout_marginBottom="16.5dp"
                     android:fontFamily="@font/rubik"
-                    android:text="Facebook"
+                    android:text="@string/facebook"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -281,6 +282,7 @@
                     android:layout_marginTop="16sp"
                     android:layout_marginEnd="32.5dp"
                     android:layout_marginBottom="16sp"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_facebook" />
 
             </LinearLayout>
@@ -300,7 +302,7 @@
                     android:layout_marginTop="16.5dp"
                     android:layout_marginBottom="16.5dp"
                     android:fontFamily="@font/rubik"
-                    android:text="Google"
+                    android:text="@string/google"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -311,6 +313,7 @@
                     android:layout_marginTop="16sp"
                     android:layout_marginEnd="32.5dp"
                     android:layout_marginBottom="16sp"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_google" />
 
             </LinearLayout>
@@ -329,7 +332,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik"
-                android:text="هل لديك حساب بالفعل؟"
+                android:text="@string/have_account"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -339,7 +342,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/rubik"
-                android:text="تسجيل الدخول "
+                android:text="@string/login"
                 android:textColor="@color/primary_color"
                 android:textSize="16sp" />
 

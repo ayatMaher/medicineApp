@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
@@ -40,13 +38,13 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     // medicine
     lateinit var favoriteMedicineAdapter: FavoriteMedicineAdapter
-    private var medicine_items: ArrayList<FavoriteTreatmentItem> = ArrayList()
+    private var medicineItems: ArrayList<FavoriteTreatmentItem> = ArrayList()
 
     private var token: String = ""
 
     //pharmacy
     lateinit var favoritePharmacyAdapter: FavoritePharmacyAdapter
-    var pharmacy_items: ArrayList<Pharmacy> = ArrayList()
+    var pharmacyItems: ArrayList<Pharmacy> = ArrayList()
 
 
     @SuppressLint("ResourceAsColor")
@@ -56,9 +54,8 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         val sharedPref =
-            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+            requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
 
         //statusBar Color
@@ -135,7 +132,7 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
     }
 
     private fun showMedicine() {
-        medicine_items.clear()
+        medicineItems.clear()
 
         if (token.isEmpty()) {
             Toast.makeText(requireContext(), "يرجى تسجيل الدخول", Toast.LENGTH_SHORT).show()
@@ -150,12 +147,12 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
                     if (response.isSuccessful && response.body()?.success == true) {
                         val favorites = response.body()?.data ?: emptyList()
 
-                        medicine_items.clear()
-                        medicine_items.addAll(favorites)
+                        medicineItems.clear()
+                        medicineItems.addAll(favorites)
 
                         favoriteMedicineAdapter = FavoriteMedicineAdapter(
                             requireActivity(),
-                            medicine_items,
+                            medicineItems,
                             this@FavoriteFragment
                         )
                         binding.rvFavoriteMedicine.layoutManager =
@@ -184,7 +181,7 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
     }
 
     private fun showPharmacy() {
-        pharmacy_items.clear()
+        pharmacyItems.clear()
 
         if (token.isEmpty()) {
             Toast.makeText(requireContext(), "يرجى تسجيل الدخول", Toast.LENGTH_SHORT).show()
@@ -207,15 +204,15 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
                                 favorite_id = wrapper.id  // ← ربط الـ favorite_id مع الصيدلية
                             }
                         }
-                        pharmacy_items.clear()
-                        pharmacy_items.addAll(pharmacies)
+                        pharmacyItems.clear()
+                        pharmacyItems.addAll(pharmacies)
                         // عرض القائمة
                         binding.rvFavoritePharmacy.visibility = View.VISIBLE
                         binding.rvFavoriteMedicine.visibility = View.GONE
 
                         favoritePharmacyAdapter = FavoritePharmacyAdapter(
                             requireActivity(),
-                            pharmacy_items,
+                            pharmacyItems,
                             this@FavoriteFragment
                         )
                         binding.rvFavoritePharmacy.layoutManager =
@@ -239,7 +236,7 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     override fun onItemClickMedicine(position: Int, id: String) {
         //when click to medicine card
-        val medicine = medicine_items[position]
+        val medicine = medicineItems[position]
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
         intent.putExtra("medicine", medicine)
         startActivity(intent)
@@ -247,7 +244,7 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     override fun onItemClickPharmacy(position: Int, id: String) {
         // go to pharmacy details page
-        val pharmacy = pharmacy_items[position]
+        val pharmacy = pharmacyItems[position]
         val intent = Intent(requireContext(), PharmacyDetailsActivity::class.java)
         intent.putExtra("pharmacy", pharmacy)
         startActivity(intent)
@@ -299,12 +296,11 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
     //click to delete favorite
     override fun onDeleteMedicineFavorite(medicineId: Int) {
         deleteFromFavoriteMedicine(medicineId)
-        Log.d("medicineId", medicineId.toString())
     }
 
     private fun deleteFromFavoriteMedicine(medicineId: Int) {
         val sharedPref =
-            requireContext().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+            requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
         val bearerToken = if (token.startsWith("Bearer ")) token else "Bearer $token"
 

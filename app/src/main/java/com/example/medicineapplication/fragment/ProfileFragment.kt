@@ -3,7 +3,6 @@ package com.example.medicineapplication.fragment
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,27 +63,22 @@ class ProfileFragment : Fragment() {
         binding.profileLayout.setOnClickListener {
             val intent = Intent(requireContext(), EditProfileActivity::class.java)
             startActivity(intent)
-            Log.e("Profile Page", "Go To Profile Page")
         }
         binding.questionLayout.setOnClickListener {
             val intent = Intent(requireContext(), CommonQuestionsActivity::class.java)
             startActivity(intent)
-            Log.e("Question Page", "Go To Question Page")
         }
         binding.settingLayout.setOnClickListener {
             val intent = Intent(requireContext(), SettingActivity::class.java)
             startActivity(intent)
-            Log.e("Setting Page", "Go To Setting Page")
         }
         binding.infoLayout.setOnClickListener {
             val intent = Intent(requireContext(), AboutAppActivity::class.java)
             startActivity(intent)
-            Log.e("Info Page", "Go To Info Page")
         }
         binding.rateLayout.setOnClickListener {
             val intent = Intent(requireContext(), RatingAppActivity::class.java)
             startActivity(intent)
-            Log.e("rate Page", "Go To rate Page")
         }
         binding.locationLayout.setOnClickListener {
             //go to Location page
@@ -258,8 +252,6 @@ class ProfileFragment : Fragment() {
         val bearerToken = if (token.startsWith("Bearer ")) token else "Bearer $token"
         val apiService = ApiClient.instance.create(ApiService::class.java)
         val userId = sharedPref.getInt("USER_ID", -1)
-        Log.e("user id ", userId.toString())
-        Log.e("bearerToken", bearerToken)
 
         if (userId == -1) {
             Toast.makeText(requireContext(), "معرف المستخدم غير موجود", Toast.LENGTH_SHORT).show()
@@ -270,7 +262,6 @@ class ProfileFragment : Fragment() {
                 call: Call<DeleteResponse>,
                 response: Response<DeleteResponse>
             ) {
-                Log.e("response", response.toString())
                 if (response.isSuccessful && response.body()?.success == true) {
                     Toast.makeText(requireContext(), response.body()!!.message, Toast.LENGTH_SHORT)
                         .show()
@@ -283,7 +274,8 @@ class ProfileFragment : Fragment() {
                     requireActivity().finish()
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    Log.e("delete_error_body", errorBody ?: "no error body")
+                    Toast.makeText(requireContext(), errorBody, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 

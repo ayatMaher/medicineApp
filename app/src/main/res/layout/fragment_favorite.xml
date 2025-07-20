@@ -40,7 +40,7 @@
             android:backgroundTint="@color/primary_color"
             android:fontFamily="@font/rubik"
             android:padding="12dp"
-            android:text="الصيدليات"
+            android:text="@string/pharmacies"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:cornerRadius="16dp" />
@@ -54,7 +54,7 @@
             android:backgroundTint="@color/light_green"
             android:fontFamily="@font/rubik"
             android:padding="12dp"
-            android:text="الأدوية"
+            android:text="@string/medicines"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:cornerRadius="16dp" />

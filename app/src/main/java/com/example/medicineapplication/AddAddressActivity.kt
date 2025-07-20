@@ -3,6 +3,7 @@ package com.example.medicineapplication
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -46,10 +47,10 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color_log)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
-        binding.btnBack.setOnClickListener {
+        binding.header.titleText.text = "إضافة موقع جديد"
+        binding.header.backButton.setOnClickListener {
             finish()
         }
-
         geocoder = Geocoder(this, Locale.getDefault())
 
         val mapFragment = supportFragmentManager
@@ -57,11 +58,13 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         binding.confirmButton.setOnClickListener {
+            unEnableAndUnVisible()
             saveOrUpdateLocation()
 
         }
 
     }
+
 
     private fun saveOrUpdateLocation() {
         val latLng = selectedLatLng
@@ -77,7 +80,6 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         val address = addresses[0]
-        val selectedAddress = address.getAddressLine(0) ?: ""
 
         val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val userId = sharedPref.getInt("USER_ID", -1)
@@ -158,6 +160,7 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                     call: Call<GeneralResponse>,
                     response: Response<GeneralResponse>
                 ) {
+                    enableAndVisible()
                     if (response.isSuccessful && response.body()?.success == true) {
                         Toast.makeText(
                             this@AddAddressActivity,
@@ -174,6 +177,7 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                             "فشل في تحديث الموقع",
                             Toast.LENGTH_SHORT
                         ).show()
+                        enableAndVisible()
                     }
                 }
 
@@ -183,6 +187,7 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                         "خطأ في الاتصال: ${t.message}",
                         Toast.LENGTH_SHORT
                     ).show()
+                    enableAndVisible()
                 }
             })
     }
@@ -238,12 +243,16 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                     call: Call<StoreLocationResponse>,
                     response: Response<StoreLocationResponse>
                 ) {
+                    enableAndVisible()
                     if (response.isSuccessful && response.body()?.success == true) {
                         Toast.makeText(
                             this@AddAddressActivity,
                             "تم حفظ الموقع بنجاح",
                             Toast.LENGTH_SHORT
                         ).show()
+                        val intent =
+                            Intent(this@AddAddressActivity, NavigationDrawerActivity::class.java)
+                        startActivity(intent)
                         finish()
                     } else {
                         Toast.makeText(
@@ -251,6 +260,7 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                             "فشل في حفظ الموقع",
                             Toast.LENGTH_SHORT
                         ).show()
+                        enableAndVisible()
                     }
                 }
 
@@ -260,6 +270,7 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                         "خطأ في الاتصال: ${t.message}",
                         Toast.LENGTH_SHORT
                     ).show()
+                    enableAndVisible()
                 }
             })
     }
@@ -305,6 +316,18 @@ class AddAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                 ).show()
             }
         })
+    }
+
+    private fun enableAndVisible() {
+        binding.progressBar.visibility = View.GONE
+        binding.confirmButton.isEnabled = true
+        binding.confirmButton.alpha = 1f
+    }
+
+    private fun unEnableAndUnVisible() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.confirmButton.isEnabled = false
+        binding.confirmButton.alpha = 0.5f
     }
 
 }

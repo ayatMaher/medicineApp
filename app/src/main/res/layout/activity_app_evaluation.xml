@@ -35,9 +35,9 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="310dp"
-        app:cardCornerRadius="16dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="-25dp"
+        app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,17 +46,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
-
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="24dp"
+                android:orientation="horizontal"
                 android:scaleX="0.8"
                 android:scaleY="0.8">
 
@@ -64,27 +62,27 @@
                     android:id="@+id/ratingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="1"
-                    android:rating="0"
                     android:isIndicator="false"
-                    android:theme="@style/CustomRatingBarStyle"/>
+                    android:numStars="5"
+                    android:rating="0"
+                    android:stepSize="1"
+                    android:theme="@style/CustomRatingBarStyle" />
             </LinearLayout>
-
 
 
             <EditText
                 android:id="@+id/txt_comment"
                 android:layout_width="match_parent"
                 android:layout_height="137dp"
-                android:enabled="true"
                 android:layout_marginHorizontal="16dp"
+                android:autofillHints=""
                 android:background="@drawable/back"
+                android:enabled="true"
                 android:fontFamily="@font/rubik"
-                android:padding="16dp"
-                android:inputType="textMultiLine"
                 android:gravity="top|start"
-                android:hint="ادخل تعليقك لتفييم الصيدلية"
+                android:hint="@string/add_evaluation"
+                android:inputType="textMultiLine"
+                android:padding="16dp"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -92,13 +90,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="24dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/btn_background_profile"
                 android:backgroundTint="@color/primary"
                 android:fontFamily="@font/rubik"
-                android:text="إرسال"
+                android:text="@string/send"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                android:progressTint="@color/primary_color"
+                android:visibility="gone" />
 
 
         </LinearLayout>

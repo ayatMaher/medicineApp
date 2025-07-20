@@ -38,8 +38,9 @@ class CurrentUserLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
+
         //back button
-        binding.btnBack.setOnClickListener {
+        binding.header.backButton.setOnClickListener {
             finish()
         }
         // إعداد Retrofit

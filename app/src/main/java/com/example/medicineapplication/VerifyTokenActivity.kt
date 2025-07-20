@@ -1,5 +1,6 @@
 package com.example.medicineapplication
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -52,11 +53,7 @@ class VerifyTokenActivity : AppCompatActivity() {
         startCountdown()
         //click to verify button
         binding.btnVerify.setOnClickListener {
-
-            binding.progressBar.visibility = View.VISIBLE
-            binding.btnVerify.isEnabled = false
-            binding.btnVerify.alpha = 0.5f
-
+            unEnableAndUnVisible()
             if (isTokenExpired) {
                 showExpiredMessage()
                 return@setOnClickListener
@@ -67,21 +64,35 @@ class VerifyTokenActivity : AppCompatActivity() {
                 verifyCode(email, code)
             } else {
                 Toast.makeText(this, "يرجى إدخال الكود كاملًا", Toast.LENGTH_SHORT).show()
-                binding.progressBar.visibility = View.GONE
-                binding.btnVerify.isEnabled = true
-                binding.btnVerify.alpha = 1f
+                enableAndVisible()
             }
 
         }
 
         // resend verify code
         binding.txtResend.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.btnVerify.isEnabled = false
-            binding.btnVerify.alpha = 0.5f
+            unEnableAndUnVisible()
             resendVerificationCode()
         }
 
+    }
+
+    private fun unEnableAndUnVisible() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnVerify.isEnabled = false
+        binding.btnVerify.alpha = 0.5f
+        binding.codeLayout.isEnabled = false
+        binding.codeLayout.alpha = 0.5f
+        binding.txtResend.isEnabled = false
+    }
+
+    private fun enableAndVisible() {
+        binding.progressBar.visibility = View.GONE
+        binding.btnVerify.isEnabled = true
+        binding.btnVerify.alpha = 1f
+        binding.codeLayout.isEnabled = true
+        binding.codeLayout.alpha = 1f
+        binding.txtResend.isEnabled = true
     }
 
     private fun getEnteredCode(): String {
@@ -93,6 +104,7 @@ class VerifyTokenActivity : AppCompatActivity() {
 
     private fun startCountdown() {
         countDownTimer = object : CountDownTimer(1 * 60 * 1000, 1000) {
+            @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = millisUntilFinished / 60000
                 val seconds = (millisUntilFinished % 60000) / 1000
@@ -103,18 +115,14 @@ class VerifyTokenActivity : AppCompatActivity() {
             override fun onFinish() {
                 isTokenExpired = true
                 binding.txtCountDownTime.text = "⛔ انتهت صلاحية الكود"
-                binding.btnVerify.isEnabled = false
-                binding.btnVerify.alpha = 0.5f
-
+                unEnableAndUnVisible()
                 showExpiredMessage()
             }
         }.start()
     }
 
     private fun showExpiredMessage() {
-        binding.progressBar.visibility = View.GONE
-        binding.btnVerify.isEnabled = true
-        binding.btnVerify.alpha = 1f
+        enableAndVisible()
         Toast.makeText(this, "انتهت صلاحية الكود. حاول مرة أخرى لاحقًا.", Toast.LENGTH_LONG).show()
     }
 
@@ -156,9 +164,7 @@ class VerifyTokenActivity : AppCompatActivity() {
                     call: Call<GenericResponse>,
                     response: Response<GenericResponse>
                 ) {
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnVerify.isEnabled = true
-                    binding.btnVerify.alpha = 1f
+                    enableAndVisible()
                     if (response.isSuccessful) {
                         Toast.makeText(
                             this@VerifyTokenActivity,
@@ -179,13 +185,11 @@ class VerifyTokenActivity : AppCompatActivity() {
                                 JSONObject(errorBody!!).getJSONObject("data").getString("error")
                             Toast.makeText(this@VerifyTokenActivity, errorMsg, Toast.LENGTH_LONG)
                                 .show()
-                            binding.progressBar.visibility = View.GONE
-                            binding.btnVerify.isEnabled = true
-                            binding.btnVerify.alpha = 1f
+                            enableAndVisible()
                             if (errorMsg.contains("انتهت صلاحية الكود")) {
                                 isTokenExpired = true
-                                binding.btnVerify.isEnabled = false
-                                binding.btnVerify.alpha = 0.5f
+                                unEnableAndUnVisible()
+                                binding.txtResend.isEnabled = true
                             }
 
                         } catch (e: Exception) {
@@ -199,9 +203,7 @@ class VerifyTokenActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnVerify.isEnabled = true
-                    binding.btnVerify.alpha = 1f
+                    enableAndVisible()
                     Toast.makeText(
                         this@VerifyTokenActivity,
                         "خطأ في الاتصال: ${t.message}",
@@ -225,11 +227,8 @@ class VerifyTokenActivity : AppCompatActivity() {
                     ).show()
 
                     // إعادة تفعيل زر التحقق
-                    binding.progressBar.visibility = View.GONE
                     isTokenExpired = false
-                    binding.btnVerify.isEnabled = true
-                    binding.btnVerify.alpha = 1f
-
+                    enableAndVisible()
                     // إعادة تشغيل العداد
                     countDownTimer.cancel()
                     startCountdown()
@@ -244,11 +243,11 @@ class VerifyTokenActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
-                binding.progressBar.visibility = View.GONE
-                Toast.makeText(
-                    this@VerifyTokenActivity,
-                    "فشل الاتصال: ${t.message}",
-                    Toast.LENGTH_SHORT
+                enableAndVisible()
+                Toast . makeText (
+                        this@VerifyTokenActivity,
+                "فشل الاتصال: ${t.message}",
+                Toast.LENGTH_SHORT
                 ).show()
             }
         })

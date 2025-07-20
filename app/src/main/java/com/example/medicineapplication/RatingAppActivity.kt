@@ -2,7 +2,6 @@ package com.example.medicineapplication
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -77,9 +76,6 @@ class RatingAppActivity : AppCompatActivity() {
                         ).show()
                         finish()
                     } else {
-                        Log.e("API_ERROR", "Response code: ${response.code()}")
-                        Log.e("API_ERROR", "Response body: ${response.body()}")
-                        Log.e("API_ERROR", "Error body: ${response.errorBody()?.string()}")
                         Toast.makeText(
                             this@RatingAppActivity,
                             "فشل في إرسال التقييم",

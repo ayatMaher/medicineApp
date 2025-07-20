@@ -2,6 +2,7 @@ package com.example.medicineapplication.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+
 @Parcelize
 data class MedicinesWithCategoryResponse(
     val success: Boolean,
@@ -11,20 +12,22 @@ data class MedicinesWithCategoryResponse(
 ): Parcelable
 
 
+
 @Parcelize
 data class Treatment(
     val id: Int,
     val image: String,
     val name: String,
     val description: String,
-    val category: Category,
+    val category: Category?,
     val about_the_medicine: String,
     val how_to_use: String,
     val instructions: String,
     val side_effects: String,
     var isFeatured: Boolean?,
     var is_favorite: Boolean?,  // يمكن أن يكون null
-    val pharmacy_count_available: Int?  // يمكن أن يكون null
+    val pharmacy_count_available: Int , // يمكن أن يكون null
+    val pharmacy_stock: List<PharmacyStock>?
 ) : Parcelable
 
 

@@ -7,11 +7,16 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.transition.Visibility
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -25,7 +30,10 @@ import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.MedicineResponse
 import com.example.medicineapplication.model.Pharmacy
 import com.example.medicineapplication.model.Rating
+import com.example.medicineapplication.model.Treatment
 import com.example.medicineapplication.model.storeTreatmentAvailbilteRequest
+import com.google.zxing.integration.android.IntentIntegrator
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,11 +50,13 @@ class PharmacyDetailsActivity : AppCompatActivity(),
     private var ratingItems: List<Rating> = emptyList()
 
     private lateinit var medicinePharmacyDetailsAdapter: MedicinePharmacyDetailsAdapter
-    private var medicine_items: ArrayList<Medicine> = ArrayList()
+    private var medicine_items: ArrayList<Treatment> = ArrayList()
 
     private var token: String=" "
     private var userId: Int=-1
     private var query: String=""
+
+    private var isFromQRScan = false
 
     private var confirmationDialog: AlertDialog? = null
 
@@ -56,7 +66,13 @@ class PharmacyDetailsActivity : AppCompatActivity(),
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        val sharedPref = getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+
+
+        binding.qr.setOnClickListener {
+            startQRScanner()
+        }
+
+        val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
         userId = sharedPref.getInt("USER_ID", -1)
 
@@ -102,6 +118,10 @@ class PharmacyDetailsActivity : AppCompatActivity(),
             }
         }
 
+        if(query.isEmpty()){
+            searchMedicine("")
+        }
+
         binding.contactWhatsApp.setOnClickListener {
             val phone = pharmacy.phone_number_pharmacy.replace("+", "").replace(" ", "")
             val message = "مرحبا، أود الاستفسار من فضلك."
@@ -119,6 +139,40 @@ class PharmacyDetailsActivity : AppCompatActivity(),
             intent.putExtra("PHARMACY_ID", pharmacy.id)
             startActivity(intent)
         }
+    }
+
+    private val qrScannerLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val intentResult = IntentIntegrator.parseActivityResult(result.resultCode, result.data)
+        if (intentResult != null) {
+            if (intentResult.contents != null) {
+                Toast.makeText(this, "Scanned: ${intentResult.contents}", Toast.LENGTH_LONG).show()
+                Log.d("ansam", "ID: ${intentResult.contents}")
+
+                binding.edtSearch.setText(intentResult.contents)
+                isFromQRScan = true
+
+                // هنا ممكن تستدعي fetchTreatments لو بدك تبحث تلقائياً
+                searchMedicine(intentResult.contents)
+            } else {
+                Toast.makeText(this, "Scan cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun startQRScanner() {
+        val integrator = IntentIntegrator(this)
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+        integrator.setPrompt("امسح رمز QR الخاص بالدواء")
+        integrator.setBeepEnabled(true)
+        integrator.setOrientationLocked(false)
+        integrator.setBarcodeImageEnabled(true)
+
+        // بدال initiateScan() العادي، نستخدم intent ونمرره للـ launcher
+        val scanIntent = integrator.createScanIntent()
+        qrScannerLauncher.launch(scanIntent)
     }
 
     private fun updateFavoriteIcon(isFavorite: Boolean) {
@@ -171,8 +225,8 @@ class PharmacyDetailsActivity : AppCompatActivity(),
 
     private fun setupSearchListener() {
         binding.edtSearch.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE ||
-                actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                actionId == EditorInfo.IME_ACTION_SEARCH) {
 
                 query = binding.edtSearch.text.toString().trim()
                 if (query.isNotEmpty()) {
@@ -196,7 +250,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                     if (response.isSuccessful && response.body()?.success == true) {
                         val result = response.body()?.data ?: emptyList()
                         val medicineList = result.map {
-                            Medicine(
+                            Treatment(
                                 id = it.id,
                                 name = it.name,
                                 image = it.image,
@@ -206,7 +260,10 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                                 instructions = it.instructions,
                                 side_effects = it.side_effects,
                                 is_favorite = it.is_favorite,
-                                pharmacy_stock = it.pharmacy_stock
+                                pharmacy_stock = it.pharmacy_stock,
+                                category = it.category,
+                                isFeatured = null,
+                                pharmacy_count_available = it.pharmacy_count_available
                             )
 
                         }
@@ -227,48 +284,107 @@ class PharmacyDetailsActivity : AppCompatActivity(),
             })
     }
 
+//    fun showConfirmationDialog() {
+//        val builder = AlertDialog.Builder(this)
+//        //builder.setTitle("تأكيد")
+//        builder.setMessage("هل ترغب في ان ارسل لك اشعار في حال توفر هذا العلاج؟")
+//
+//        builder.setPositiveButton("نعم") { dialog, which ->
+//            storeRequestTreatmentAvailbilte(token,userId,query,pharmacy.id)
+//            Toast.makeText(this, "تم الاختيار: نعم", Toast.LENGTH_SHORT).show()
+//        }
+//
+//        builder.setNegativeButton("لا") { dialog, which ->
+//            Toast.makeText(this, "تم الاختيار: لا", Toast.LENGTH_SHORT).show()
+//        }
+//
+//        builder.setNeutralButton("إلغاء") { dialog, which ->
+//            dialog.dismiss()
+//        }
+//
+//        confirmationDialog = builder.create()
+//        confirmationDialog?.show()
+//    }
 
-
-    fun showConfirmationDialog() {
-        val builder = AlertDialog.Builder(this)
-        //builder.setTitle("تأكيد")
-        builder.setMessage("هل ترغب في ان ارسل لك اشعار في حال توفر هذا العلاج؟")
-
-        builder.setPositiveButton("نعم") { dialog, which ->
-            storeRequestTreatmentAvailbilte(token,userId,query,pharmacy.id)
-            Toast.makeText(this, "تم الاختيار: نعم", Toast.LENGTH_SHORT).show()
-        }
-
-        builder.setNegativeButton("لا") { dialog, which ->
-            Toast.makeText(this, "تم الاختيار: لا", Toast.LENGTH_SHORT).show()
-        }
-
-        builder.setNeutralButton("إلغاء") { dialog, which ->
-            dialog.dismiss()
-        }
-
-        confirmationDialog = builder.create()
-        confirmationDialog?.show()
-    }
 
 
 
     fun showErrorDialog(message: String) {
         confirmationDialog?.dismiss()
         confirmationDialog = null
+        val dialogView = layoutInflater.inflate(R.layout.custom_popup, null)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
 
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(message)
+        val btnYes = dialogView.findViewById<Button>(R.id.ok_button)
+        val btnNo = dialogView.findViewById<Button>(R.id.close_button)
+        val btnCancel=dialogView.findViewById<Button>(R.id.cancel_button)
 
-        builder.setNeutralButton("إلغاء") { dialog, _ ->
-            dialog.dismiss()
+        btnYes.visibility= View.GONE
+        btnNo.visibility=View.GONE
+        val content=dialogView.findViewById<TextView>(R.id.popup_message)
+        content.text=message
+
+
+        btnCancel.setOnClickListener {
+            alertDialog.dismiss()
         }
 
-        val dialog = builder.create()
-        dialog.show()
+        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+        confirmationDialog = alertDialog
     }
 
+//    fun showErrorDialog(message: String) {
+//        confirmationDialog?.dismiss()
+//        confirmationDialog = null
+//
+//        val builder = AlertDialog.Builder(this)
+//        builder.setMessage(message)
+//
+//        builder.setNeutralButton("إلغاء") { dialog, _ ->
+//            dialog.dismiss()
+//        }
+//
+//        val dialog = builder.create()
+//        dialog.show()
+//    }
 
+
+    fun showConfirmationDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.custom_popup, null)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        val btnYes = dialogView.findViewById<Button>(R.id.ok_button)
+        val btnNo = dialogView.findViewById<Button>(R.id.close_button)
+        val btnCancel=dialogView.findViewById<Button>(R.id.cancel_button)
+
+        btnYes.setOnClickListener {
+            storeRequestTreatmentAvailbilte(token, userId, query, pharmacy.id)
+            alertDialog.dismiss()
+            Toast.makeText(this, "تم إرسال الطلب", Toast.LENGTH_SHORT).show()
+        }
+
+
+        btnCancel.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        btnNo.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+        confirmationDialog = alertDialog
+    }
 
 
     private fun storeRequestTreatmentAvailbilte(token: String,userId: Int,treatment_name: String,pharmacy_id: Int){
@@ -289,7 +405,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                         confirmationDialog?.dismiss()
 
                         val errorMessage = try {
-                            val json = org.json.JSONObject(errorBody ?: "")
+                            val json = JSONObject(errorBody ?: "")
                             json.optJSONObject("data")?.optString("error") ?: "فشل غير معروف"
                         } catch (e: Exception) {
                             "فشل غير معروف"
@@ -305,8 +421,6 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                 }
             })
     }
-
-
 
     private fun addPharmacyToFavorite(pharmacyId: Int, userId: Int) {
         val token = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString("ACCESS_TOKEN", "") ?: ""
@@ -333,7 +447,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                         updateFavoriteIcon(true)
                     } else {
                         val errorMessage = try {
-                            val json = org.json.JSONObject(errorBody ?: "")
+                            val json = JSONObject(errorBody ?: "")
                             json.optJSONObject("data")?.optString("error") ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
                             "فشل في الإضافة للمفضلة"
@@ -350,14 +464,17 @@ class PharmacyDetailsActivity : AppCompatActivity(),
             })
     }
 
-
     override fun onItemClick(position: Int, id: String) {
         // لم يُستخدم بعد
     }
 
-    override fun onItemClickMedicine(position: Int, id: String) {
-        val intent = Intent(this, MedicineDetailsActivity::class.java)
-        intent.putExtra("pharmacy_name", pharmacy.name_pharmacy)
+    override fun onItemClickMedicine(position: Int, treatment: Treatment) {
+        val intent = Intent(this@PharmacyDetailsActivity, MedicineDetailsActivity::class.java)
+        Log.d("ansam", "نجح في تحميل بيانات العلاج")
+        Log.d("ansam", treatment.toString())
+        intent.putExtra("medicine", treatment)
+        intent.putExtra("pharmacy_name","pharmacy")
         startActivity(intent)
     }
+
 }

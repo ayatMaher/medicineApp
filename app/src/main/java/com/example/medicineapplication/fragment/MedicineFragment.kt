@@ -29,9 +29,12 @@ import com.example.medicineapplication.model.GeneralResponse
 import com.example.medicineapplication.model.Treatment
 import com.example.medicineapplication.model.TreatmentsSearchResponse
 import com.example.medicineapplication.model.ViewCategoriesResponse
+import com.google.zxing.integration.android.IntentIntegrator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+
 
 
 @Suppress("DEPRECATION")
@@ -43,6 +46,8 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private var isFromQRScan = false
 
     // category
     private lateinit var categoryAdapter: CategoryAdapter
@@ -113,6 +118,10 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
             Toast.makeText(requireContext(), "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
         }
 
+        binding.qr.setOnClickListener {
+            startQRScanner()
+        }
+
 
         //category
         showCategory()
@@ -121,6 +130,29 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         setupSearchListeners()
         return root
     }
+
+
+    private val qrScannerLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val intentResult = IntentIntegrator.parseActivityResult(result.resultCode, result.data)
+        if (intentResult != null) {
+            if (intentResult.contents != null) {
+                Toast.makeText(requireContext(), "Scanned: ${intentResult.contents}", Toast.LENGTH_LONG).show()
+                Log.d("ansam", "ID: ${intentResult.contents}")
+
+                binding.edtSearch.setText(intentResult.contents)
+                medicineName = intentResult.contents ?: ""
+                isFromQRScan = true
+
+                // هنا ممكن تستدعي fetchTreatments لو بدك تبحث تلقائياً
+                fetchTreatments(token, "", intentResult.contents ?: "")
+            } else {
+                Toast.makeText(requireContext(), "Scan cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
 
     private fun setupSearchListeners() {
@@ -294,10 +326,36 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
     }
 
 
+    private fun startQRScanner() {
+        val integrator = IntentIntegrator(requireActivity())
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+        integrator.setPrompt("امسح رمز QR الخاص بالدواء")
+        integrator.setBeepEnabled(true)
+        integrator.setOrientationLocked(false)
+        integrator.setBarcodeImageEnabled(true)
+
+        // بدال initiateScan() العادي، نستخدم intent ونمرره للـ launcher
+        val scanIntent = integrator.createScanIntent()
+        qrScannerLauncher.launch(scanIntent)
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isFromQRScan) {
+            binding.edtSearch.setText("")
+            medicineName = ""
+        }
+        // بعد ما تتحقق وتحدث حالة التفريغ، نعيد تعيين الفلاغ لـ false للاستعداد للمرات القادمة
+        isFromQRScan = false
+    }
+
+
 
     override fun onItemClick(position: Int, id: String) {
         selectedCategoryId = id
@@ -321,6 +379,7 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
         val treatment = medicineAdapter.data[position]
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
+        intent.putExtra("pharmacy_name","pharmacy")
         intent.putExtra("medicine", treatment)
         startActivity(intent)
 }
@@ -330,6 +389,8 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         Log.d("DEBUG", "medicineId clicked: $medicineId")
         addMedicineToFavorite(medicineId)
     }
+
+
 
 
 }

@@ -114,7 +114,7 @@ data class StoreRatingRequest(
 data class MedicineResponse(
     val success: Boolean,
     val message: String,
-    val data: List<Medicine>,
+    val data: List<Treatment>,
     val status: String
 )
 
@@ -134,7 +134,7 @@ data class Medicine(
 
 
 @Parcelize
-data class PharmacyStock(
+data class  PharmacyStock(
     val id: Int,
     val price: String,
     val discount_rate: Int,

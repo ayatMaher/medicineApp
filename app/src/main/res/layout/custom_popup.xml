@@ -1,0 +1,82 @@
+<!-- res/layout/custom_popup.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:background="@drawable/back"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/app_logo"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/popup_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="أين دوائي؟"
+        android:fontFamily="@font/bold"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/popup_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="هل ترغب أن ارسل لك اشعار في حال توفر هذا العلاج ؟"
+        android:textSize="16sp"
+        android:fontFamily="@font/rubik"
+        android:layout_marginTop="10dp"
+        android:gravity="center"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="إغلاق"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="8dp"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:fontFamily="@font/rubik"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="لا"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="8dp"
+        android:fontFamily="@font/rubik"
+        android:backgroundTint="@color/red"
+        android:layout_marginTop="20dp"/>
+
+
+    <Button
+        android:id="@+id/ok_button"
+        android:fontFamily="@font/rubik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="نعم"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="60dp"
+        android:backgroundTint="@color/primary"
+        android:layout_marginTop="20dp"/>
+
+
+</LinearLayout>
+
+</LinearLayout>

@@ -35,12 +35,14 @@ import com.example.medicineapplication.model.FavoriteMedicineResponse
 import com.example.medicineapplication.model.FavoritePharmacyRequest
 import com.example.medicineapplication.model.FavoritePharmacyResponse
 import com.example.medicineapplication.model.FavoriteTreatmentResponse
+import com.example.medicineapplication.model.GeneralResponse
 import com.example.medicineapplication.model.MedicinesWithCategoryResponse
 import com.example.medicineapplication.model.Pharmacy
 import com.example.medicineapplication.model.PharmacyResponse
 import com.example.medicineapplication.model.Treatment
 import com.example.medicineapplication.model.UserResponse
 import com.example.medicineapplication.model.ViewCategoriesResponse
+import com.google.firebase.messaging.FirebaseMessaging
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -80,6 +82,21 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
             requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
         token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
         userId = sharedPref.getInt("USER_ID", -1)
+
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val fcmToken = task.result
+                Log.d("FCM_TOKEN", "Token: $fcmToken")
+                Log.d("hhhhhhhhhhhhhhhhh", "Token: $fcmToken")
+                sendFcmTokenToServer(fcmToken)
+
+            } else {
+                Log.e("FCM_TOKEN", "فشل في جلب التوكن", task.exception)
+                Log.d("hhhhhhhhhhhhhhhhh", "Token:")
+            }
+        }
+
 
 
         // تغيير لون status bar
@@ -239,6 +256,30 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
         })
     }
 
+    private fun sendFcmTokenToServer(fcmToken: String) {
+        if (token.isEmpty()) return
+
+        val body = mapOf("fcm_token" to fcmToken)
+        ApiClient.apiService.updateDeviceToken("Bearer $token", body)
+            .enqueue(object : Callback<GeneralResponse> {
+                override fun onResponse(
+                    call: Call<GeneralResponse>,
+                    response: Response<GeneralResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        Log.d("FCM_UPDATE", "تم إرسال التوكن بنجاح")
+                    } else {
+                        Log.e("FCM_UPDATE", "فشل إرسال التوكن: ${response.code()}")
+                        Log.e("FCM_UPDATE", "فشل إرسال التوكن: ${token}")
+                    }
+                }
+
+                override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
+                    Log.e("FCM_UPDATE", "فشل الاتصال بالسيرفر: ${t.message}")
+                }
+            })
+    }
+
     private fun addPharmacyToFavorite(pharmacyId: Int) {
 
         if (token.isEmpty() || userId == -1) {
@@ -292,7 +333,6 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                 }
             })
     }
-
 
     private fun addMedicineToFavorite(medicineId: Int) {
 
@@ -445,6 +485,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
     override fun onItemClickMedicine(position: Int, id: String) {
         val medicine = medicine_items[position]
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
+        intent.putExtra("pharmacy_name","")
         intent.putExtra("medicine", medicine)
         startActivity(intent)
     }

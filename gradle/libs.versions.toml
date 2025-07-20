@@ -1,5 +1,5 @@
 [versions]
-agp = "8.10.1"
+agp = "8.9.2"
 barcodeScanning = "17.3.0"
 cardview = "1.0.0"
 circleimageview = "3.1.0"
@@ -22,6 +22,8 @@ activity = "1.10.1"
 constraintlayout = "2.2.1"
 lifecycleLivedataKtx = "2.9.1"
 lifecycleViewmodelKtx = "2.9.1"
+zxingCore = "3.5.0"
+zxingEmbedded = "4.3.0"
 mapsCompose = "2.11.4"
 navigationFragmentKtx = "2.9.1"
 navigationUiKtx = "2.9.1"
@@ -38,6 +40,8 @@ firebaseAuth = "23.2.1"
 textRecognition = "16.0.1"
 
 [libraries]
+zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxingCore" }
+zxing-embedded = { group = "com.journeyapps", name = "zxing-android-embedded", version = "4.3.0" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }

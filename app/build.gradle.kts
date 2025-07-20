@@ -6,6 +6,7 @@ plugins {
     id ("kotlin-parcelize")
     alias(libs.plugins.google.gms.google.services)
 }
+
 android {
     namespace = "com.example.medicineapplication"
     compileSdk = 35
@@ -72,12 +73,10 @@ dependencies {
     implementation (libs.play.services.location.v2101)
     implementation(libs.maps.compose)
     implementation(libs.play.services.maps)
-
     implementation (libs.okhttp)
-
     // Glide
     //noinspection KaptUsageInsteadOfKsp
-    kapt(libs.compiler)
+   // kapt(libs.compiler)
     // Import the BoM for the Firebase platform
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
@@ -88,8 +87,30 @@ dependencies {
     implementation (libs.text.recognition)
     // barcode
     implementation (libs.barcode.scanning)
+    // Glide
+    implementation(libs.glide) // هذا جيد
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    // بدل libs.compiler
+    // ZXing QR Scanner
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation ("com.google.zxing:core:3.5.0")
+
+    implementation(libs.zxing.core)
+    implementation(libs.zxing.embedded)
+
+    implementation("com.google.firebase:firebase-messaging")
+
+
+
+
+
+
+
+
+
 
 
 
 
 }
+

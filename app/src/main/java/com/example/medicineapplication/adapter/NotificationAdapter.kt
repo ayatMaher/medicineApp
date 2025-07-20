@@ -1,70 +1,56 @@
 package com.example.medicineapplication.adapter
 
+import android.icu.text.SimpleDateFormat
+import android.icu.util.TimeZone
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medicineapplication.databinding.ActivityNotificationItemBinding
-import com.example.medicineapplication.databinding.ItemSectionHeaderBinding
-import com.example.medicineapplication.model.NotificationListItem
+import com.example.medicineapplication.model.NotificationItem
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class NotificationAdapter(
-    private val items: List<NotificationListItem>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val items: List<NotificationItem>
+) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
-    companion object {
-        private const val TYPE_HEADER = 0
-        private const val TYPE_ITEM = 1
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
+        val binding = ActivityNotificationItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return NotificationViewHolder(binding)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (items[position]) {
-            is NotificationListItem.SectionHeader -> TYPE_HEADER
-            is NotificationListItem.NotificationItem -> TYPE_ITEM
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == TYPE_HEADER) {
-            val binding = ItemSectionHeaderBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-            HeaderViewHolder(binding)
-        } else {
-            val binding = ActivityNotificationItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-            NotificationViewHolder(binding)
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (val item = items[position]) {
-            is NotificationListItem.SectionHeader -> (holder as HeaderViewHolder).bind(item)
-            is NotificationListItem.NotificationItem -> (holder as NotificationViewHolder).bind(item)
-        }
+    override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size
 
-
-    class HeaderViewHolder(private val binding: ItemSectionHeaderBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: NotificationListItem.SectionHeader) {
-            binding.tvSectionTitle.text = item.title
-        }
-    }
-
-
     class NotificationViewHolder(private val binding: ActivityNotificationItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: NotificationListItem.NotificationItem) {
-            binding.tvMessage.text = item.message
-            binding.tvTime.text = item.time
-            binding.imgMedicine.setImageResource(item.imageResId)
+
+        fun bind(item: NotificationItem) {
+            binding.tvMessage.text = item.body
+            try {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.getDefault())
+                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+                val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                val date = inputFormat.parse(item.date)
+                binding.tvTime.text = date?.let { outputFormat.format(it) } ?: item.date
+            } catch (e: Exception) {
+                e.printStackTrace()
+                binding.tvTime.text = item.date
+            }
+            binding.tvTitle.text = item.title
+            // إذا كان في صورة ممكن تضيفها هنا
+            // binding.imgMedicine.setImageResource(...)
         }
     }
 }

@@ -3,6 +3,8 @@ package com.example.medicineapplication
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.widget.RatingBar
+import android.widget.RatingBar.OnRatingBarChangeListener
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity

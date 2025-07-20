@@ -37,188 +37,224 @@ class MedicineDetailsActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-        token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
-        userId = sharedPref.getInt("USER_ID", -1)
-
-
-        medicine = intent.getParcelableExtra("medicine") ?: run {
-            Toast.makeText(this, "فشل في تحميل بيانات العلاج", Toast.LENGTH_SHORT).show()
-            finish()
-            return
-        }
-
-
-        //statusBar Color
-        window.statusBarColor = ContextCompat.getColor(this, R.color.light_green)
-        // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
-        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
-        // title text
-        binding.header.titleText.text = "تفاصيل الدواء"
-        // back arrow
-        binding.header.backButton.setOnClickListener {
-            finish()
-        }
 
 
 
-        binding.medicineName.text = medicine.name
-        binding.txtMedicineDescription.text = medicine.description
 
-        Glide.with(this)
-            .load(medicine.image)
-            .placeholder(R.drawable.medicine_img)
-            .into(binding.imageMedicine)
+                val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
+                userId = sharedPref.getInt("USER_ID", -1)
 
 
-        binding.txtMedicineType.text = medicine.category.name
-
-        if (medicine.is_favorite == true) {
-            binding.favoriteImg.setImageResource(R.drawable.red_favorite)
-        } else {
-            binding.favoriteImg.setImageResource(R.drawable.favorite)
-        }
-
-
-        binding.priceLayout.visibility = View.VISIBLE
-        binding.line1.visibility = View.VISIBLE
-        val count = medicine.pharmacy_count_available.toString()
-        binding.countPharmacis.text = "متاح في ${count} صيدلية"
-        binding.txtMedicinePrice.text =
-            "${medicine.pharmacy_count_available ?: 0} صيدلية توفر هذا الدواء"
-
-
-
-        showUsage()
-
-        // show pharmacy icon
-        binding.showPharmacyPage.setOnClickListener {
-            val medicineName = binding.medicineName.text.toString()
-            val intent = Intent(this, PharmacyActivity::class.java)
-            intent.putExtra("medicine_name", medicineName)
-            startActivity(intent)
-        }
-
-        binding.favoriteImg.setOnClickListener {
-            val userId = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getInt("USER_ID", -1)
-            if (userId == -1) {
-                Toast.makeText(this, "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            addMedicineToFavorite(medicine.id)
-        }
-
-        binding.txtUsage.setOnClickListener {
-            showUsage()
-        }
-
-        binding.txtInstructions.setOnClickListener {
-            showInstruction()
-        }
-        binding.txtSideEffects.setOnClickListener {
-            showSideEffects()
-        }
-    }
-
-
-    private fun updateFavoriteIcon(isFavorite: Boolean) {
-        if (isFavorite) {
-            binding.favoriteImg.setImageResource(R.drawable.red_favorite)
-        } else {
-            binding.favoriteImg.setImageResource(R.drawable.favorite)
-        }
-    }
-
-    @SuppressLint("ResourceAsColor", "SetTextI18n")
-    private fun showUsage() {
-        binding.txtUsage.setTextColor(ContextCompat.getColor(this, R.color.primary_color))
-        binding.txtLineUsage.visibility = View.VISIBLE
-        binding.txtSideEffects.setTextColor(ContextCompat.getColor(this, R.color.black))
-        binding.txtLineSideEffect.visibility = View.INVISIBLE
-        binding.txtInstructions.setTextColor(ContextCompat.getColor(this, R.color.black))
-        binding.txtLineInstructions.visibility = View.INVISIBLE
-        binding.txtTabContent.text = medicine.how_to_use
-    }
-
-    @SuppressLint("ResourceAsColor", "SetTextI18n")
-    private fun showInstruction() {
-        binding.txtUsage.setTextColor(ContextCompat.getColor(this, R.color.black))
-        binding.txtLineUsage.visibility = View.INVISIBLE
-        binding.txtSideEffects.setTextColor(ContextCompat.getColor(this, R.color.black))
-        binding.txtLineSideEffect.visibility = View.INVISIBLE
-        binding.txtInstructions.setTextColor(ContextCompat.getColor(this, R.color.primary_color))
-        binding.txtLineInstructions.visibility = View.VISIBLE
-        binding.txtTabContent.text = medicine.instructions
-
-    }
-
-    @SuppressLint("ResourceAsColor", "SetTextI18n")
-    private fun showSideEffects() {
-        binding.txtUsage.setTextColor(ContextCompat.getColor(this, R.color.black))
-        binding.txtLineUsage.visibility = View.INVISIBLE
-        binding.txtSideEffects.setTextColor(ContextCompat.getColor(this, R.color.primary_color))
-        binding.txtLineSideEffect.visibility = View.VISIBLE
-        binding.txtInstructions.setTextColor(ContextCompat.getColor(this, R.color.black))
-        binding.txtLineInstructions.visibility = View.INVISIBLE
-        binding.txtTabContent.text = medicine.side_effects
-    }
-
-
-    private fun addMedicineToFavorite(medicineId: Int) {
-
-        if (token.isEmpty() || userId == -1) {
-            Toast.makeText(this, "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val request = FavoriteMedicineRequest(userId, medicineId)
-
-        ApiClient.apiService.storFavoriteMedicine(token, request)
-            .enqueue(object : Callback<FavoriteMedicineResponse> {
-                override fun onResponse(
-                    call: Call<FavoriteMedicineResponse>,
-                    response: Response<FavoriteMedicineResponse>
-                ) {
-                    val errorBody = response.errorBody()?.string()
-
-                    if (response.isSuccessful && response.body()?.success == true) {
-                        Toast.makeText(
-                            this@MedicineDetailsActivity,
-                            "تمت الإضافة إلى المفضلة",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        // ✅ تحديث حالة isFavorite في القائمة وإبلاغ الـ Adapter
-                        medicine.is_favorite = true
-                        updateFavoriteIcon(true)
-
-                    } else {
-                        val errorMessage = try {
-                            val json = org.json.JSONObject(errorBody ?: "")
-                            json.optJSONObject("data")?.optString("error")
-                                ?: "فشل في الإضافة للمفضلة"
-                        } catch (e: Exception) {
-                            "فشل في الإضافة للمفضلة"
-                        }
-
-                        Log.e(
-                            "FavoriteError",
-                            "Response code: ${response.code()}, Error body: $errorBody"
-                        )
-                        Toast.makeText(
-                            this@MedicineDetailsActivity,
-                            errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                medicine = intent.getParcelableExtra<Treatment>("medicine") ?: run {
+                    Toast.makeText(this, "فشل في تحميل بيانات العلاج", Toast.LENGTH_SHORT).show()
+                    Log.d("ansam", "فشل في تحميل بيانات العلاج")
+                    finish()
+                    return
                 }
 
-                override fun onFailure(call: Call<FavoriteMedicineResponse>, t: Throwable) {
-                    Toast.makeText(this@MedicineDetailsActivity, "خطأ: ${t.message}", Toast.LENGTH_SHORT).show()
+        Log.d("ansam", "ttttttttttt" + medicine.toString())
 
-                }
-            })
+
+                      if (medicine == null) {
+                          Log.d("ansam", "فشل في تحميل بيانات الدواء")
+                          Toast.makeText(this, "فشل في تحميل بيانات الدواء", Toast.LENGTH_SHORT).show()
+                          finish()
+                          return
+                      }
+
+
+
+
+                            // show or do not show price of medicine
+                            val pharmacyName = intent.getStringExtra("pharmacy_name")
+                            if (pharmacyName.isNullOrBlank()) {
+                                binding.priceLayout.visibility = View.GONE
+                                binding.line1.visibility = View.GONE
+                                Log.d("ansam", "تفاصيلللللللللللللللل")
+                            } else {
+                                binding.priceLayout.visibility = View.VISIBLE
+                                binding.line1.visibility = View.VISIBLE
+
+                                Log.d("ansam", "هوووووووووووووووم")
+                            }
+
+
+                            //statusBar Color
+                            window.statusBarColor = ContextCompat.getColor(this, R.color.light_green)
+                            // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
+                            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+                            // title text
+                            binding.header.titleText.text = "تفاصيل الدواء"
+                            // back arrow
+                            binding.header.backButton.setOnClickListener {
+                                finish()
+                            }
+
+
+                                   binding.medicineName.text = medicine.name
+                                   binding.txtMedicineDescription.text = medicine.description
+
+                                   Glide.with(this)
+                                       .load(medicine.image)
+                                       .placeholder(R.drawable.medicine_img)
+                                       .into(binding.imageMedicine)
+
+
+
+                                    if (medicine.category != null){
+                                        binding.txtMedicineType.text = medicine.category!!.name
+                                    }
+
+                                   if (medicine.is_favorite == true) {
+                                       binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+                                   } else {
+                                       binding.favoriteImg.setImageResource(R.drawable.favorite)
+                                   }
+
+//
+                                    if(medicine.pharmacy_count_available!=null){
+                                        val count = medicine.pharmacy_count_available.toString()
+                                        binding.countPharmacis.text = "متاح في ${count} صيدلية"
+                                        binding.txtMedicinePrice.text =
+                                            "${medicine.pharmacy_count_available ?: 0} صيدلية توفر هذا الدواء"
+
+                                    }
+
+
+
+                                            showUsage()
+
+                                            // show pharmacy icon
+                                            binding.showPharmacyPage.setOnClickListener {
+                                                val medicineName = binding.medicineName.text.toString()
+                                                val intent = Intent(this, PharmacyActivity::class.java)
+                                                intent.putExtra("medicine_name", medicineName)
+                                                startActivity(intent)
+                                            }
+
+                                            binding.favoriteImg.setOnClickListener {
+                                                val userId = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getInt("USER_ID", -1)
+                                                if (userId == -1) {
+                                                    Toast.makeText(this, "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
+                                                    return@setOnClickListener
+                                                }
+
+
+
+                                                addMedicineToFavorite(medicine.id)
+                                            }
+
+                                            binding.txtUsage.setOnClickListener {
+                                                showUsage()
+                                            }
+
+                                            binding.txtInstructions.setOnClickListener {
+                                                showInstruction()
+                                            }
+                                            binding.txtSideEffects.setOnClickListener {
+                                                showSideEffects()
+                                            }
+                                        }
+
+
+                                        private fun updateFavoriteIcon(isFavorite: Boolean) {
+                                            if (isFavorite) {
+                                                binding.favoriteImg.setImageResource(R.drawable.red_favorite)
+                                            } else {
+                                                binding.favoriteImg.setImageResource(R.drawable.favorite)
+                                            }
+                                        }
+
+                                        @SuppressLint("ResourceAsColor", "SetTextI18n")
+                                        private fun showUsage() {
+                                            binding.txtUsage.setTextColor(ContextCompat.getColor(this, R.color.primary_color))
+                                            binding.txtLineUsage.visibility = View.VISIBLE
+                                            binding.txtSideEffects.setTextColor(ContextCompat.getColor(this, R.color.black))
+                                            binding.txtLineSideEffect.visibility = View.INVISIBLE
+                                            binding.txtInstructions.setTextColor(ContextCompat.getColor(this, R.color.black))
+                                            binding.txtLineInstructions.visibility = View.INVISIBLE
+                                            binding.txtTabContent.text = medicine.how_to_use
+                                        }
+
+                                        @SuppressLint("ResourceAsColor", "SetTextI18n")
+                                        private fun showInstruction() {
+                                            binding.txtUsage.setTextColor(ContextCompat.getColor(this, R.color.black))
+                                            binding.txtLineUsage.visibility = View.INVISIBLE
+                                            binding.txtSideEffects.setTextColor(ContextCompat.getColor(this, R.color.black))
+                                            binding.txtLineSideEffect.visibility = View.INVISIBLE
+                                            binding.txtInstructions.setTextColor(ContextCompat.getColor(this, R.color.primary_color))
+                                            binding.txtLineInstructions.visibility = View.VISIBLE
+                                            binding.txtTabContent.text = medicine.instructions
+
+                                        }
+
+                                        @SuppressLint("ResourceAsColor", "SetTextI18n")
+                                        private fun showSideEffects() {
+                                            binding.txtUsage.setTextColor(ContextCompat.getColor(this, R.color.black))
+                                            binding.txtLineUsage.visibility = View.INVISIBLE
+                                            binding.txtSideEffects.setTextColor(ContextCompat.getColor(this, R.color.primary_color))
+                                            binding.txtLineSideEffect.visibility = View.VISIBLE
+                                            binding.txtInstructions.setTextColor(ContextCompat.getColor(this, R.color.black))
+                                            binding.txtLineInstructions.visibility = View.INVISIBLE
+                                            binding.txtTabContent.text = medicine.side_effects
+                                        }
+
+
+                                        private fun addMedicineToFavorite(medicineId: Int) {
+
+                                            if (token.isEmpty() || userId == -1) {
+                                                Toast.makeText(this, "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
+                                                return
+                                            }
+
+                                            val request = FavoriteMedicineRequest(userId, medicineId)
+
+                                            ApiClient.apiService.storFavoriteMedicine(token, request)
+                                                .enqueue(object : Callback<FavoriteMedicineResponse> {
+                                                    override fun onResponse(
+                                                        call: Call<FavoriteMedicineResponse>,
+                                                        response: Response<FavoriteMedicineResponse>
+                                                    ) {
+                                                        val errorBody = response.errorBody()?.string()
+
+                                                        if (response.isSuccessful && response.body()?.success == true) {
+                                                            Toast.makeText(
+                                                                this@MedicineDetailsActivity,
+                                                                "تمت الإضافة إلى المفضلة",
+                                                                Toast.LENGTH_SHORT
+                                                            ).show()
+
+                                                            // ✅ تحديث حالة isFavorite في القائمة وإبلاغ الـ Adapter
+                                                            medicine.is_favorite = true
+                                                            updateFavoriteIcon(true)
+
+                                                        } else {
+                                                            val errorMessage = try {
+                                                                val json = org.json.JSONObject(errorBody ?: "")
+                                                                json.optJSONObject("data")?.optString("error")
+                                                                    ?: "فشل في الإضافة للمفضلة"
+                                                            } catch (e: Exception) {
+                                                                "فشل في الإضافة للمفضلة"
+                                                            }
+
+                                                            Log.e(
+                                                                "FavoriteError",
+                                                                "Response code: ${response.code()}, Error body: $errorBody"
+                                                            )
+                                                            Toast.makeText(
+                                                                this@MedicineDetailsActivity,
+                                                                errorMessage,
+                                                                Toast.LENGTH_SHORT
+                                                            ).show()
+                                                        }
+                                                    }
+
+                                                    override fun onFailure(call: Call<FavoriteMedicineResponse>, t: Throwable) {
+                                                        Toast.makeText(this@MedicineDetailsActivity, "خطأ: ${t.message}", Toast.LENGTH_SHORT).show()
+
+                                                    }
+                                                })
 
 
 

@@ -3,7 +3,6 @@ package com.example.medicineapplication
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -11,12 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
-import com.example.medicineapplication.PharmacyDetailsActivity
 import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.databinding.ActivityMedicineDetailsBinding
 import com.example.medicineapplication.model.FavoriteMedicineRequest
 import com.example.medicineapplication.model.FavoriteMedicineResponse
-import com.example.medicineapplication.model.Pharmacy
 import com.example.medicineapplication.model.Treatment
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,7 +27,7 @@ class MedicineDetailsActivity : AppCompatActivity() {
     private var userId: Int = -1
 
 
-    @SuppressLint("CommitTransaction")
+    @SuppressLint("CommitTransaction", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMedicineDetailsBinding.inflate(layoutInflater)
@@ -83,7 +80,7 @@ class MedicineDetailsActivity : AppCompatActivity() {
         binding.priceLayout.visibility = View.VISIBLE
         binding.line1.visibility = View.VISIBLE
         val count = medicine.pharmacy_count_available.toString()
-        binding.countPharmacis.text = "متاح في ${count} صيدلية"
+        binding.countPharmacis.text = "متاح في $count صيدلية"
         binding.txtMedicinePrice.text =
             "${medicine.pharmacy_count_available ?: 0} صيدلية توفر هذا الدواء"
 
@@ -199,13 +196,8 @@ class MedicineDetailsActivity : AppCompatActivity() {
                             json.optJSONObject("data")?.optString("error")
                                 ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
-                            "فشل في الإضافة للمفضلة"
+                            " ${e.message}فشل في الإضافة للمفضلة"
                         }
-
-                        Log.e(
-                            "FavoriteError",
-                            "Response code: ${response.code()}, Error body: $errorBody"
-                        )
                         Toast.makeText(
                             this@MedicineDetailsActivity,
                             errorMessage,

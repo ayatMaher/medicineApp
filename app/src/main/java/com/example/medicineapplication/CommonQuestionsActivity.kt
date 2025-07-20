@@ -17,17 +17,14 @@ class CommonQuestionsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         binding = ActivityCommonQuestionsPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
-
-        binding.btnBack.setOnClickListener {
+        binding.header.titleText.text = "الأسئلة الشائعة"
+        binding.header.backButton.setOnClickListener {
             finish()
         }
 

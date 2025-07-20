@@ -21,6 +21,7 @@
         <ImageView
             android:layout_width="335dp"
             android:layout_height="324dp"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/location_image"
             android:layout_marginBottom="61dp"/>
 
@@ -28,9 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/medium"
-            android:text="السماح بالوصول للموقع"
+            android:text="@string/allow_location"
             android:textColor="@color/black"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
 
 
         <TextView
@@ -38,10 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:fontFamily="@font/rubik"
-            android:text="موقعك بيساعدنا نوصل لك الخدمة بشكل أسرع وأسهل"
+            android:text="@string/location_description"
             android:textAlignment="center"
             android:textColor="#801C1A1A"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -52,7 +53,7 @@
             android:layout_marginTop="49dp"
             android:background="@drawable/btn_background_profile"
             android:fontFamily="@font/rubik"
-            android:text="موقعي الحالي"
+            android:text="@string/current_location"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -64,7 +65,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/choose_location_btn_background"
             android:fontFamily="@font/rubik"
-            android:text="اختر موقع اخر"
+            android:text="@string/choose_another_location"
             android:textColor="@color/black"
             android:textSize="16sp" />
 

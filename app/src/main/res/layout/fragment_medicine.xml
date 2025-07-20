@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/main"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:orientation="horizontal"
@@ -23,6 +23,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone"
             android:src="@drawable/right_arrow_primary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +33,7 @@
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:background="@drawable/search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +46,7 @@
                 android:layout_height="18dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/search_normal"
                 app:layout_constraintStart_toStartOf="@id/search_bar"
                 app:layout_constraintTop_toTopOf="@id/search_bar" />
@@ -57,7 +61,7 @@
                 android:background="@null"
                 android:fontFamily="@font/rubik"
                 android:imeOptions="actionSearch"
-                android:hint="ابحث عن دوائك"
+                android:hint="@string/search_medicine"
                 android:inputType="text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@id/search_image"
@@ -67,7 +71,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="110dp"
-                android:contentDescription="BarCode"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/bar_code"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="@id/search_bar"

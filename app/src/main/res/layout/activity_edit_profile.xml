@@ -28,7 +28,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:contentDescription="رجوع"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/white_arrow_right" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/medium"
-            android:text="تعديل المعلومات الشخصية"
+            android:text="@string/edit_profile"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -75,11 +75,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layoutDirection="rtl"
-            android:paddingBottom="16dp"
+            android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingTop="90dp">
+            android:paddingTop="90dp"
+            android:paddingBottom="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,6 +95,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_user" />
 
                 <EditText
@@ -102,11 +103,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:autofillHints="username"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/rubik"
-                    android:textAlignment="viewStart"
+                    android:hint="@string/example"
                     android:inputType="textPersonName"
-                    android:text="ghydaa jamal"
+                    android:textAlignment="viewStart"
                     android:textColor="#000000"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -126,6 +128,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/email" />
 
                 <EditText
@@ -133,12 +136,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textAlignment="viewStart"
+                    android:autofillHints="emailAddress"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/rubik"
-                    android:hint="ghydaa@gmail.com"
+                    android:hint="@string/example_gmail_com_hint"
                     android:inputType="textEmailAddress"
-                    android:text="ghydaa@gmail.com"
+                    android:textAlignment="viewStart"
                     android:textColor="#000000"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -158,6 +161,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/phone_green" />
 
                 <EditText
@@ -165,11 +169,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textAlignment="viewStart"
+                    android:autofillHints="phone"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/rubik"
                     android:inputType="phone"
-                    android:text="059003030344"
+                    android:hint="@string/phone_number"
+                    android:textAlignment="viewStart"
                     android:textColor="#000000"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -193,25 +198,23 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/lock" />
 
-                <!-- مربع إدخال كلمة المرور -->
                 <EditText
                     android:id="@+id/edit_password"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textAlignment="viewStart"
+                    android:autofillHints="password"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/rubik"
                     android:inputType="textPassword"
-                    android:text="********"
+                    android:textAlignment="viewStart"
                     android:textColor="#000000"
                     android:textSize="14sp" />
             </LinearLayout>
 
-
-            <!-- زر الحفظ -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
@@ -220,7 +223,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/btn_background_profile"
                 android:fontFamily="@font/rubik"
-                android:text="حفظ التعديل"
+                android:text="@string/btn_save_edits"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
@@ -230,13 +233,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
                 android:progressTint="@color/primary_color"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- صورة المستخدم في المنتصف -->
-
-    <!-- زر + فوق الصورة -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="110dp"
@@ -259,6 +259,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="90dp"
         android:background="@drawable/circle_white"
+        android:contentDescription="@string/app_name"
         android:elevation="10dp"
         android:padding="0dp"
         android:src="@drawable/ic_add"

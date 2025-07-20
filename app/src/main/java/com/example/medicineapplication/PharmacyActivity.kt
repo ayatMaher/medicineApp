@@ -55,9 +55,15 @@ class PharmacyActivity : AppCompatActivity(), PharmacyAdapter.ItemClickListener 
 
         val medicineName= intent.getStringExtra("medicine_name")
         binding.edtSearch.setText(medicineName)
-
-
         fetchPharmaciesNearby(token,medicineName.toString())
+
+        val drugName = intent.getStringExtra("drug_name") ?: ""
+        binding.edtSearch.setText(drugName)
+        if (drugName.isNotEmpty()) {
+            fetchPharmaciesNearby(token, drugName)
+        }
+
+
 
 
         pharmacyAdapter = PharmacyAdapter(this, emptyList(), this)

@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,9 +18,20 @@ import com.example.medicineapplication.databinding.ActivityCurrentLocationBindin
 import com.example.medicineapplication.model.StoreLocationRequest
 import com.example.medicineapplication.model.StoreLocationResponse
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +40,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 
 @Suppress("DEPRECATION")
 class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -41,8 +52,8 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationRequest: LocationRequest
     private lateinit var geocoder: Geocoder
     private var locationMarker: Marker? = null
-    private val LOCATION_PERMISSION_CODE = 1001
-    private val LOCATION_SETTINGS_REQUEST_CODE = 101
+    private val loctionPermissionCode = 1001
+    private val loctionSettingRequestCode = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,12 +87,13 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        binding.btnBack.setOnClickListener {
+        binding.header.titleText.text = "موقعك الحالي"
+        binding.header.backButton.setOnClickListener {
             finish()
         }
 
         binding.confirmButton.setOnClickListener {
+            unEnableAndUnVisible()
             storeCurrentLocation()
         }
 
@@ -154,6 +166,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
                                                 response.body()!!.message,
                                                 Toast.LENGTH_SHORT
                                             ).show()
+                                            enableAndVisible()
                                             val intent = Intent(
                                                 this@CurrentLocationActivity,
                                                 NavigationDrawerActivity::class.java
@@ -161,15 +174,12 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
                                             startActivity(intent)
                                         } else {
                                             val errorBody = response.errorBody()?.string()
-                                            Log.e(
-                                                "LocationError",
-                                                "Response code: ${response.code()} - $errorBody"
-                                            )
                                             Toast.makeText(
                                                 this@CurrentLocationActivity,
-                                                "❌ لم يتم الحفظ: ${response.message()}",
+                                                errorBody,
                                                 Toast.LENGTH_SHORT
                                             ).show()
+                                            enableAndVisible()
                                         }
                                     }
 
@@ -182,7 +192,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
                                             "📡 خطأ في الاتصال: ${t.message}",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        Log.e("LocationError", "API Failure", t)
+                                        enableAndVisible()
                                     }
                                 })
                         }
@@ -193,6 +203,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
                                 "📍 لم يتم العثور على عنوان",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            enableAndVisible()
                         }
                     }
 
@@ -228,7 +239,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_CODE
+                loctionPermissionCode
             )
         }
 
@@ -267,13 +278,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
                 val addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
                 if (!addressList.isNullOrEmpty()) {
                     val address = addressList[0]
-//                    val country = address.countryName ?: "غير معروف"
-//                    val adminArea = address.adminArea ?: "غير معروف"    // المحافظة أو المنطقة
-//                    val city = address.locality ?: "غير معروف"          // المدينة
-//                    val district = address.subLocality ?: "غير معروف"   // الحي
-//                    val postalCode = address.postalCode ?: "غير معروف"
                     val fullAddress = address.getAddressLine(0) ?: "غير معروف"
-
                     withContext(Dispatchers.Main) {
                         binding.address.text = fullAddress
                     }
@@ -321,7 +326,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             .addOnFailureListener { exception ->
                 if (exception is ResolvableApiException) {
                     try {
-                        exception.startResolutionForResult(this, LOCATION_SETTINGS_REQUEST_CODE)
+                        exception.startResolutionForResult(this, loctionSettingRequestCode)
                     } catch (sendEx: Exception) {
                         sendEx.printStackTrace()
                     }
@@ -331,6 +336,22 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
+    private fun enableAndVisible() {
+        binding.progressBar.visibility = View.INVISIBLE
+        binding.confirmButton.isEnabled = true
+        binding.confirmButton.alpha = 1f
+        binding.addressText.isEnabled = true
+        binding.addressText.alpha = 1f
+    }
+
+    private fun unEnableAndUnVisible() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.confirmButton.isEnabled = false
+        binding.confirmButton.alpha = 0.5f
+        binding.addressText.isEnabled = false
+        binding.addressText.alpha = 0.5f
+    }
+
     @Suppress("DEPRECATION")
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -338,7 +359,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_CODE &&
+        if (requestCode == loctionPermissionCode &&
             grantResults.isNotEmpty() &&
             grantResults[0] == PackageManager.PERMISSION_GRANTED
         ) {
@@ -356,7 +377,7 @@ class CurrentLocationActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == LOCATION_SETTINGS_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == loctionSettingRequestCode && resultCode == RESULT_OK) {
             startLocationUpdates()
         }
     }

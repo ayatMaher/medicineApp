@@ -1,8 +1,11 @@
 package com.example.medicineapplication
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,10 +14,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.medicineapplication.databinding.ActivityLocationBinding
-import android.Manifest
-import android.content.Context
-import android.location.LocationManager
-import android.provider.Settings
 
 @Suppress("DEPRECATION")
 class LocationActivity : AppCompatActivity() {
@@ -57,7 +56,7 @@ class LocationActivity : AppCompatActivity() {
 
     }
     private fun checkLocationSettingsAndPermission() {
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
         if (!isGpsEnabled) {

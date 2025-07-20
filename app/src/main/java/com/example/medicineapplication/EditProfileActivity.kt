@@ -1,35 +1,34 @@
 package com.example.medicineapplication
 
+import android.Manifest
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
-import com.example.medicineapplication.databinding.ActivityEditProfileBinding
-import java.io.File
-import android.Manifest
-import android.content.Intent
-import android.util.Log
-import android.view.View
-import android.widget.Toast
-import com.example.medicineapplication.api.ApiClient
-import com.example.medicineapplication.api.ApiService
-import com.example.medicineapplication.model.UserResponse
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import androidx.core.content.edit
 import com.bumptech.glide.Glide
+import com.example.medicineapplication.api.ApiClient
+import com.example.medicineapplication.api.ApiService
+import com.example.medicineapplication.databinding.ActivityEditProfileBinding
+import com.example.medicineapplication.model.UserResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 
 
 class EditProfileActivity : AppCompatActivity() {
@@ -71,22 +70,42 @@ class EditProfileActivity : AppCompatActivity() {
             showImagePickerDialog()
         }
         binding.btnSave.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.btnSave.isEnabled = false
-            binding.btnSave.alpha = 0.5f
-            binding.editName.isEnabled = false
-            binding.editName.alpha = 0.5f
-            binding.editEmail.isEnabled = false
-            binding.editEmail.alpha = 0.5f
-            binding.editPhone.isEnabled = false
-            binding.editPhone.alpha = 0.5f
-            binding.editPassword.isEnabled = false
-            binding.editPassword.alpha = 0.5f
-            binding.addIcon.isEnabled = false
-            binding.addIcon.alpha = 0.5f
+            unEnabledAndVisibility()
             updateProfile()
         }
         loadUserData()
+    }
+
+    private fun enabledAndVisibility() {
+        binding.progressBar.visibility = View.GONE
+        binding.btnSave.isEnabled = true
+        binding.btnSave.alpha = 1f
+        binding.editName.isEnabled = true
+        binding.editName.alpha = 1f
+        binding.editEmail.isEnabled = true
+        binding.editEmail.alpha = 1f
+        binding.editPhone.isEnabled = true
+        binding.editPhone.alpha = 1f
+        binding.editPassword.isEnabled = true
+        binding.editPassword.alpha = 1f
+        binding.addIcon.isEnabled = true
+        binding.addIcon.alpha = 1f
+    }
+
+    private fun unEnabledAndVisibility() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnSave.isEnabled = false
+        binding.btnSave.alpha = 0.5f
+        binding.editName.isEnabled = false
+        binding.editName.alpha = 0.5f
+        binding.editEmail.isEnabled = false
+        binding.editEmail.alpha = 0.5f
+        binding.editPhone.isEnabled = false
+        binding.editPhone.alpha = 0.5f
+        binding.editPassword.isEnabled = false
+        binding.editPassword.alpha = 0.5f
+        binding.addIcon.isEnabled = false
+        binding.addIcon.alpha = 0.5f
     }
 
     private fun showImagePickerDialog() {
@@ -150,19 +169,7 @@ class EditProfileActivity : AppCompatActivity() {
                     call: Call<UserResponse>,
                     response: Response<UserResponse>
                 ) {
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnSave.isEnabled = true
-                    binding.btnSave.alpha = 1f
-                    binding.editName.isEnabled = true
-                    binding.editName.alpha = 1f
-                    binding.editEmail.isEnabled = true
-                    binding.editEmail.alpha = 1f
-                    binding.editPhone.isEnabled = true
-                    binding.editPhone.alpha = 1f
-                    binding.editPassword.isEnabled = true
-                    binding.editPassword.alpha = 1f
-                    binding.addIcon.isEnabled = true
-                    binding.addIcon.alpha = 1f
+                    enabledAndVisibility()
                     if (response.isSuccessful && response.body()?.success == true) {
                         Toast.makeText(
                             this@EditProfileActivity,
@@ -183,8 +190,6 @@ class EditProfileActivity : AppCompatActivity() {
                                     errorBody,
                                     Toast.LENGTH_SHORT
                                 ).show()
-
-                                Log.e("errorBody", errorBody)
                                 if (errorMessage.contains("غير مصرح")) {
                                     // 🧹 حذف التوكن
                                     val sharedPref =
@@ -224,20 +229,7 @@ class EditProfileActivity : AppCompatActivity() {
                         "فشل الاتصال: ${t.message}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.e("onFailure", "فشل الاتصال: ${t.message}")
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnSave.isEnabled = true
-                    binding.btnSave.alpha = 1f
-                    binding.editName.isEnabled = true
-                    binding.editName.alpha = 1f
-                    binding.editEmail.isEnabled = true
-                    binding.editEmail.alpha = 1f
-                    binding.editPhone.isEnabled = true
-                    binding.editPhone.alpha = 1f
-                    binding.editPassword.isEnabled = true
-                    binding.editPassword.alpha = 1f
-                    binding.addIcon.isEnabled = true
-                    binding.addIcon.alpha = 1f
+                    enabledAndVisibility()
                 }
             })
     }

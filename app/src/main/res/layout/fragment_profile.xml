@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/rubik"
-            android:text="الصفحة الشخصية"
+            android:text="@string/profile"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@id/view"
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="690dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="130dp"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
@@ -55,9 +55,10 @@
                 android:id="@+id/profile_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="72dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="47dp"
@@ -65,6 +66,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_gray"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/profile_icon" />
 
                 <TextView
@@ -72,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/rubik"
-                    android:text="الصفحة الشخصية"
+                    android:text="@string/profile"
                     android:textSize="16sp" />
             </LinearLayout>
             <!--            2-->
@@ -81,7 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="47dp"
@@ -89,6 +92,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_gray"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/question_icon" />
 
                 <TextView
@@ -96,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/rubik"
-                    android:text="الأسئلة الشائعة"
+                    android:text="@string/common_questions"
                     android:textSize="16sp" />
             </LinearLayout>
             <!--            3-->
@@ -105,7 +109,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="47dp"
@@ -113,6 +118,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_gray"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/setting_icon" />
 
                 <TextView
@@ -120,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/rubik"
-                    android:text="الاعدادات"
+                    android:text="@string/settings"
                     android:textSize="16sp" />
             </LinearLayout>
             <!--            4-->
@@ -129,7 +135,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="47dp"
@@ -137,6 +144,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_gray"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/info_icon" />
 
                 <TextView
@@ -144,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/rubik"
-                    android:text="عن التطبيق"
+                    android:text="@string/app_info"
                     android:textSize="16sp" />
             </LinearLayout>
             <!--            5-->
@@ -153,7 +161,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="47dp"
@@ -161,6 +170,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_gray"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/black_star_icon" />
 
                 <TextView
@@ -168,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/rubik"
-                    android:text="قيم التطبيق"
+                    android:text="@string/app_rating"
                     android:textSize="16sp" />
             </LinearLayout>
             <!--            6-->
@@ -177,7 +187,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="47dp"
@@ -185,6 +196,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_gray"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/location_icon" />
 
                 <TextView
@@ -192,7 +204,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/rubik"
-                    android:text="موقعي"
+                    android:text="@string/myLocation"
                     android:textSize="16sp" />
             </LinearLayout>
             <!--            7-->
@@ -201,7 +213,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="47dp"
@@ -209,6 +222,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_gray"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/favorite_icon" />
 
                 <TextView
@@ -216,20 +230,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/rubik"
-                    android:text="المفضلة"
+                    android:text="@string/favorite"
                     android:textSize="16sp" />
             </LinearLayout>
             <!--            8-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
                 <LinearLayout
                     android:id="@+id/delete_account"
-                    android:layout_width="170dp"
+                    android:layout_width="160dp"
                     android:layout_height="55dp"
                     android:layout_marginEnd="8dp"
                     android:clickable="true"
+                    android:focusable="true"
                     android:orientation="horizontal"
                     android:padding="16dp"
                     android:background="@drawable/btn_background"
@@ -238,18 +254,20 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/app_name"
                         android:src="@drawable/delete_icon"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="حذف الحساب"
+                        android:text="@string/delete_account"
                         android:textSize="16sp"
                         android:fontFamily="@font/rubik"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/logout"
-                    android:layout_width="170dp"
+                    android:layout_width="160dp"
                     android:layout_height="55dp"
+                    android:focusable="true"
                     android:padding="16dp"
                     android:clickable="true"
                     android:orientation="horizontal"
@@ -259,11 +277,12 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/app_name"
                         android:src="@drawable/logout_icon"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="تسجيل الخروج"
+                        android:text="@string/logout"
                         android:textSize="16sp"
                         android:fontFamily="@font/rubik"/>
                 </LinearLayout>
@@ -278,7 +297,7 @@
         android:id="@+id/profile_image"
         android:layout_width="108dp"
         android:layout_height="100dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:elevation="5dp"
         android:src="@drawable/user"
         android:translationY="-5dp"

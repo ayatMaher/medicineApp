@@ -14,7 +14,8 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="56dp"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/arrow_right"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +26,8 @@
         android:layout_height="82dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/circle"
-        android:src="@drawable/ic_forget"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_verify"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_back" />
@@ -45,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/medium"
-            android:text=" راجع بريدك الالكتروني"
+            android:text="@string/verify_email"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -54,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/rubik"
-            android:text="تم ارسال كود مكون من 4 ارقام الى البريد الالكتروني"
+            android:text="@string/email_description"
             android:textColor="#801C1A1A"
             android:textSize="14sp" />
 
@@ -63,11 +65,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik"
-            android:text="example@gmail.com"
+            android:text="@string/example_gmail_com_hint"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
         <LinearLayout
+            android:id="@+id/code_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="46dp"
@@ -79,11 +82,13 @@
                 android:id="@+id/edt_code1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:autofillHints="creditCardNumber"
                 android:background="@drawable/otp_box_background"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="LabelFor" />
             <Space
                 android:layout_width="8dp"
                 android:layout_height="0dp"/>
@@ -91,11 +96,13 @@
                 android:id="@+id/edt_code2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:autofillHints="creditCardNumber"
                 android:background="@drawable/otp_box_background"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="LabelFor" />
             <Space
                 android:layout_width="8dp"
                 android:layout_height="0dp"/>
@@ -103,11 +110,13 @@
                 android:id="@+id/edt_code3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:autofillHints="creditCardNumber"
                 android:background="@drawable/otp_box_background"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="LabelFor" />
             <Space
                 android:layout_width="8dp"
                 android:layout_height="0dp"/>
@@ -115,11 +124,13 @@
                 android:id="@+id/edt_code4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:autofillHints="creditCardNumber"
                 android:background="@drawable/otp_box_background"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="LabelFor" />
         </LinearLayout>
 
 
@@ -130,7 +141,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_background_profile"
             android:fontFamily="@font/rubik"
-            android:text="تأكيد"
+            android:text="@string/ensure"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -147,7 +158,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik"
-                android:text="الكود ينتهي خلال :"
+                android:text="@string/code_finish"
                 android:textColor="#7F1C1A1A"
                 android:textSize="14sp" />
 
@@ -157,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/rubik"
-                android:text="03:45"
+                android:text="@string/time"
                 android:textColor="#E94141"
                 android:textSize="14sp" />
 
@@ -175,7 +186,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik"
-                android:text="لم يصلني الكود الى البريد الالكتروني ،"
+                android:text="@string/not_sent_code"
                 android:textColor="#7F1C1A1A"
                 android:textSize="14sp" />
 
@@ -184,7 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik"
-                android:text="إعادة الارسال"
+                android:text="@string/resend"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 

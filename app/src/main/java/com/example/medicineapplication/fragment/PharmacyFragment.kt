@@ -2,7 +2,6 @@ package com.example.medicineapplication.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,6 @@ import com.example.medicineapplication.R
 import com.example.medicineapplication.adapter.PharmacyAdapter
 import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.databinding.FragmentPharmacyBinding
-import com.example.medicineapplication.model.GeneralResponse
 import com.example.medicineapplication.model.Pharmacy
 import com.example.medicineapplication.model.PharmacyResponse
 import retrofit2.Call

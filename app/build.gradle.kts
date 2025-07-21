@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.kapt")
-    id ("kotlin-android")
-    id ("kotlin-parcelize")
+    id("kotlin-android")
+    id("kotlin-parcelize")
     alias(libs.plugins.google.gms.google.services)
 }
 
@@ -69,8 +69,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
     //noinspection UseTomlInstead
-    implementation (libs.glide)
-    implementation (libs.play.services.location.v2101)
+    implementation(libs.glide)
+    implementation(libs.play.services.location.v2101)
     implementation(libs.maps.compose)
     implementation(libs.play.services.maps)
     implementation (libs.okhttp)
@@ -80,12 +80,12 @@ dependencies {
     // Import the BoM for the Firebase platform
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-    implementation (libs.firebase.auth.ktx)
-    implementation (libs.play.services.auth.v2100)
-    implementation (libs.facebook.android.sdk)
-    // معرفة النص الموجود في الصورة للروشيته
-    implementation (libs.text.recognition)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.play.services.auth.v2100)
+    implementation(libs.facebook.android.sdk)
+  
     // barcode
+
     implementation (libs.barcode.scanning)
     // Glide
     implementation(libs.glide) // هذا جيد
@@ -103,7 +103,15 @@ dependencies {
 
 
 
+    implementation(libs.barcode.scanning)
 
+    // اختبارات الوحدة (Unit Tests)
+    testImplementation(libs.junit)
+
+// لدعم الكوروتينز في الاختبارات (إذا تستخدمها)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+    implementation(libs.text.recognition.v1600)
 
 
 

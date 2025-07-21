@@ -22,6 +22,7 @@ import com.example.medicineapplication.api.ApiClient
 import com.example.medicineapplication.api.ApiService
 import com.example.medicineapplication.databinding.ActivityLogInBinding
 import com.example.medicineapplication.model.LoginResponse
+import com.example.medicineapplication.validator.LoginValidator
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -43,6 +44,9 @@ import retrofit2.Response
 class LogInActivity : AppCompatActivity() {
     lateinit var binding: ActivityLogInBinding
     private lateinit var apiService: ApiService
+
+    // test
+    private val loginValidator = LoginValidator()
 
     // call manager facebook
     private lateinit var callbackManager: CallbackManager
@@ -74,21 +78,21 @@ class LogInActivity : AppCompatActivity() {
 
         //click to log button
         binding.btnLog.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.btnLog.isEnabled = false
-            binding.btnLog.alpha = 0.5f
+            unEnableAndUnVisible()
             val email = binding.emailEditText.text.toString().trim()
             val password = binding.passwordEditText.text.toString().trim()
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "لو سمحت ادخل الايميل او كلمة المرور", Toast.LENGTH_SHORT)
-                    .show()
-                binding.progressBar.visibility = View.GONE
-                binding.btnLog.isEnabled = true
-                binding.btnLog.alpha = 1f
-            } else {
-                loginUser(email, password)
+            if (!loginValidator.isValidEmail(email) || !loginValidator.isValidPassword(password)) {
+                Toast.makeText(
+                    this,
+                    "الرجاء إدخال بريد إلكتروني وكلمة مرور صحيحة",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+                enableAndVisible()
             }
+
+            loginUser(email, password)
         }
         //log in with google
         binding.btnGoogle.setOnClickListener {
@@ -99,6 +103,36 @@ class LogInActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun enableAndVisible() {
+        binding.progressBar.visibility = View.GONE
+        binding.btnLog.isEnabled = true
+        binding.btnLog.alpha = 1f
+        binding.btnFacebook.isEnabled = true
+        binding.btnFacebook.alpha = 1f
+        binding.btnGoogle.isEnabled = true
+        binding.btnGoogle.alpha = 1f
+        binding.emailEditText.isEnabled = true
+        binding.emailEditText.alpha = 1f
+        binding.passwordEditText.isEnabled = true
+        binding.passwordEditText.alpha = 1f
+        binding.txtCreateAccount.isEnabled = true
+    }
+
+    private fun unEnableAndUnVisible() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnLog.isEnabled = false
+        binding.btnLog.alpha = 0.5f
+        binding.btnFacebook.isEnabled = false
+        binding.btnFacebook.alpha = 0.5f
+        binding.btnGoogle.isEnabled = false
+        binding.btnGoogle.alpha = 0.5f
+        binding.emailEditText.isEnabled = false
+        binding.emailEditText.alpha = 0.5f
+        binding.passwordEditText.isEnabled = false
+        binding.passwordEditText.alpha = 0.5f
+        binding.txtCreateAccount.isEnabled = false
     }
 
     private fun logInWithFacebook() {
@@ -187,31 +221,21 @@ class LogInActivity : AppCompatActivity() {
             val googleCredential = GoogleIdTokenCredential.createFrom(credential.data)
 
             val idToken = googleCredential.idToken
-            val email = googleCredential.id
             val name = googleCredential.displayName
-            val picture = googleCredential.profilePictureUri
-
-            Log.d("GOOGLE_LOGIN", "Name: $name")
-            Log.d("GOOGLE_LOGIN", "Email: $email")
-            Log.d("GOOGLE_LOGIN", "Token: $idToken")
-            Log.d("GOOGLE_LOGIN", "Photo: $picture")
-
             val provider = RequestBody.create("text/plain".toMediaTypeOrNull(), "google")
             val tokenBody = RequestBody.create("text/plain".toMediaTypeOrNull(), idToken)
-            Log.d("GOOGLE_LOGIN", "Token: $idToken")
             apiService.loginWithGoogle(provider, tokenBody)
                 .enqueue(object : Callback<LoginResponse> {
                     override fun onResponse(
                         call: Call<LoginResponse>,
                         response: Response<LoginResponse>
                     ) {
-                        Log.d("GOOGLE_LOGIN", provider.toString())
-                        Log.d("GOOGLE_LOGIN", tokenBody.toString())
+                        enableAndVisible()
                         if (response.isSuccessful && response.body() != null) {
-                            val responseData=response.body()!!.data
+                            val responseData = response.body()!!.data
                             val token = responseData?.accessToken
                             val userId = responseData?.user!!.id
-
+                            val location = responseData.user.location
                             // حفظ التوكن
                             val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
                             sharedPref.edit {
@@ -219,30 +243,49 @@ class LogInActivity : AppCompatActivity() {
                                 putInt("USER_ID", userId)
                                 apply()
                             }
-                            Log.d("USER_ID", userId.toString())
-                            Toast.makeText(this@LogInActivity, "مرحبًا $name", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@LogInActivity, NavigationDrawerActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            if (location == null) {
+                                enableAndVisible()
+                                // المستخدم ليس لديه موقع، انتقلي إلى واجهة إضافة الموقع
+                                val intent =
+                                    Intent(this@LogInActivity, LocationActivity::class.java)
+                                intent.putExtra("USER_ID", userId)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                enableAndVisible()
+                                // المستخدم لديه موقع، انتقلي للواجهة الرئيسية
+                                val intent =
+                                    Intent(this@LogInActivity, NavigationDrawerActivity::class.java)
+                                startActivity(intent)
+
+                                finish()
+                            }
+                            Toast.makeText(this@LogInActivity, "مرحبًا $name", Toast.LENGTH_SHORT)
+                                .show()
+                            enableAndVisible()
                         } else {
-                            Toast.makeText(this@LogInActivity, "فشل في تسجيل الدخول عبر Google", Toast.LENGTH_SHORT).show()
-                            Log.e("GOOGLE_LOGIN", "Error: ${response.errorBody()?.string()}")
+                            Toast.makeText(
+                                this@LogInActivity,
+                                "فشل في تسجيل الدخول عبر Google",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            enableAndVisible()
                         }
                     }
 
                     override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                        Toast.makeText(this@LogInActivity, "خطأ: ${t.message}", Toast.LENGTH_SHORT).show()
-                        Log.e("GOOGLE_LOGIN", "Failure: ${t.message}")
+                        Toast.makeText(this@LogInActivity, "خطأ: ${t.message}", Toast.LENGTH_SHORT)
+                            .show()
+                        enableAndVisible()
                     }
                 })
-//            Toast.makeText(this, "مرحبًا $name", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this, NavigationDrawerActivity::class.java)
-//            startActivity(intent)
-
-            // يمكنك الآن إرسال البيانات إلى Laravel API
-            // sendGoogleLoginToLaravel(name, email, idToken, picture)
         } else {
-            Log.w("GOOGLE_LOGIN", "Credential is not Google ID token")
+            Toast.makeText(
+                this@LogInActivity,
+                "Credential is not Google ID token",
+                Toast.LENGTH_SHORT
+            ).show()
+            enableAndVisible()
         }
     }
 
@@ -251,9 +294,7 @@ class LogInActivity : AppCompatActivity() {
         binding.btnLog.isEnabled = false
         call.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                binding.progressBar.visibility = View.GONE
-                binding.btnLog.isEnabled = true
-                binding.btnLog.alpha = 1f
+                enableAndVisible()
                 if (response.isSuccessful && response.body() != null) {
                     val responseData = response.body()?.data
                     if (responseData != null) {
@@ -267,8 +308,6 @@ class LogInActivity : AppCompatActivity() {
                             putInt("USER_ID", userId)
                             apply()
                         }
-                        Log.e("LOGIN_TOKEN", "Saved token: $token")
-
 
                         Toast.makeText(
                             this@LogInActivity,
@@ -276,7 +315,7 @@ class LogInActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         )
                             .show()
-                        binding.btnLog.isEnabled = true
+                        enableAndVisible()
                         // الانتقال للواجهة التالية
                         val intent =
                             Intent(this@LogInActivity, NavigationDrawerActivity::class.java)
@@ -290,9 +329,7 @@ class LogInActivity : AppCompatActivity() {
                             val errorMessage = jsonObject.getJSONObject("data").getString("error")
                             Toast.makeText(this@LogInActivity, errorMessage, Toast.LENGTH_SHORT)
                                 .show()
-                            binding.progressBar.visibility = View.GONE
-                            binding.btnLog.isEnabled = true
-                            binding.btnLog.alpha = 1f
+                           enableAndVisible()
                         } catch (e: Exception) {
                             Toast.makeText(
                                 this@LogInActivity,
@@ -306,16 +343,12 @@ class LogInActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(errorBody!!)
                     val errorMessage = jsonObject.getJSONObject("data").getString("error")
                     Toast.makeText(this@LogInActivity, errorMessage, Toast.LENGTH_SHORT).show()
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnLog.isEnabled = true
-                    binding.btnLog.alpha = 1f
+                   enableAndVisible()
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                binding.progressBar.visibility = View.GONE
-                binding.btnLog.isEnabled = true
-                binding.btnLog.alpha = 1f
+                enableAndVisible()
                 Toast.makeText(this@LogInActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })

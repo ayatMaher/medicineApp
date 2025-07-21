@@ -7,42 +7,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/log_background"
     tools:context=".CurrentUserLocationActivity">
-    <RelativeLayout
-        android:id="@+id/titleText"
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/activity_header"
         android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="44dp"
-        android:elevation="100dp"
-        android:layoutDirection="rtl"
-        app:layout_constraintBottom_toTopOf="@+id/mapFragment"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginVertical="10dp"
-            android:layout_marginEnd="360dp"
-            android:contentDescription="رجوع"
-            android:src="@drawable/arrow_right" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/medium"
-            android:text="موقعك على الخريطة"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-
-    </RelativeLayout>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- الموقع المختار -->
 
@@ -53,7 +26,7 @@
         android:layout_height="83dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="68dp"
         android:background="@drawable/choose_location_btn_background"
@@ -83,15 +56,16 @@
             android:layout_marginTop="19dp"
             android:layout_marginEnd="17dp"
             android:fontFamily="@font/rubik"
-            android:text="العنوان"
             android:inputType="textMultiLine"
+            android:text="@string/full_address"
             android:textColor="@color/black"
             android:textDirection="rtl"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addressIcon"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="TextViewEdits" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <fragment
@@ -101,12 +75,12 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="74dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/addressText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+        app:layout_constraintTop_toBottomOf="@+id/header" />
 
     <!-- زر تأكيد الموقع -->
     <androidx.appcompat.widget.AppCompatButton
@@ -114,13 +88,25 @@
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/btn_background_profile"
         android:fontFamily="@font/rubik"
-        android:text="تعديل الموقع"
+        android:text="@string/change_location"
         android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:progressTint="@color/primary_color"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/changeButton"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

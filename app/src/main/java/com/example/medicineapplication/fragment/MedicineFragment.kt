@@ -2,7 +2,6 @@ package com.example.medicineapplication.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -57,11 +56,11 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
     private lateinit var medicineAdapter: MedicineAdapter
     private val medicineData = ArrayList<Treatment>()
 
-    private var token: String=" "
-    private var userId: Int=-1
+    private var token: String = " "
+    private var userId: Int = -1
 
-    private var medicineName: String=""
-    private var categoryId: String?=""
+    private var medicineName: String = ""
+    private var categoryId: String? = ""
 
     private var selectedCategoryId: String? = null
 
@@ -75,8 +74,8 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         _binding = FragmentMedicineBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
-        val sharedPref = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        val sharedPref =
+            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
         token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
         userId = sharedPref.getInt("USER_ID", -1)
 
@@ -100,19 +99,19 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
         categoryId = selectedCategoryId ?: arguments?.getString("category_id") ?: ""
 
-        if(categoryId==null){
-            categoryId=""
+        if (categoryId == null) {
+            categoryId = ""
         }
 
         if (token.isNotEmpty()) {
-            if (categoryId?.isNotEmpty()==true&&medicineName.isEmpty()){
-                fetchTreatments(token ,categoryId.toString(),"")
+            if (categoryId?.isNotEmpty() == true && medicineName.isEmpty()) {
+                fetchTreatments(token, categoryId.toString(), "")
                 Toast.makeText(requireContext(), " أولاً", Toast.LENGTH_SHORT).show()
-            }else if(categoryId?.isNotEmpty()==true&&medicineName.isNotEmpty()){
-                fetchTreatments(token ,categoryId.toString(),medicineName)
+            } else if (categoryId?.isNotEmpty() == true && medicineName.isNotEmpty()) {
+                fetchTreatments(token, categoryId.toString(), medicineName)
                 Toast.makeText(requireContext(), " 1111111111", Toast.LENGTH_SHORT).show()
-            }else if(categoryId==null&&medicineName.isNotEmpty()){
-                fetchTreatments(token ,"",medicineName)
+            } else if (categoryId == null && medicineName.isNotEmpty()) {
+                fetchTreatments(token, "", medicineName)
             }
         } else {
             Toast.makeText(requireContext(), "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
@@ -121,7 +120,6 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         binding.qr.setOnClickListener {
             startQRScanner()
         }
-
 
         //category
         showCategory()
@@ -159,7 +157,8 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         // الضغط على Enter من الكيبورد
         binding.edtSearch.setOnEditorActionListener { _: TextView, actionId: Int, event: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+            ) {
                 performSearch()
                 true
             } else {
@@ -181,13 +180,14 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
             return
         }
 
-        val sharedPref = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        val sharedPref =
+            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
         val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
 
 
 
         if (token.isNotEmpty()) {
-            fetchTreatments(token ,categoryId.toString(),medicineName)
+            fetchTreatments(token, categoryId.toString(), medicineName)
         } else {
             Toast.makeText(requireContext(), "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
         }
@@ -202,47 +202,65 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
                     response: Response<TreatmentsSearchResponse>
                 ) {
                     if (response.isSuccessful && response.body()?.success == true) {
-                        val results = response.body()?.data?.filterIsInstance<Treatment>() ?: emptyList()
+                        val results =
+                            response.body()?.data?.filterIsInstance<Treatment>() ?: emptyList()
                         medicineAdapter.updateData(results)
 
-                        Toast.makeText(requireContext(), "${categoryId},${treatment}تم العثور على نتائج", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "${categoryId},${treatment}تم العثور على نتائج",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
 
-                        Toast.makeText(requireContext(), "${categoryId},${treatment} لم يتم العثور على نتائج", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "${categoryId},${treatment} لم يتم العثور على نتائج",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<TreatmentsSearchResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
                 }
             })
     }
-
 
 
     private fun showCategory() {
 
         ApiClient.apiService.viewCategories(token)
             .enqueue(object : Callback<ViewCategoriesResponse> {
-                override fun onResponse(call: Call<ViewCategoriesResponse>, response: Response<ViewCategoriesResponse>) {
+                override fun onResponse(
+                    call: Call<ViewCategoriesResponse>,
+                    response: Response<ViewCategoriesResponse>
+                ) {
                     if (response.isSuccessful && response.body()?.success == true) {
 
                         val categories = response.body()?.data ?: emptyList()
                         val updatedList = categories.map {
-                            it.copy(isFeatured=true)
+                            it.copy(isFeatured = true)
                         }
                         data.addAll(updatedList)
                         //Toast.makeText(requireContext(), "تم العثور على نتائج الانواع", Toast.LENGTH_SHORT).show()
                         val selectedCategoryName = arguments?.getString("category_name")
-                        categoryAdapter = CategoryAdapter(requireActivity(), data, this@MedicineFragment,selectedCategoryName)
+                        categoryAdapter = CategoryAdapter(
+                            requireActivity(),
+                            data,
+                            this@MedicineFragment,
+                            selectedCategoryName
+                        )
                         binding.rvCategory.adapter = categoryAdapter
-                    }else {
-                       // Toast.makeText(requireContext(), " لم يتم العثور على نتائج الانواع", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Toast.makeText(requireContext(), " لم يتم العثور على نتائج الانواع", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ViewCategoriesResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
                 }
             })
 
@@ -255,24 +273,33 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         binding.rvCategoryMedicine.adapter = medicineAdapter
     }
 
-    private fun storeSearchTreatment(token: String,userId: String,treatmentId: String){
-        ApiClient.apiService.storeSearchTreatment(token,userId,treatmentId)
+    private fun storeSearchTreatment(token: String, userId: String, treatmentId: String) {
+        ApiClient.apiService.storeSearchTreatment(token, userId, treatmentId)
             .enqueue(object : Callback<GeneralResponse> {
-                override fun onResponse(call: Call<GeneralResponse>, response: Response<GeneralResponse>) {
+                override fun onResponse(
+                    call: Call<GeneralResponse>,
+                    response: Response<GeneralResponse>
+                ) {
                     if (response.isSuccessful && response.body()?.success == true) {
 
                         //val categories = response.body()?.data ?: emptyList()
-                        Toast.makeText(requireContext(), "نجح ${response.body()}", Toast.LENGTH_LONG).show()
-
-                        Log.d("hhh", "نجح ${response.body()}")
-
-                    }else {
-                         Toast.makeText(requireContext(), " لم يتم العثور على نتائج", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "نجح ${response.body()}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            " لم يتم العثور على نتائج",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "فشل الاتصال: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
                 }
             })
 
@@ -288,7 +315,7 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
         val request = FavoriteMedicineRequest(userId, medicineId)
 
-        ApiClient.apiService.storFavoriteMedicine( token, request)
+        ApiClient.apiService.storFavoriteMedicine(token, request)
             .enqueue(object : Callback<FavoriteMedicineResponse> {
                 override fun onResponse(
                     call: Call<FavoriteMedicineResponse>,
@@ -297,7 +324,11 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
                     val errorBody = response.errorBody()?.string()
 
                     if (response.isSuccessful && response.body()?.success == true) {
-                        Toast.makeText(requireContext(), "تمت الإضافة إلى المفضلة", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "تمت الإضافة إلى المفضلة",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                         // ✅ تحديث حالة isFavorite في القائمة وإبلاغ الـ Adapter
                         val index = medicineData.indexOfFirst { it.id == medicineId }
@@ -309,12 +340,11 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
                     } else {
                         val errorMessage = try {
                             val json = org.json.JSONObject(errorBody ?: "")
-                            json.optJSONObject("data")?.optString("error") ?: "فشل في الإضافة للمفضلة"
+                            json.optJSONObject("data")?.optString("error")
+                                ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
-                            "فشل في الإضافة للمفضلة"
+                            "فشل في الإضافة للمفضلة${e.message}"
                         }
-
-                        Log.e("FavoriteError", "Response code: ${response.code()}, Error body: $errorBody")
                         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -359,8 +389,6 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
     override fun onItemClick(position: Int, id: String) {
         selectedCategoryId = id
-        Log.d("SelectedCategory", "ID: $selectedCategoryId")
-
         val categoryName = data[position].name
         val categoryId = data[position].id
         val bundle = Bundle().apply {
@@ -374,19 +402,16 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
     override fun onItemClickMedicine(position: Int, id: String) {
 
-        storeSearchTreatment(token,userId.toString(),id.toString())
-        Log.d("hhh", "نجح ${id}")
-
+        storeSearchTreatment(token, userId.toString(), id.toString())
         val treatment = medicineAdapter.data[position]
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
         intent.putExtra("pharmacy_name","pharmacy")
         intent.putExtra("medicine", treatment)
         startActivity(intent)
-}
+    }
 
 
     override fun onAddMedicineToFavorite(medicineId: Int) {
-        Log.d("DEBUG", "medicineId clicked: $medicineId")
         addMedicineToFavorite(medicineId)
     }
 

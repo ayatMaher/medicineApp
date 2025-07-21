@@ -77,19 +77,6 @@ data class StoreLocationResponse(
 )
 
 
-
-data class LocationRequest(
-    val latitude: Double,
-    val longitude: Double,
-    val formatted_address: String,
-    val country: String,
-    val region: String,
-    val city: String,
-    val district: String,
-    val postal_code: String,
-    val location_type: String
-)
-
 data class LocationData(
     val id: Int,
     val user: LocationUser,

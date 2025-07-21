@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.net.toUri
@@ -59,14 +57,14 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
     private var items: ArrayList<Category> = ArrayList()
 
     private lateinit var pharmacyHomeAdapter: PharmacyAdapter
-    private var pharmacy_items: ArrayList<Pharmacy> = ArrayList()
+    private var pharmacyItems: ArrayList<Pharmacy> = ArrayList()
 
     private var token: String = " "
     private var userId: Int = -1
 
 
     private lateinit var medicineAdapter: MedicineAdapter
-    private var medicine_items: ArrayList<Treatment> = ArrayList()
+    private var medicineItems: ArrayList<Treatment> = ArrayList()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -79,7 +77,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
         val root: View = binding.root
 
         val sharedPref =
-            requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+            requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
         userId = sharedPref.getInt("USER_ID", -1)
 
@@ -141,7 +139,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
     }
 
     private fun showMedicine() {
-        medicine_items.clear()
+        medicineItems.clear()
 
         ApiClient.apiService.getTopTreatment(token)
             .enqueue(object : Callback<MedicinesWithCategoryResponse> {
@@ -155,6 +153,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                         // الآن اجلب المفضلة
                         ApiClient.apiService.getFavoriteMedicines("Bearer $token")
                             .enqueue(object : Callback<FavoriteTreatmentResponse> {
+                                @SuppressLint("NotifyDataSetChanged")
                                 override fun onResponse(
                                     call2: Call<FavoriteTreatmentResponse>,
                                     response2: Response<FavoriteTreatmentResponse>
@@ -169,7 +168,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                                             it.copy(is_favorite = favoriteIds.contains(it.id))
                                         }
 
-                                        medicine_items.addAll(updatedList)
+                                        medicineItems.addAll(updatedList)
                                         medicineAdapter.notifyDataSetChanged()
                                     }
                                 }
@@ -186,7 +185,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                 override fun onFailure(call: Call<MedicinesWithCategoryResponse>, t: Throwable) {}
             })
 
-        medicineAdapter = MedicineAdapter(requireActivity(), medicine_items, this@HomeFragment)
+        medicineAdapter = MedicineAdapter(requireActivity(), medicineItems, this@HomeFragment)
         binding.rvMedicine.adapter = medicineAdapter
     }
 
@@ -233,7 +232,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
     }
 
     private fun showPharmacy() {
-        pharmacy_items.clear()
+        pharmacyItems.clear()
 
         ApiClient.apiService.nearbyPharmacies(token).enqueue(object : Callback<PharmacyResponse> {
             override fun onResponse(
@@ -242,9 +241,9 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
             ) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     val pharmacies = response.body()?.data ?: emptyList()
-                    pharmacy_items.addAll(pharmacies)
+                    pharmacyItems.addAll(pharmacies)
                     pharmacyHomeAdapter =
-                        PharmacyAdapter(requireActivity(), pharmacy_items, this@HomeFragment)
+                        PharmacyAdapter(requireActivity(), pharmacyItems, this@HomeFragment)
                     binding.rvPharmacy.adapter = pharmacyHomeAdapter
                 }
             }
@@ -305,25 +304,20 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                         ).show()
 
                         // ✅ تحديث حالة isFavorite في القائمة وإبلاغ الـ Adapter
-                        val index = pharmacy_items.indexOfFirst { it.id == pharmacyId }
+                        val index = pharmacyItems.indexOfFirst { it.id == pharmacyId }
                         if (index != -1) {
-                            pharmacy_items[index].is_favorite = true
+                            pharmacyItems[index].is_favorite = true
                             pharmacyHomeAdapter.notifyItemChanged(index)
                         }
 
                     } else {
                         val errorMessage = try {
-                            val json = org.json.JSONObject(errorBody ?: "")
+                            val json = JSONObject(errorBody ?: "")
                             json.optJSONObject("data")?.optString("error")
                                 ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
-                            "فشل في الإضافة للمفضلة"
+                            "فشل في الإضافة للمفضلة${e.message}"
                         }
-
-                        Log.e(
-                            "FavoriteError",
-                            "Response code: ${response.code()}, Error body: $errorBody"
-                        )
                         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -359,25 +353,20 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                         ).show()
 
                         // ✅ تحديث حالة isFavorite في القائمة وإبلاغ الـ Adapter
-                        val index = medicine_items.indexOfFirst { it.id == medicineId }
+                        val index = medicineItems.indexOfFirst { it.id == medicineId }
                         if (index != -1) {
-                            medicine_items[index].is_favorite = true
+                            medicineItems[index].is_favorite = true
                             medicineAdapter.notifyItemChanged(index)
                         }
 
                     } else {
                         val errorMessage = try {
-                            val json = org.json.JSONObject(errorBody ?: "")
+                            val json = JSONObject(errorBody ?: "")
                             json.optJSONObject("data")?.optString("error")
                                 ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
-                            "فشل في الإضافة للمفضلة"
+                            "${e.message}فشل في الإضافة للمفضلة"
                         }
-
-                        Log.e(
-                            "FavoriteError",
-                            "Response code: ${response.code()}, Error body: $errorBody"
-                        )
                         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -394,6 +383,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
         val apiService = ApiClient.instance.create(ApiService::class.java)
         apiService.getCurrentUser(token).enqueue(object : Callback<UserResponse> {
+            @SuppressLint("SetTextI18n")
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     val user = response.body()!!.data
@@ -421,7 +411,10 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
                             if (errorMessage.contains("غير مصرح")) {
                                 // 🧹 حذف التوكن
-                                val sharedPref = requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                                val sharedPref = requireActivity().getSharedPreferences(
+                                    "MyAppPrefs",
+                                    MODE_PRIVATE
+                                )
                                 sharedPref.edit { clear() }
 
                                 // 🔁 إعادة التوجيه إلى تسجيل الدخول
@@ -475,7 +468,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
     // pharmacy click
     override fun onItemClickPharmacy(position: Int, id: String) {
-        val pharmacy = pharmacy_items[position]
+        val pharmacy = pharmacyItems[position]
         val intent = Intent(requireContext(), PharmacyDetailsActivity::class.java)
         intent.putExtra("pharmacy", pharmacy)
         startActivity(intent)
@@ -483,7 +476,7 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
     // medicine click
     override fun onItemClickMedicine(position: Int, id: String) {
-        val medicine = medicine_items[position]
+        val medicine = medicineItems[position]
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
         intent.putExtra("pharmacy_name","")
         intent.putExtra("medicine", medicine)
@@ -497,7 +490,6 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
 
 
     override fun onAddMedicineToFavorite(medicineId: Int) {
-        Log.d("DEBUG", "medicineId clicked: $medicineId")
         addMedicineToFavorite(medicineId)
     }
 

@@ -2,7 +2,6 @@ package com.example.medicineapplication
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -45,24 +44,16 @@ class ResetPasswordActivity : AppCompatActivity() {
 
         //save button
         binding.btnSave.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.btnSave.isEnabled = false
-            binding.btnSave.alpha = 0.5f
+            unEnableAndUnVisible()
 
             val newPassword = binding.passwordEditText.text.toString().trim()
             val confirmPassword = binding.confirmPasswordEditText.text.toString().trim()
-            Log.d("ResetPassword", "Password: '$newPassword'")
-            Log.d("ResetPassword", "Confirm: '$confirmPassword'")
             if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "الرجاء إدخال كلمة المرور", Toast.LENGTH_SHORT).show()
-                binding.progressBar.visibility = View.GONE
-                binding.btnSave.isEnabled = true
-                binding.btnSave.alpha = 1f
+                enableAndVisible()
             } else if (newPassword != confirmPassword) {
                 Toast.makeText(this, "كلمات المرور غير متطابقة", Toast.LENGTH_SHORT).show()
-                binding.progressBar.visibility = View.GONE
-                binding.btnSave.isEnabled = true
-                binding.btnSave.alpha = 1f
+                enableAndVisible()
             } else {
                 resetPassword(email, token, newPassword, confirmPassword)
             }
@@ -70,6 +61,26 @@ class ResetPasswordActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun unEnableAndUnVisible() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnSave.isEnabled = false
+        binding.btnSave.alpha = 0.5f
+        binding.passwordEditText.isEnabled = false
+        binding.passwordEditText.alpha = 0.5f
+        binding.confirmPasswordEditText.isEnabled = false
+        binding.confirmPasswordEditText.alpha = 0.5f
+    }
+
+    private fun enableAndVisible() {
+        binding.progressBar.visibility = View.GONE
+        binding.btnSave.isEnabled = true
+        binding.btnSave.alpha = 1f
+        binding.passwordEditText.isEnabled = true
+        binding.passwordEditText.alpha = 1f
+        binding.confirmPasswordEditText.isEnabled = true
+        binding.confirmPasswordEditText.alpha = 1f
     }
 
     private fun resetPassword(
@@ -90,9 +101,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                     call: Call<GenericResponse>,
                     response: Response<GenericResponse>
                 ) {
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnSave.isEnabled = true
-                    binding.btnSave.alpha = 1f
+                    enableAndVisible()
                     if (response.isSuccessful && response.body()?.success == true) {
                         Toast.makeText(
                             this@ResetPasswordActivity,
@@ -113,16 +122,12 @@ class ResetPasswordActivity : AppCompatActivity() {
                             e.message
                         }
                         Toast.makeText(this@ResetPasswordActivity, msg, Toast.LENGTH_LONG).show()
-                        binding.progressBar.visibility = View.GONE
-                        binding.btnSave.isEnabled = true
-                        binding.btnSave.alpha = 1f
+                        enableAndVisible()
                     }
                 }
 
                 override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnSave.isEnabled = true
-                    binding.btnSave.alpha = 1f
+                    enableAndVisible()
                     Toast.makeText(
                         this@ResetPasswordActivity,
                         "فشل الاتصال: ${t.message}",

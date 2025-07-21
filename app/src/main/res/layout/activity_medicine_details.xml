@@ -21,7 +21,6 @@
             android:id="@+id/header"
             layout="@layout/activity_header"
             android:layout_width="0dp"
-            android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@id/view"
             app:layout_constraintStart_toStartOf="@id/view"
@@ -183,6 +182,7 @@
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:gravity="center"
+
                     android:orientation="vertical">
 
                     <ImageView

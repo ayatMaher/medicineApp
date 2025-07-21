@@ -1,6 +1,7 @@
 package com.example.medicineapplication
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.medicineapplication.databinding.ActivityAddingPrescriptionBinding
+import com.example.medicineapplication.validator.DrugNameExtractor
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -26,7 +28,7 @@ import java.io.File
 @Suppress("DEPRECATION")
 class AddingPrescriptionActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityAddingPrescriptionBinding
+    private lateinit var binding: ActivityAddingPrescriptionBinding
     private lateinit var imageUri: Uri
 
     private val pickImageLauncher =
@@ -52,14 +54,27 @@ class AddingPrescriptionActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
-        // عند الضغط على icon_add، نعرض حوار اختيار الصورة
+        // صلاحيات READ_MEDIA_IMAGES (Android 13+)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                    102
+                )
+            }
+        }
+
         binding.iconAdd.setOnClickListener {
             showImagePickerDialog()
         }
 
-        binding.btnBackArrow.setOnClickListener {
+        binding.header.backButton.setOnClickListener {
             finish()
         }
+
     }
 
     private fun showImagePickerDialog() {
@@ -76,7 +91,6 @@ class AddingPrescriptionActivity : AppCompatActivity() {
     }
 
     private fun openCamera() {
-        // طلب صلاحية الكاميرا فقط عند الحاجة (اختياري)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED
         ) {
@@ -94,63 +108,73 @@ class AddingPrescriptionActivity : AppCompatActivity() {
 
     private fun showImageInIconAdd(uri: Uri) {
         val container = binding.iconAdd
-
-        // حذف كل العناصر داخل icon_add
         container.removeAllViews()
 
-        // إنشاء صورة جديدة
         val imageView = ImageView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            scaleType = ImageView.ScaleType.FIT_CENTER // ✅ مهم: لعرض الصورة بالحجم الطبيعي
+            scaleType = ImageView.ScaleType.FIT_CENTER
             setImageURI(uri)
+            adjustViewBounds = true
+        }
+
+        container.addView(imageView)
+
+        try {
             val image = InputImage.fromFilePath(this@AddingPrescriptionActivity, uri)
             val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
             recognizer.process(image)
                 .addOnSuccessListener { visionText ->
                     val fullText = visionText.text
-                    val drugName = extractDrugName(fullText)
+                    val foundDrugs = DrugNameExtractor().extract(fullText)
 
-                    if (drugName != null) {
-                        Log.d("EXTRACTED_DRUG", "تم التعرف على الدواء: $drugName")
-                        Toast.makeText(this@AddingPrescriptionActivity, "تم التعرف على الدواء: $drugName", Toast.LENGTH_LONG).show()
-                        // انتقل لصفحة البحث مع اسم الدواء
-//                        val intent = Intent(this, MedicineFragment::class.java)
-//                        intent.putExtra("DRUG_NAME", drugName)
-//                        startActivity(intent)
+                    if (foundDrugs.isNotEmpty()) {
+                        val result = foundDrugs.joinToString(", ")
+                        Log.d("EXTRACTED_DRUGS", "تم التعرف على الأدوية: $result")
+                        Toast.makeText(
+                            this@AddingPrescriptionActivity,
+                            "تم التعرف على: $result",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        // يمكنك الانتقال لصفحة البحث هنا أو عرضها للمستخدم
+                        if (foundDrugs.isNotEmpty()) {
+                            val result = foundDrugs.joinToString(", ")
+                            val drugNameForSearch = foundDrugs.first()
+
+                            Toast.makeText(this, "تم التعرف على: $result", Toast.LENGTH_LONG).show()
+
+                            binding.iconAdd.isEnabled = false
+                            binding.btnContinue.setOnClickListener {
+                                val intent = Intent(this, PharmacyActivity::class.java)
+                                intent.putExtra("drug_name", drugNameForSearch)
+                                startActivity(intent)
+                            }
+                        }
                     } else {
                         Toast.makeText(
                             this@AddingPrescriptionActivity,
-                            "لم يتم العثور على اسم دواء",
+                            "لم يتم العثور على أسماء أدوية معروفة",
                             Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        ).show()
                     }
                 }
-                .addOnFailureListener {
+
+                .addOnFailureListener { e ->
+                    Log.e("OCR_ERROR", "خطأ أثناء تحليل النص: ${e.localizedMessage}")
                     Toast.makeText(
                         this@AddingPrescriptionActivity,
-                        "فشل في قراءة النص",
+                        "فشل في قراءة النص: ${e.localizedMessage}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            adjustViewBounds = true // ✅ يسمح للارتفاع يتكيف حسب حجم الصورة
-        }
 
-
-        // إضافة الصورة داخل icon_add
-        container.addView(imageView)
-    }
-    private fun extractDrugName(text: String): String? {
-        val knownDrugs = listOf("Panadol", "Augmentin", "Aspirin", "Brufen", "Amoxicillin")
-        for (drug in knownDrugs) {
-            if (text.contains(drug, ignoreCase = true)) {
-                return drug
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "خطأ في تحميل الصورة", Toast.LENGTH_SHORT).show()
         }
-        return null
     }
+
 }

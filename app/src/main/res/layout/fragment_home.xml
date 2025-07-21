@@ -51,7 +51,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/bold"
-                    android:text="مرحبا, غيداء"
+                    android:text="@string/hello_user"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/profile_image"
@@ -67,7 +67,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/circle"
-                    android:contentDescription="Search"
+                    android:contentDescription="@string/app_name"
                     android:padding="10dp"
                     android:src="@drawable/search_icon"
                     app:layout_constraintStart_toEndOf="@id/notification_icon"
@@ -80,7 +80,7 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/circle"
-                    android:contentDescription="Notification"
+                    android:contentDescription="@string/app_name"
                     android:padding="10dp"
                     android:src="@drawable/notification"
                     app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="95dp"
                     android:fontFamily="@font/rubik"
-                    android:text="ابحث عن دوائك بسهولة... واعرف أماكن توفره بالقرب منك فوراً!"
+                    android:text="@string/search_easily_for_medicine"
                     android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -117,7 +117,7 @@
                     android:background="@drawable/btn_background"
                     android:backgroundTint="@color/primary_color"
                     android:fontFamily="@font/rubik"
-                    android:text="انضم الينا كصيدلية"
+                    android:text="@string/join_as_pharmacy"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -143,7 +143,7 @@
                         android:layout_marginStart="5dp"
                         android:fontFamily="@font/rubik"
                         android:padding="8dp"
-                        android:text="تحميل وصفة الطبيب"
+                        android:text="@string/load_pre"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -151,6 +151,7 @@
                         android:layout_height="16dp"
                         android:layout_gravity="center_vertical"
                         android:adjustViewBounds="true"
+                        android:contentDescription="@string/app_name"
                         android:scaleType="fitCenter"
                         android:src="@drawable/upload_icon" />
 
@@ -200,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bold"
-                android:text="الصيدليات القريبة من موقعك"
+                android:text="@string/near_pharmacy"
                 android:textSize="16sp"
                 android:layout_marginStart="5dp"
                 app:layout_constraintStart_toStartOf="@id/pharmacy_part"
@@ -238,7 +239,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bold"
                 android:layout_marginStart="5dp"
-                android:text="الأدوية الأكثر استخداماً"
+                android:text="@string/medicine_always_use"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/medicine_part"
                 app:layout_constraintTop_toTopOf="@id/medicine_part" />

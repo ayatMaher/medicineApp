@@ -1,26 +1,66 @@
 {
   "project_info": {
-    "project_number": "158399876041",
-    "project_id": "medicine-application-529c1",
-    "storage_bucket": "medicine-application-529c1.firebasestorage.app"
+    "project_number": "429602649937",
+    "firebase_url": "https://medical-consulting-app-default-rtdb.firebaseio.com",
+    "project_id": "medical-consulting-app",
+    "storage_bucket": "medical-consulting-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:158399876041:android:ae871aae91f55ce3417618",
+        "mobilesdk_app_id": "1:429602649937:android:a454703c29c9425e4b0570",
         "android_client_info": {
-          "package_name": "com.example.medicineapplication"
+          "package_name": "com.example.medicalconsultingapplication"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "429602649937-68ji624mupsiu85n52c3cnpad2665l2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyA4Z7FlhOhYycaQJvZivVTdnYGz-LMztoU"
+          "current_key": "AIzaSyDW2kTiyDZD0XJ-W60AM2We_ByWVtqMSrM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429602649937-68ji624mupsiu85n52c3cnpad2665l2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429602649937:android:928a14944f2916024b0570",
+        "android_client_info": {
+          "package_name": "com.example.medicineapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429602649937-68ji624mupsiu85n52c3cnpad2665l2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDW2kTiyDZD0XJ-W60AM2We_ByWVtqMSrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429602649937-68ji624mupsiu85n52c3cnpad2665l2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

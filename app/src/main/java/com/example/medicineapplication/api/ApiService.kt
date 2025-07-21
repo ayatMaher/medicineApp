@@ -12,6 +12,7 @@ import com.example.medicineapplication.model.GenericResponse
 import com.example.medicineapplication.model.LoginResponse
 import com.example.medicineapplication.model.MedicineResponse
 import com.example.medicineapplication.model.MedicinesWithCategoryResponse
+import com.example.medicineapplication.model.NotificationResponse
 import com.example.medicineapplication.model.PharmacyResponse
 import com.example.medicineapplication.model.RegisterResponse
 import com.example.medicineapplication.model.StoreAppRatingResponse
@@ -228,5 +229,17 @@ interface ApiService {
         @Body request: storeTreatmentAvailbilteRequest
     ): Call<GeneralResponse>
 
+
+    @POST("api/user/update-device-token")
+    fun updateDeviceToken(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, String>
+    ): Call<GeneralResponse>
+
+
+    @GET("api/notifications/current-user")
+    fun notificationorForCurrentUser(
+        @Header("Authorization") token: String,
+    ): Call<NotificationResponse>
 
 }

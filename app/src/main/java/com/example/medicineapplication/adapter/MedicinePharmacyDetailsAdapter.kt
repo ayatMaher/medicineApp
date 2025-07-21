@@ -7,10 +7,11 @@ import com.bumptech.glide.Glide
 import com.example.medicineapplication.R
 import com.example.medicineapplication.databinding.MedicinePharmacyDetailsItemBinding
 import com.example.medicineapplication.model.Medicine
+import com.example.medicineapplication.model.Treatment
 
 class MedicinePharmacyDetailsAdapter(
     private var activity: Activity,
-    private var data: ArrayList<Medicine>,
+    private var data: ArrayList<Treatment>,
     private var itemClickListener: ItemClickListener,
 ) : RecyclerView.Adapter<MedicinePharmacyDetailsAdapter.ViewHolder>() {
 
@@ -18,7 +19,7 @@ class MedicinePharmacyDetailsAdapter(
         RecyclerView.ViewHolder(binding.root)
 
     interface ItemClickListener {
-        fun onItemClickMedicine(position: Int, id: String)
+        fun onItemClickMedicine(position: Int, treatment: Treatment)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,7 +43,7 @@ class MedicinePharmacyDetailsAdapter(
             .into(holder.binding.medicineImage)
 
         // ✅ عرض السعر وسعر الخصم إن وُجد
-        val stock = item.pharmacy_stock.firstOrNull()
+        val stock = item.pharmacy_stock!!.firstOrNull()
         if (stock != null) {
             holder.binding.txtPrice.text = "السعر: ${stock.price} ₪"
             holder.binding.txtPriceAfterDiscount.text = "بعد الخصم: ${stock.price_after_discount} ₪"
@@ -52,7 +53,7 @@ class MedicinePharmacyDetailsAdapter(
         }
 
         // ✅ عرض الأيقونة حسب حالة is_favorite
-        if (item.is_favorite) {
+        if (item.is_favorite!!) {
             holder.binding.favoriteImg.setImageResource(R.drawable.red_favorite)
         } else {
             holder.binding.favoriteImg.setImageResource(R.drawable.favorite)
@@ -60,15 +61,16 @@ class MedicinePharmacyDetailsAdapter(
 
         holder.binding.root.setOnClickListener {
             try {
-                itemClickListener.onItemClickMedicine(position, item.id.toString())
+                itemClickListener.onItemClickMedicine(position, item)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
+
     }
 
     // ✅ دالة لتحديث البيانات بعد البحث
-    fun updateList(newList: List<Medicine>) {
+    fun updateList(newList: List<Treatment>) {
         data.clear()
         data.addAll(newList)
         notifyDataSetChanged()

@@ -51,7 +51,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
 
     private lateinit var medicinePharmacyDetailsAdapter: MedicinePharmacyDetailsAdapter
 
-    private var medicineItems: ArrayList<Medicine> = ArrayList()
+    private var medicineItems: ArrayList<Treatment> = ArrayList()
 
     private var token: String=" "
     private var userId: Int=-1

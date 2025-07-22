@@ -84,6 +84,7 @@
     <string name="phone_number">0592754492</string>
     <string name="edit_profile">تعديل المعلومات الشخصية</string>
     <string name="ensure_location">تأكيد الموقع</string>
+    <string name="continue_text">استمر</string>
     <string name="add_new_location">إضافة موقع جديد</string>
     <string name="full_address">العنوان</string>
     <string name="add_prescription">إرفاق الروشته</string>

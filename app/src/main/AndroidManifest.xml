@@ -10,7 +10,6 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -19,8 +18,6 @@
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -34,6 +31,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedicineApplication"
         tools:targetApi="33">
+        <activity
+            android:name=".OnBoardingActivity"
+            android:exported="false" />
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -91,7 +91,7 @@
         </activity>
         <activity
             android:name=".CurrentLocationActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -137,8 +137,8 @@
         <activity
             android:name=".PharmacyDetailsActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.MedicineApplication" />
+            android:theme="@style/Theme.MedicineApplication"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MedicineDetailsActivity"
             android:exported="false" />

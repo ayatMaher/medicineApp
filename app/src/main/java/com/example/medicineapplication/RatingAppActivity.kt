@@ -51,12 +51,10 @@ class RatingAppActivity : AppCompatActivity() {
         val userId = sharedPref.getInt("USER_ID", -1)
         val rating = String.format("%.1f", binding.ratingBar.rating) // "3.0" مثلاً
         val comment = binding.txtComment.text.toString()
-
         if (userId == -1 || token.isBlank()) {
             Toast.makeText(this, "معلومات المستخدم  صحيحة", Toast.LENGTH_SHORT).show()
             return
         }
-
         val request = StoreRatingAppRequest(
             user_id = userId,
             rating = rating,
@@ -83,7 +81,6 @@ class RatingAppActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
-
                 override fun onFailure(call: Call<StoreAppRatingResponse>, t: Throwable) {
                     Toast.makeText(
                         this@RatingAppActivity,

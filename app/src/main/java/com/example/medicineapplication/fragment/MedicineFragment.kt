@@ -2,7 +2,6 @@ package com.example.medicineapplication.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -33,8 +32,6 @@ import com.google.zxing.integration.android.IntentIntegrator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-
 
 
 @Suppress("DEPRECATION")
@@ -137,8 +134,11 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         val intentResult = IntentIntegrator.parseActivityResult(result.resultCode, result.data)
         if (intentResult != null) {
             if (intentResult.contents != null) {
-                Toast.makeText(requireContext(), "Scanned: ${intentResult.contents}", Toast.LENGTH_LONG).show()
-                Log.d("ansam", "ID: ${intentResult.contents}")
+                Toast.makeText(
+                    requireContext(),
+                    "Scanned: ${intentResult.contents}",
+                    Toast.LENGTH_LONG
+                ).show()
 
                 binding.edtSearch.setText(intentResult.contents)
                 medicineName = intentResult.contents ?: ""
@@ -151,7 +151,6 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
             }
         }
     }
-
 
 
     private fun setupSearchListeners() {
@@ -387,7 +386,6 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
     }
 
 
-
     override fun onItemClick(position: Int, id: String) {
         selectedCategoryId = id
         val categoryName = data[position].name
@@ -406,7 +404,7 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
         storeSearchTreatment(token, userId.toString(), id.toString())
         val treatment = medicineAdapter.data[position]
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
-        intent.putExtra("pharmacy_name","pharmacy")
+        intent.putExtra("pharmacy_name", "pharmacy")
         intent.putExtra("medicine", treatment)
         startActivity(intent)
     }
@@ -415,8 +413,6 @@ class MedicineFragment : Fragment(), CategoryAdapter.ItemClickListener,
     override fun onAddMedicineToFavorite(medicineId: Int) {
         addMedicineToFavorite(medicineId)
     }
-
-
 
 
 }

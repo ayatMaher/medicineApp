@@ -68,7 +68,7 @@ data class UserRating(
     val created_at: String,
     val updated_at: String,
     val deleted_at: String?,
-    val phone: String
+    val phone: String?
 ) : Parcelable
 
 data class FavoritePharmacyRequest(

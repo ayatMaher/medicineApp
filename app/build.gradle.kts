@@ -76,14 +76,14 @@ dependencies {
     implementation (libs.okhttp)
     // Glide
     //noinspection KaptUsageInsteadOfKsp
-   // kapt(libs.compiler)
+    // kapt(libs.compiler)
     // Import the BoM for the Firebase platform
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth.v2100)
     implementation(libs.facebook.android.sdk)
-  
+
     // barcode
 
     implementation (libs.barcode.scanning)
@@ -121,4 +121,3 @@ dependencies {
 
 
 }
-

@@ -191,7 +191,6 @@ class VerifyTokenActivity : AppCompatActivity() {
                                 unEnableAndUnVisible()
                                 binding.txtResend.isEnabled = true
                             }
-
                         } catch (e: Exception) {
                             Toast.makeText(
                                 this@VerifyTokenActivity,

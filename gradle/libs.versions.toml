@@ -4,7 +4,6 @@ barcodeScanning = "17.3.0"
 cardview = "1.0.0"
 circleimageview = "3.1.0"
 converterGson = "2.9.0"
-core = "1.6.1"
 credentials = "1.5.0"
 credentialsPlayServicesAuth = "1.5.0"
 facebookAndroidSdk = "latest.release"
@@ -21,16 +20,11 @@ espressoCore = "3.6.1"
 appcompat = "1.7.1"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
-#lifecycleLivedataKtx = "2.9.1"
-#lifecycleViewmodelKtx = "2.9.1"
 zxingCore = "3.5.0"
-zxingEmbedded = "4.3.0"
 kotlinxCoroutinesTest = "1.8.1"
-lifecycleLivedataKtx = "2.9.2"
 lifecycleViewmodelKtx = "2.9.2"
+lifecycleLivedataKtx = "2.9.2"
 mapsCompose = "2.11.4"
-mockitoAndroid = "5.11.0"
-mockitoCore = "5.11.0"
 navigationFragmentKtx = "2.9.2"
 navigationUiKtx = "2.9.2"
 materialVersion = "1.12.0"
@@ -43,23 +37,20 @@ retrofit = "2.9.0"
 playServicesLocation = "21.3.0"
 googleGmsGoogleServices = "4.4.3"
 firebaseAuth = "23.2.1"
-robolectric = "4.11.1"
-runner = "1.6.2"
-textRecognition = "16.0.1"
-textRecognitionVersion = "16.0.0"
+textRecognitionVersion = "16.0.1"
 
 [libraries]
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxingCore" }
 zxing-embedded = { group = "com.journeyapps", name = "zxing-android-embedded", version = "4.3.0" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
-androidx-core = { module = "androidx.test:core", version.ref = "core" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
-androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "barcodeScanning" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 facebook-android-sdk = { module = "com.facebook.android:facebook-android-sdk", version.ref = "facebookAndroidSdk" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -77,11 +68,7 @@ androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navi
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
-mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
-mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoCore" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 #noinspection SimilarGradleDependency
 play-services-auth-v2100 = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
@@ -93,8 +80,6 @@ retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", v
 #noinspection SimilarGradleDependency
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
-robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
 text-recognition-v1600 = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognitionVersion" }
 
 [plugins]

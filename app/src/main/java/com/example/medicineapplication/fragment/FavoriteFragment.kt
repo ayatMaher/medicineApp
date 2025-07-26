@@ -133,7 +133,6 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     private fun showMedicine() {
         medicineItems.clear()
-
         if (token.isEmpty()) {
             Toast.makeText(requireContext(), "يرجى تسجيل الدخول", Toast.LENGTH_SHORT).show()
             return
@@ -236,7 +235,7 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
 
     override fun onItemClickMedicine(position: Int, id: String) {
         //when click to medicine card
-        val medicine = medicineItems[position]
+        val medicine = medicineItems[position].treatment
         val intent = Intent(requireContext(), MedicineDetailsActivity::class.java)
         intent.putExtra("medicine", medicine)
         startActivity(intent)
@@ -254,14 +253,12 @@ class FavoriteFragment : Fragment(), FavoriteMedicineAdapter.ItemClickListener,
         pharmacy: Pharmacy,
         position: Int
     ) {
-
         val token = "Bearer ${
             requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString(
                 "ACCESS_TOKEN",
                 ""
             )
         }"
-
         val call =
             ApiClient.apiService.removePharmacyFavorite(token, pharmacy.favorite_id ?: return)
         call.enqueue(object : Callback<GenericResponse> {

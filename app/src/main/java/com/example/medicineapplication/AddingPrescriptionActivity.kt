@@ -119,18 +119,14 @@ class AddingPrescriptionActivity : AppCompatActivity() {
             setImageURI(uri)
             adjustViewBounds = true
         }
-
         container.addView(imageView)
-
         try {
             val image = InputImage.fromFilePath(this@AddingPrescriptionActivity, uri)
             val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-
             recognizer.process(image)
                 .addOnSuccessListener { visionText ->
                     val fullText = visionText.text
                     val foundDrugs = DrugNameExtractor().extract(fullText)
-
                     if (foundDrugs.isNotEmpty()) {
                         val result = foundDrugs.joinToString(", ")
                         Log.d("EXTRACTED_DRUGS", "تم التعرف على الأدوية: $result")
@@ -143,9 +139,7 @@ class AddingPrescriptionActivity : AppCompatActivity() {
                         if (foundDrugs.isNotEmpty()) {
                             val result = foundDrugs.joinToString(", ")
                             val drugNameForSearch = foundDrugs.first()
-
                             Toast.makeText(this, "تم التعرف على: $result", Toast.LENGTH_LONG).show()
-
                             binding.iconAdd.isEnabled = false
                             binding.btnContinue.setOnClickListener {
                                 val intent = Intent(this, PharmacyActivity::class.java)

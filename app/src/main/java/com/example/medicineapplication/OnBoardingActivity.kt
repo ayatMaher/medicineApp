@@ -6,12 +6,10 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.medicineapplication.databinding.ActivityOnBoardingBinding
-import com.example.medicineapplication.databinding.ActivitySplashBinding
 
+@Suppress("DEPRECATION")
 class OnBoardingActivity : AppCompatActivity() {
     lateinit var binding: ActivityOnBoardingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +19,7 @@ class OnBoardingActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //statusBar Color
-        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        window.statusBarColor = ContextCompat.getColor(this, R.color.board_color)
         // اجعل الأيقونات داكنة إذا كان الخلفية فاتحة
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 

@@ -308,7 +308,6 @@ class LogInActivity : AppCompatActivity() {
                             putInt("USER_ID", userId)
                             apply()
                         }
-
                         Toast.makeText(
                             this@LogInActivity,
                             response.body()!!.message,
@@ -329,7 +328,7 @@ class LogInActivity : AppCompatActivity() {
                             val errorMessage = jsonObject.getJSONObject("data").getString("error")
                             Toast.makeText(this@LogInActivity, errorMessage, Toast.LENGTH_SHORT)
                                 .show()
-                           enableAndVisible()
+                            enableAndVisible()
                         } catch (e: Exception) {
                             Toast.makeText(
                                 this@LogInActivity,
@@ -343,7 +342,7 @@ class LogInActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(errorBody!!)
                     val errorMessage = jsonObject.getJSONObject("data").getString("error")
                     Toast.makeText(this@LogInActivity, errorMessage, Toast.LENGTH_SHORT).show()
-                   enableAndVisible()
+                    enableAndVisible()
                 }
             }
 

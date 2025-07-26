@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.medicineapplication.AddingPrescriptionActivity
 import com.example.medicineapplication.LogInActivity
 import com.example.medicineapplication.MedicineDetailsActivity
@@ -205,11 +206,6 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                             it.copy(isFeatured = false)
                         }
                         items.addAll(updatedList)
-                        Toast.makeText(
-                            requireContext(),
-                            "تم العثور على نتائج الانواع",
-                            Toast.LENGTH_SHORT
-                        ).show()
                         categoryAdapter =
                             CategoryAdapter(requireActivity(), items, this@HomeFragment)
                         binding.rvMedicinetype.layoutManager =
@@ -281,14 +277,11 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
     }
 
     private fun addPharmacyToFavorite(pharmacyId: Int) {
-
         if (token.isEmpty() || userId == -1) {
             Toast.makeText(requireContext(), "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
             return
         }
-
         val request = FavoritePharmacyRequest(userId, pharmacyId)
-
         ApiClient.apiService.storeFavorite(token, request)
             .enqueue(object : Callback<FavoritePharmacyResponse> {
                 override fun onResponse(
@@ -303,14 +296,12 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                             "تمت الإضافة إلى المفضلة",
                             Toast.LENGTH_SHORT
                         ).show()
-
                         // ✅ تحديث حالة isFavorite في القائمة وإبلاغ الـ Adapter
                         val index = pharmacyItems.indexOfFirst { it.id == pharmacyId }
                         if (index != -1) {
                             pharmacyItems[index].is_favorite = true
                             pharmacyHomeAdapter.notifyItemChanged(index)
                         }
-
                     } else {
                         val errorMessage = try {
                             val json = JSONObject(errorBody ?: "")
@@ -322,7 +313,6 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
                         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
-
                 override fun onFailure(call: Call<FavoritePharmacyResponse>, t: Throwable) {
                     Toast.makeText(requireContext(), "خطأ: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -388,13 +378,15 @@ class HomeFragment : Fragment(), CategoryAdapter.ItemClickListener,
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     val user = response.body()!!.data
-                    Toast.makeText(
-                        requireContext(),
-                        response.body()!!.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    // ✅ عرض بيانات المستخدم
+                    // show user name
                     binding.userName.text = "مرحبا, ${user.name}"
+                    //show uaer image
+                     user.image?.let {
+                        Glide.with(this@HomeFragment)
+                            .load(it)
+                            .placeholder(R.drawable.user)
+                            .into(binding.profileImage)
+                    }
 
                 } else {
                     val errorBody = response.errorBody()?.string()

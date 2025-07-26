@@ -42,15 +42,11 @@ class MedicineDetailsActivity : AppCompatActivity() {
 
         medicine = intent.getParcelableExtra<Treatment>("medicine") ?: run {
             Toast.makeText(this, "فشل في تحميل بيانات العلاج", Toast.LENGTH_SHORT).show()
-            Log.d("ansam", "فشل في تحميل بيانات العلاج")
             finish()
             return
         }
 
-        Log.d("ansam", "ttttttttttt" + medicine.toString())
-
-
-        if (medicine == null) {
+        if (false) {
             Log.d("ansam", "فشل في تحميل بيانات الدواء")
             Toast.makeText(this, "فشل في تحميل بيانات الدواء", Toast.LENGTH_SHORT).show()
             finish()
@@ -60,21 +56,20 @@ class MedicineDetailsActivity : AppCompatActivity() {
 
         binding.priceLayout.visibility = View.VISIBLE
         binding.line1.visibility = View.VISIBLE
+
         val count = medicine.pharmacy_count_available.toString()
         binding.countPharmacis.text = "متاح في $count صيدلية"
-        binding.txtMedicinePrice.text =
-            "${medicine.pharmacy_count_available ?: 0} صيدلية توفر هذا الدواء"
+        val prices = medicine.pharmacy_stock?.joinToString(", ") { it.price_after_discount }
+        binding.txtMedicinePrice.text = prices ?: "غير متوفر"
+
         // show or do not show price of medicine
         val pharmacyName = intent.getStringExtra("pharmacy_name")
         if (pharmacyName.isNullOrBlank()) {
             binding.priceLayout.visibility = View.GONE
             binding.line1.visibility = View.GONE
-            Log.d("ansam", "تفاصيلللللللللللللللل")
         } else {
             binding.priceLayout.visibility = View.VISIBLE
             binding.line1.visibility = View.VISIBLE
-
-            Log.d("ansam", "هوووووووووووووووم")
         }
 
 
@@ -110,13 +105,6 @@ class MedicineDetailsActivity : AppCompatActivity() {
             binding.favoriteImg.setImageResource(R.drawable.favorite)
         }
 
-//
-        if (medicine.pharmacy_count_available != null) {
-            val count = medicine.pharmacy_count_available.toString()
-            binding.countPharmacis.text = "متاح في ${count} صيدلية"
-            binding.txtMedicinePrice.text =
-                "${medicine.pharmacy_count_available ?: 0} صيدلية توفر هذا الدواء"
-        }
 
         showUsage()
 
@@ -230,7 +218,7 @@ class MedicineDetailsActivity : AppCompatActivity() {
                             json.optJSONObject("data")?.optString("error")
                                 ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
-                            "فشل في الإضافة للمفضلة"
+                            "فشل في الإضافة للمفضلة${e.message}"
                         }
 
                         Log.e(
@@ -256,83 +244,9 @@ class MedicineDetailsActivity : AppCompatActivity() {
             })
 
 
-//        @SuppressLint("ResourceAsColor", "SetTextI18n")
-//        fun showSideEffects() {
-//            binding.txtUsage.setTextColor(ContextCompat.getColor(this, R.color.black))
-//            binding.txtLineUsage.visibility = View.INVISIBLE
-//            binding.txtSideEffects.setTextColor(ContextCompat.getColor(this, R.color.primary_color))
-//            binding.txtLineSideEffect.visibility = View.VISIBLE
-//            binding.txtInstructions.setTextColor(ContextCompat.getColor(this, R.color.black))
-//            binding.txtLineInstructions.visibility = View.INVISIBLE
-//            binding.txtTabContent.text = medicine.side_effects
-//        }
 
-
-//        fun addMedicineToFavorite(medicineId: Int) {
-//
-//            if (token.isEmpty() || userId == -1) {
-//                Toast.makeText(this, "يرجى تسجيل الدخول أولاً", Toast.LENGTH_SHORT).show()
-//                return
-//            }
-//
-//            val request = FavoriteMedicineRequest(userId, medicineId)
-//
-//            ApiClient.apiService.storFavoriteMedicine(token, request)
-//                .enqueue(object : Callback<FavoriteMedicineResponse> {
-//                    override fun onResponse(
-//                        call: Call<FavoriteMedicineResponse>,
-//                        response: Response<FavoriteMedicineResponse>
-//                    ) {
-//                        val errorBody = response.errorBody()?.string()
-//
-//                        if (response.isSuccessful && response.body()?.success == true) {
-//                            Toast.makeText(
-//                                this@MedicineDetailsActivity,
-//                                "تمت الإضافة إلى المفضلة",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//
-//                            // ✅ تحديث حالة isFavorite في القائمة وإبلاغ الـ Adapter
-//                            medicine.is_favorite = true
-//                            updateFavoriteIcon(true)
-//
-//                        } else {
-//                            val errorMessage = try {
-//                                val json = org.json.JSONObject(errorBody ?: "")
-//                                json.optJSONObject("data")?.optString("error")
-//                                    ?: "فشل في الإضافة للمفضلة"
-//                            } catch (e: Exception) {
-//                                " ${e.message}فشل في الإضافة للمفضلة"
-//                            }
-//                            Toast.makeText(
-//                                this@MedicineDetailsActivity,
-//                                errorMessage,
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<FavoriteMedicineResponse>, t: Throwable) {
-//                        Toast.makeText(
-//                            this@MedicineDetailsActivity,
-//                            "خطأ: ${t.message}",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//
-//                    }
-//                })
-//
-//
-//        }
     }
 
 
 
 }
-
-
-
-
-
-
-

@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="370dp"
         android:background="@drawable/pharmacy_img"
-        android:padding="16dp"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,7 +24,6 @@
             layout="@layout/activity_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="@id/img_pharmacy_layout"
             app:layout_constraintStart_toStartOf="@id/img_pharmacy_layout"
             app:layout_constraintTop_toTopOf="@id/img_pharmacy_layout" />
@@ -37,7 +36,7 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/circle"
             android:backgroundTint="@color/white"
-            android:contentDescription="Favorite"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/favorite"
             app:layout_constraintEnd_toEndOf="@id/img_pharmacy_layout"
             app:layout_constraintTop_toTopOf="@id/img_pharmacy_layout" />
@@ -73,15 +72,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/txt_pharmacy_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="200dp"
+                        android:layout_marginEnd="160dp"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="صيدلية الأسرى"
+                        android:text="@string/pharmacy_name"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/rubik"
-                    android:text="نخدمكم على مدار الساعة لتوفير الأدوية والمستلزمات الطبية بجودة عالية وخدمة موثوقة. صحتكم أولويتنا"
+                    android:text="@string/description"
                     android:textColor="#D41C1A1A"
                     android:textSize="16sp" />
 
@@ -114,12 +114,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginEnd="5dp"
+                            android:contentDescription="@string/app_name"
                             android:src="@drawable/gray_location" />
 
                         <TextView
@@ -127,7 +129,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/rubik"
-                            android:text="غزة_التفاح_شارع النفق"
+                            android:text="@string/full_address"
                             android:textColor="#801C1A1A"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -140,7 +142,7 @@
                         android:layout_marginStart="60dp"
                         android:background="@drawable/btn_background_stroke"
                         android:fontFamily="@font/rubik"
-                        android:text="الموقع على الخريطة"
+                        android:text="@string/location_inMap"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -148,6 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:gravity="center"
                     android:background="@drawable/back"
                     android:orientation="horizontal"
                     android:padding="10dp">
@@ -158,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:fontFamily="@font/rubik"
-                        android:text="2.67 k"
+                        android:text="@string/rate_example"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -167,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:fontFamily="@font/rubik"
-                        android:text="تقييمات"
+                        android:text="@string/rates"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -175,9 +178,9 @@
                         android:id="@+id/btn_rate"
                         android:layout_width="90dp"
                         android:layout_height="35dp"
-                        android:layout_marginStart="145dp"
+                        android:layout_marginStart="165dp"
                         android:background="@drawable/btn_background_profile"
-                        android:text="اضغط للتقيم"
+                        android:text="@string/click_toRate"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
@@ -211,6 +214,7 @@
                             android:layout_height="18dp"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="20dp"
+                            android:contentDescription="@string/app_name"
                             android:src="@drawable/search_normal"
                             app:layout_constraintStart_toStartOf="@id/search_bar"
                             app:layout_constraintTop_toTopOf="@id/search_bar" />
@@ -224,7 +228,7 @@
                             android:autofillHints=""
                             android:background="@null"
                             android:fontFamily="@font/rubik"
-                            android:hint="ابحث عن دوائك"
+                            android:hint="@string/search_medicine"
                             android:inputType="text"
                             android:textSize="14sp"
                             app:layout_constraintStart_toEndOf="@id/search_image"
@@ -235,7 +239,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginStart="140dp"
-                            android:contentDescription="BarCode"
+                            android:contentDescription="@string/app_name"
                             android:src="@drawable/bar_code"
                             app:layout_constraintEnd_toEndOf="@id/search_bar"
                             app:layout_constraintBottom_toBottomOf="@id/search_bar"
@@ -249,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="الأدوية المتوفرة"
+                        android:text="@string/available_medicine"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 

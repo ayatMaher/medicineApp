@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pharmacy_search_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,6 +28,7 @@
                     android:id="@+id/pharmacy_img"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     android:src="@drawable/pharmacy2" />
 
@@ -38,7 +40,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:ignore="UselessParent">
 
                         <TextView
                             android:id="@+id/pharmacy_name"
@@ -47,14 +50,15 @@
                             android:layout_marginStart="40dp"
                             android:layout_marginTop="105dp"
                             android:fontFamily="@font/bold"
-                            android:text="صيدلية الأسرى"
+                            android:text="@string/pharmacy_name"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            tools:ignore="UseCompoundDrawables">
 
                             <ImageView
                                 android:layout_width="18dp"
@@ -67,9 +71,11 @@
                                 android:id="@+id/pharmacy_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:lines="2"
                                 android:layout_marginStart="8dp"
+                                android:layout_marginBottom="5dp"
                                 android:fontFamily="@font/rubik"
-                                android:text="غزة_التفاح_شارع النفق"
+                                android:text="@string/full_address"
                                 android:textColor="@color/white"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -84,6 +90,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_margin="16sp"
             android:orientation="horizontal">
 
@@ -100,7 +107,7 @@
                     android:layout_height="26dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/lighter_yellow"
-                    android:contentDescription="Rate"
+                    android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     android:src="@drawable/star" />
 
@@ -110,7 +117,7 @@
                     android:layout_height="17dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
-                    android:text="4.5"
+                    android:text="@string/rate_example"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -127,7 +134,7 @@
                     android:layout_height="26dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_yellow_green"
-                    android:contentDescription="Rate"
+                    android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     android:src="@drawable/clock" />
 
@@ -138,7 +145,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
                     android:fontFamily="@font/rubik"
-                    android:text="8:00 ص_1:00 م "
+                    android:text="@string/dead_line"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -146,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -155,7 +162,7 @@
                     android:layout_height="26dp"
                     android:background="@drawable/circle"
                     android:backgroundTint="#D5E9EA"
-                    android:contentDescription="Rate"
+                    android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     android:src="@drawable/arrow" />
 
@@ -165,14 +172,14 @@
                     android:layout_height="17dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
-                    android:text="4.5"
+                    android:text="@string/rate_example"
                     android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="كيلو"
+                    android:text="@string/kilo"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -181,6 +188,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/circle"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/phone" />
         </LinearLayout>
     </LinearLayout>

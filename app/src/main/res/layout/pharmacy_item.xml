@@ -5,6 +5,7 @@
     android:layout_height="215dp"
     android:layoutDirection="rtl"
     app:cardCornerRadius="10dp"
+    android:paddingBottom="10dp"
     app:cardUseCompatPadding="true"
     android:id="@+id/pharmacy_card">
 
@@ -17,7 +18,7 @@
             android:id="@+id/pharmacy_img"
             android:layout_width="215dp"
             android:layout_height="130dp"
-            android:contentDescription="Pharmacy"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/pharmacy_img"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/circle"
             android:backgroundTint="@color/white"
-            android:contentDescription="Favorite"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/favorite"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,9 +41,9 @@
             android:id="@+id/ph_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pharmacy_img">
 
             <TextView
@@ -51,13 +52,14 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:fontFamily="@font/rubik"
-                android:text="صيدلية الخنساء الطبية" />
+                android:text="@string/pharmacy_name" />
 
             <ImageView
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="40dp"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/fill_star_primary" />
 
             <TextView
@@ -67,18 +69,19 @@
                 android:layout_marginStart="5dp"
                 android:textSize="12sp"
                 android:fontFamily="@font/rubik"
-                android:text="4.5" />
+                android:text="@string/rate_example" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/pharmacy_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:lines="2"
             android:gravity="center"
-            android:layout_marginStart="8dp"
             android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             android:fontFamily="@font/rubik"
-            android:text="الرمال_ شارع أحمد بن عبد العزيز"
+            android:text="@string/full_address"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ph_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>

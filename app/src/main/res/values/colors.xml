@@ -34,6 +34,8 @@
 
     <color name="status_bar_color_log">#F8F9F5</color>
     <color name="red">#A83838</color>
+    <color name="board_color">#46BAB7</color>
+
 
     <color name="black_overlay">#66000000</color>
 

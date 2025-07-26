@@ -172,8 +172,8 @@
                     android:autofillHints="phone"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/rubik"
-                    android:inputType="phone"
                     android:hint="@string/phone_number"
+                    android:inputType="phone"
                     android:textAlignment="viewStart"
                     android:textColor="#000000"
                     android:textSize="14sp" />

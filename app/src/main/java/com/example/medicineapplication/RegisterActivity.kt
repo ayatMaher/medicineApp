@@ -146,7 +146,7 @@ class RegisterActivity : AppCompatActivity() {
                         val errorMessage = jsonObject.getJSONObject("data").getString("error")
                         Toast.makeText(this@RegisterActivity, errorMessage, Toast.LENGTH_LONG)
                             .show()
-                        Log.e("Exception", errorMessage )
+                        Log.e("Exception", errorMessage)
                         enableAndVisible()
                     } catch (e: Exception) {
                         Toast.makeText(
@@ -154,7 +154,7 @@ class RegisterActivity : AppCompatActivity() {
                             e.message,
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.e("Exception", e.message.toString() )
+                        Log.e("Exception", e.message.toString())
                     }
                 }
             }
@@ -163,7 +163,7 @@ class RegisterActivity : AppCompatActivity() {
                 enableAndVisible()
                 Toast.makeText(this@RegisterActivity, "Error: ${t.message}", Toast.LENGTH_LONG)
                     .show()
-                Log.e("Exception", t.message.toString() )
+                Log.e("Exception", t.message.toString())
             }
         })
     }

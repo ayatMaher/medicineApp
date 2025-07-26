@@ -1,6 +1,7 @@
 package com.example.medicineapplication
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -142,13 +143,10 @@ class EditProfileActivity : AppCompatActivity() {
         val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
         val bearerToken = if (token.startsWith("Bearer ")) token else "Bearer $token"
         val apiService = ApiClient.instance.create(ApiService::class.java)
-
         val name = binding.editName.text.toString().trim()
         val email = binding.editEmail.text.toString().trim()
         val phone = binding.editPhone.text.toString().trim()
         val password = binding.editPassword.text.toString().trim()
-
-
         val nameBody = name.toRequestBody("text/plain".toMediaTypeOrNull())
         val emailBody = email.toRequestBody("text/plain".toMediaTypeOrNull())
         val phoneBody = phone.toRequestBody("text/plain".toMediaTypeOrNull())
@@ -162,7 +160,6 @@ class EditProfileActivity : AppCompatActivity() {
                 imagePart = MultipartBody.Part.createFormData("image", it.name, requestFile)
             }
         }
-
         apiService.updateUser(bearerToken, nameBody, emailBody, phoneBody, passwordBody, imagePart)
             .enqueue(object : Callback<UserResponse> {
                 override fun onResponse(
@@ -249,18 +246,15 @@ class EditProfileActivity : AppCompatActivity() {
 
         val apiService = ApiClient.instance.create(ApiService::class.java)
         apiService.getCurrentUser(token).enqueue(object : Callback<UserResponse> {
+            @SuppressLint("SetTextI18n")
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     val user = response.body()!!.data
-                    Toast.makeText(
-                        this@EditProfileActivity,
-                        response.body()!!.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
                     // ✅ عرض بيانات المستخدم
                     binding.editName.setText(user.name)
                     binding.editEmail.setText(user.email)
                     binding.editPhone.setText(user.phone)
+                    binding.editPassword.setText("123456789")
                     user.image?.let {
                         Glide.with(this@EditProfileActivity)
                             .load(it)

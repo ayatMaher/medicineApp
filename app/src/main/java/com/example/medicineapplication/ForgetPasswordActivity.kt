@@ -57,7 +57,6 @@ class ForgetPasswordActivity : AppCompatActivity() {
 
     private fun sendForgotPasswordRequest(email: String) {
         val call = apiService.forgotPassword(email = email)
-
         call.enqueue(object : Callback<GenericResponse> {
             override fun onResponse(
                 call: Call<GenericResponse>,
@@ -70,7 +69,6 @@ class ForgetPasswordActivity : AppCompatActivity() {
                         response.body()!!.message,
                         Toast.LENGTH_LONG
                     ).show()
-
                     // الانتقال إلى شاشة إدخال الكود
                     val intent =
                         Intent(this@ForgetPasswordActivity, VerifyTokenActivity::class.java)
@@ -93,7 +91,6 @@ class ForgetPasswordActivity : AppCompatActivity() {
                     }
                 }
             }
-
             override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
                 enableAndVisible()
                 Toast.makeText(

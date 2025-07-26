@@ -141,4 +141,27 @@
     <string name="logout">تسجيل الخروج</string>
     <string name="pharmacies">الصيدليات</string>
     <string name="medicines">الأدوية</string>
+    <string name="rate_example">4.5</string>
+    <string name="pharmacy_name">صيدلية الخنساء الطبية</string>
+    <string name="date">3 مارس 2024</string>
+    <string name="description">صيدلية منظمة، توفر خدمة جيدة وأسعار مناسبة، لكن تحتاج لتحسين سرعة الاستجابة.</string>
+    <string name="resolve">اكتشف، تواصل، وأرفق روشتتك خلال ثوان 🧾ٍ</string>
+    <string name="board">ابحث عن دوائك واطلبه من أقرب صيدلية بكل سهولة كل ذلك في تطبيق واحد بسيط 🩺</string>
+    <string name="number">50</string>
+    <string name="available_medicine">الأدوية المتوفرة</string>
+    <string name="click_toRate">اضغط للتقيم</string>
+    <string name="location_inMap">الموقع على الخريطة</string>
+    <string name="rates">تقييمات</string>
+    <string name="dead_line">8:00 ص_1:00 م</string>
+    <string name="kilo">كيلو</string>
+    <string name="price">50.00</string>
+    <string name="dollar">₪</string>
+    <string name="available_pharmacies">الصيدليات المتاحة</string>
+    <string name="usage">الاستخدام</string>
+    <string name="available">متاح في 18 صيدلية</string>
+    <string name="description_medicine">مكمل غذائي لذيذ على شكل حلوى جيلاتينية، يدعم صحتك اليومية بطريقة ممتعة وسهلة! يساهم في نمو الخلايا وتجديد الجلد والحفاظ على صحةالجسد</string>
+    <string name="category">فيتامين</string>
+    <string name="haba">حبة</string>
+    <string name="instructions">التعليمات</string>
+    <string name="side_effects">الآثار الجانبية</string>
 </resources>

@@ -2,10 +2,12 @@ package com.example.medicineapplication.fragment
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -111,11 +113,6 @@ class ProfileFragment : Fragment() {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     val user = response.body()!!.data
-                    Toast.makeText(
-                        requireContext(),
-                        response.body()!!.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
                     //show uaer image
                     user.image?.let {
                         Glide.with(this@ProfileFragment)
@@ -194,8 +191,17 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showLogoutConfirmationDialog() {
+        val title = TextView(requireContext()).apply {
+            text = "تأكيد تسجيل الخروج"
+            textSize = 20f
+            setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+            setPadding(32, 32, 32, 16)
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START  // المحاذاة إلى اليمين للغة العربية
+            typeface = Typeface.DEFAULT_BOLD
+            layoutDirection = View.LAYOUT_DIRECTION_RTL
+        }
         val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("تأكيد تسجيل الخروج")
+            .setCustomTitle(title)
             .setMessage("هل أنت متأكد أنك تريد تسجيل الخروج؟")
             .setPositiveButton("نعم") { _, _ ->
                 performLogout()
@@ -241,7 +247,7 @@ class ProfileFragment : Fragment() {
 
     private fun deleteAccount() {
         val sharedPref =
-            requireActivity().getSharedPreferences("MyAppPrefs",MODE_PRIVATE)
+            requireActivity().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val token = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
 
         if (token.isEmpty()) {
@@ -287,14 +293,29 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showDeleteAccountDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("❗ تأكيد حذف الحساب")
+        val title = TextView(requireContext()).apply {
+            text = "تأكيد حذف الحساب"
+            textSize = 20f
+            setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+            setPadding(32, 32, 32, 16)
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START  // المحاذاة إلى اليمين للغة العربية
+            typeface = Typeface.DEFAULT_BOLD
+            layoutDirection = View.LAYOUT_DIRECTION_RTL
+        }
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setCustomTitle(title)
             .setMessage("هل أنت متأكد أنك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.")
             .setPositiveButton("نعم") { _, _ ->
                 deleteAccount()
             }
             .setNegativeButton("إلغاء", null)
             .show()
+        // تغيير لون أزرار الحوار بعد إظهاره
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
     }
 
 

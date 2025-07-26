@@ -16,7 +16,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import androidx.transition.Visibility
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -26,7 +25,6 @@ import com.example.medicineapplication.databinding.ActivityPharmacyDetailsBindin
 import com.example.medicineapplication.model.FavoritePharmacyRequest
 import com.example.medicineapplication.model.FavoritePharmacyResponse
 import com.example.medicineapplication.model.GeneralResponse
-import com.example.medicineapplication.model.Medicine
 import com.example.medicineapplication.model.MedicineResponse
 import com.example.medicineapplication.model.Pharmacy
 import com.example.medicineapplication.model.Rating
@@ -53,9 +51,9 @@ class PharmacyDetailsActivity : AppCompatActivity(),
 
     private var medicineItems: ArrayList<Treatment> = ArrayList()
 
-    private var token: String=" "
-    private var userId: Int=-1
-    private var query: String=""
+    private var token: String = " "
+    private var userId: Int = -1
+    private var query: String = ""
 
     private var isFromQRScan = false
 
@@ -115,7 +113,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
             }
         }
 
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             searchMedicine("")
         }
 
@@ -127,7 +125,8 @@ class PharmacyDetailsActivity : AppCompatActivity(),
             try {
                 startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(this, " ${e.message}واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, " ${e.message}واتساب غير مثبت على الجهاز", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -185,7 +184,10 @@ class PharmacyDetailsActivity : AppCompatActivity(),
             .load(pharmacy.image_pharmacy)
             .placeholder(R.drawable.new_background)
             .into(object : CustomTarget<Drawable>() {
-                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable>?
+                ) {
                     binding.imgPharmacyLayout.background = resource
                 }
 
@@ -223,7 +225,8 @@ class PharmacyDetailsActivity : AppCompatActivity(),
     private fun setupSearchListener() {
         binding.edtSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
-                actionId == EditorInfo.IME_ACTION_SEARCH) {
+                actionId == EditorInfo.IME_ACTION_SEARCH
+            ) {
 
                 query = binding.edtSearch.text.toString().trim()
                 if (query.isNotEmpty()) {
@@ -243,7 +246,10 @@ class PharmacyDetailsActivity : AppCompatActivity(),
 
         ApiClient.apiService.searchTreatmentOfStock(token, pharmacy.id.toString(), query)
             .enqueue(object : Callback<MedicineResponse> {
-                override fun onResponse(call: Call<MedicineResponse>, response: Response<MedicineResponse>) {
+                override fun onResponse(
+                    call: Call<MedicineResponse>,
+                    response: Response<MedicineResponse>
+                ) {
                     if (response.isSuccessful && response.body()?.success == true) {
                         val result = response.body()?.data ?: emptyList()
                         val medicineList = result.map {
@@ -266,44 +272,28 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                         }
                         medicinePharmacyDetailsAdapter.updateList(medicineList)
 
-                        if (medicineList.isEmpty()){
+                        if (medicineList.isEmpty()) {
                             showConfirmationDialog()
                         }
 
                     } else {
-                        Toast.makeText(this@PharmacyDetailsActivity, "لم يتم العثور على نتائج", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@PharmacyDetailsActivity,
+                            "لم يتم العثور على نتائج",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<MedicineResponse>, t: Throwable) {
-                    Toast.makeText(this@PharmacyDetailsActivity, "فشل الاتصال بالسيرفر", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@PharmacyDetailsActivity,
+                        "فشل الاتصال بالسيرفر",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
-
-//    fun showConfirmationDialog() {
-//        val builder = AlertDialog.Builder(this)
-//        //builder.setTitle("تأكيد")
-//        builder.setMessage("هل ترغب في ان ارسل لك اشعار في حال توفر هذا العلاج؟")
-//
-//        builder.setPositiveButton("نعم") { dialog, which ->
-//            storeRequestTreatmentAvailbilte(token,userId,query,pharmacy.id)
-//            Toast.makeText(this, "تم الاختيار: نعم", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        builder.setNegativeButton("لا") { dialog, which ->
-//            Toast.makeText(this, "تم الاختيار: لا", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        builder.setNeutralButton("إلغاء") { dialog, which ->
-//            dialog.dismiss()
-//        }
-//
-//        confirmationDialog = builder.create()
-//        confirmationDialog?.show()
-//    }
-
-
 
 
     fun showErrorDialog(message: String) {
@@ -317,12 +307,12 @@ class PharmacyDetailsActivity : AppCompatActivity(),
 
         val btnYes = dialogView.findViewById<Button>(R.id.ok_button)
         val btnNo = dialogView.findViewById<Button>(R.id.close_button)
-        val btnCancel=dialogView.findViewById<Button>(R.id.cancel_button)
+        val btnCancel = dialogView.findViewById<Button>(R.id.cancel_button)
 
-        btnYes.visibility= View.GONE
-        btnNo.visibility=View.GONE
-        val content=dialogView.findViewById<TextView>(R.id.popup_message)
-        content.text=message
+        btnYes.visibility = View.GONE
+        btnNo.visibility = View.GONE
+        val content = dialogView.findViewById<TextView>(R.id.popup_message)
+        content.text = message
 
 
         btnCancel.setOnClickListener {
@@ -335,22 +325,6 @@ class PharmacyDetailsActivity : AppCompatActivity(),
         confirmationDialog = alertDialog
     }
 
-//    fun showErrorDialog(message: String) {
-//        confirmationDialog?.dismiss()
-//        confirmationDialog = null
-//
-//        val builder = AlertDialog.Builder(this)
-//        builder.setMessage(message)
-//
-//        builder.setNeutralButton("إلغاء") { dialog, _ ->
-//            dialog.dismiss()
-//        }
-//
-//        val dialog = builder.create()
-//        dialog.show()
-//    }
-
-
     fun showConfirmationDialog() {
         val dialogView = layoutInflater.inflate(R.layout.custom_popup, null)
         val alertDialog = AlertDialog.Builder(this)
@@ -360,7 +334,7 @@ class PharmacyDetailsActivity : AppCompatActivity(),
 
         val btnYes = dialogView.findViewById<Button>(R.id.ok_button)
         val btnNo = dialogView.findViewById<Button>(R.id.close_button)
-        val btnCancel=dialogView.findViewById<Button>(R.id.cancel_button)
+        val btnCancel = dialogView.findViewById<Button>(R.id.cancel_button)
 
         btnYes.setOnClickListener {
             storeRequestTreatmentAvailbilte(token, userId, query, pharmacy.id)
@@ -384,10 +358,15 @@ class PharmacyDetailsActivity : AppCompatActivity(),
     }
 
 
-    private fun storeRequestTreatmentAvailbilte(token: String,userId: Int,treatmentName: String,pharmacyId: Int){
+    private fun storeRequestTreatmentAvailbilte(
+        token: String,
+        userId: Int,
+        treatmentName: String,
+        pharmacyId: Int
+    ) {
 
-        val request = storeTreatmentAvailbilteRequest(userId, treatmentName,pharmacyId)
-        ApiClient.apiService.storeRequestTreatmentAvailbilte( token, request)
+        val request = storeTreatmentAvailbilteRequest(userId, treatmentName, pharmacyId)
+        ApiClient.apiService.storeRequestTreatmentAvailbilte(token, request)
             .enqueue(object : Callback<GeneralResponse> {
                 override fun onResponse(
                     call: Call<GeneralResponse>,
@@ -396,7 +375,11 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                     val errorBody = response.errorBody()?.string()
 
                     if (response.isSuccessful && response.body()?.success == true) {
-                        Toast.makeText(this@PharmacyDetailsActivity, "تم إرسال الطلب بنجاح", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@PharmacyDetailsActivity,
+                            "تم إرسال الطلب بنجاح",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         // اغلق نافذة التأكيد
                         confirmationDialog?.dismiss()
@@ -413,13 +396,18 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                 }
 
                 override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
-                    Toast.makeText(this@PharmacyDetailsActivity, "خطأ: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@PharmacyDetailsActivity,
+                        "خطأ: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
 
     private fun addPharmacyToFavorite(pharmacyId: Int, userId: Int) {
-        val token = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString("ACCESS_TOKEN", "") ?: ""
+        val token =
+            getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString("ACCESS_TOKEN", "") ?: ""
 
         if (token.isEmpty()) {
             Toast.makeText(this, "رمز الدخول مفقود", Toast.LENGTH_SHORT).show()
@@ -437,23 +425,36 @@ class PharmacyDetailsActivity : AppCompatActivity(),
                     val errorBody = response.errorBody()?.string()
 
                     if (response.isSuccessful && response.body()?.success == true) {
-                        Toast.makeText(this@PharmacyDetailsActivity, "تمت الإضافة إلى المفضلة", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@PharmacyDetailsActivity,
+                            "تمت الإضافة إلى المفضلة",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                         pharmacy.is_favorite = true
                         updateFavoriteIcon(true)
                     } else {
                         val errorMessage = try {
                             val json = JSONObject(errorBody ?: "")
-                            json.optJSONObject("data")?.optString("error") ?: "فشل في الإضافة للمفضلة"
+                            json.optJSONObject("data")?.optString("error")
+                                ?: "فشل في الإضافة للمفضلة"
                         } catch (e: Exception) {
                             "${e.message}فشل في الإضافة للمفضلة"
                         }
-                        Toast.makeText(this@PharmacyDetailsActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@PharmacyDetailsActivity,
+                            errorMessage,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<FavoritePharmacyResponse>, t: Throwable) {
-                    Toast.makeText(this@PharmacyDetailsActivity, "خطأ: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@PharmacyDetailsActivity,
+                        "خطأ: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
@@ -464,10 +465,8 @@ class PharmacyDetailsActivity : AppCompatActivity(),
 
     override fun onItemClickMedicine(position: Int, treatment: Treatment) {
         val intent = Intent(this@PharmacyDetailsActivity, MedicineDetailsActivity::class.java)
-        Log.d("ansam", "نجح في تحميل بيانات العلاج")
-        Log.d("ansam", treatment.toString())
         intent.putExtra("medicine", treatment)
-        intent.putExtra("pharmacy_name","pharmacy")
+        intent.putExtra("pharmacy_name", "pharmacy")
         startActivity(intent)
     }
 
